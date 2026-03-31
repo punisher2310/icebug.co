@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: none; /* Custom cursor ke liye */
+}
+
+body {
+    background-color: #0b0806; /* Deep Charcoal Black */
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* Custom Ice-Blue Cursor */
+.cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #00f0ff;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    transition: transform 0.1s ease;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 5%;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.contact-btn {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #00f0ff;
+    padding: 10px 24px;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: 0.3s ease;
+}
+
+.contact-btn:hover {
+    background: #00f0ff;
+    color: #0b0806;
+}
+
+.hero {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+}
+
+.sub-heading {
+    color: #00f0ff;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.main-heading {
+    font-size: 5rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.highlight {
+    color: transparent;
+    -webkit-text-stroke: 1px #00f0ff;
+}
+
+.desc {
+    font-size: 1.2rem;
+    max-width: 600px;
+    color: #aaaaaa;
+}
+
+.services {
+    padding: 5rem 5%;
+    text-align: center;
+}
+
+.pricing-card {
+    border: 1px solid #333;
+    padding: 3rem;
+    border-radius: 20px;
+    max-width: 500px;
+    margin: 3rem auto;
+    background: linear-gradient(145deg, #111, #0a0a0a);
+}
+
+.pricing-card h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+.price { font-size: 2.5rem; font-weight: 700; color: #00f0ff; margin-bottom: 1.5rem; }
+.small { font-size: 1rem; color: #aaa; }
+ul { list-style: none; text-align: left; margin-left: 10%; }
+ul li { margin: 10px 0; font-size: 1.1rem; color: #ddd; }
+ul li::before { content: "✦ "; color: #00f0ff; }
