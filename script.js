@@ -1,4 +1,4 @@
-// Custom Cursor
+// Custom Cursor Logic
 const cursor = document.querySelector(".cursor");
 if(window.matchMedia("(pointer: fine)").matches) {
     document.addEventListener("mousemove", (e) => {
@@ -7,14 +7,15 @@ if(window.matchMedia("(pointer: fine)").matches) {
     });
 }
 
-// SOW Viewer Logic (Drive to Iframe)
-function openSOW(link) {
+// SOW Viewer Logic (No-Exit Experience)
+function openSOW(link, title) {
     const modal = document.getElementById('sowModal');
     const frame = document.getElementById('sowFrame');
     
-    // Google Drive Link Hack
+    // Google Drive Link Hack for Iframe Preview
     let embedLink = link.replace('/view?usp=sharing', '/preview');
     
+    document.getElementById('modalTitle').innerText = title;
     frame.src = embedLink;
     modal.style.display = "flex";
     document.body.style.overflow = "hidden"; // Stop background scroll
@@ -25,5 +26,5 @@ function closeSOW() {
     const frame = document.getElementById('sowFrame');
     modal.style.display = "none";
     frame.src = "";
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = "auto"; // Re-enable scroll
 }
