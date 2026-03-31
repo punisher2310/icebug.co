@@ -1,24 +1,29 @@
-// Magic Cursor Logic
+// Custom Cursor
 const cursor = document.querySelector(".cursor");
-document.addEventListener("mousemove", (e) => {
-    cursor.style.left = e.clientX - 10 + "px";
-    cursor.style.top = e.clientY - 10 + "px";
-});
-
-// Live Clock for that Tech vibe
-function updateClock() {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', { hour12: false });
-    document.getElementById('clock').textContent = timeString;
+if(window.matchMedia("(pointer: fine)").matches) {
+    document.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX - 10 + "px";
+        cursor.style.top = e.clientY - 10 + "px";
+    });
 }
-setInterval(updateClock, 1000);
 
-// GSAP Reveal
-gsap.from(".anim-up", {
-    y: 40,
-    opacity: 0,
-    duration: 1.2,
-    stagger: 0.2,
-    ease: "power4.out",
-    delay: 0.2
-});
+// SOW Viewer Logic (Drive to Iframe)
+function openSOW(link) {
+    const modal = document.getElementById('sowModal');
+    const frame = document.getElementById('sowFrame');
+    
+    // Google Drive Link Hack
+    let embedLink = link.replace('/view?usp=sharing', '/preview');
+    
+    frame.src = embedLink;
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden"; // Stop background scroll
+}
+
+function closeSOW() {
+    const modal = document.getElementById('sowModal');
+    const frame = document.getElementById('sowFrame');
+    modal.style.display = "none";
+    frame.src = "";
+    document.body.style.overflow = "auto";
+}
