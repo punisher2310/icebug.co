@@ -5,128 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Icebug\Studio | Premium Digital Experiences</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Space+Mono&display=swap" rel="stylesheet">
-    
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        :root { --bg-color: #050505; --text-main: #ffffff; --text-muted: #888888; --accent: #ff4d29; }
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
-
-        /* Custom Cursor */
-        .cursor { width: 20px; height: 20px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.1s ease; }
-        
-        /* Typography & Utility */
-        .accent { color: var(--accent); }
-        .tech-detail, .time-block, .setup-fee, .tag, .stat, .role { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
-
-        /* Navbar */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 2rem 4rem; }
-        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
-        .nav-links { display: flex; align-items: center; flex-wrap: wrap; }
-        .nav-links a { color: var(--text-main); text-decoration: none; margin-left: 2rem; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
-        .client-login { border: 1px solid #333; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem !important; }
-        .client-login:hover { border-color: var(--accent); }
-        .btn-primary { background: var(--accent); color: #fff; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: 0.3s; margin-left: 2rem; }
-        .btn-primary:hover { opacity: 0.8; box-shadow: 0 0 15px rgba(255, 77, 41, 0.4); color: #fff !important; }
-        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid #333; padding: 10px 24px; border-radius: 30px; text-decoration: none; display: inline-block; transition: 0.3s; }
-        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-
-        /* Hero */
-        .hero { height: 80vh; min-height: 600px; position: relative; display: flex; align-items: center; justify-content: center; padding: 0 4rem; }
-        .top-left { position: absolute; top: 2rem; left: 4rem; }
-        .top-right { position: absolute; top: 2rem; right: 4rem; text-align: right; }
-        .bottom-left { position: absolute; bottom: 2rem; left: 4rem; }
-        .hero-content { text-align: center; max-width: 1000px; width: 100%; }
-        .hero-sub { font-size: 2.5rem; font-weight: 300; letter-spacing: -1px; line-height: 1.2; margin-bottom: 1rem; }
-        .hero-main { font-size: 7rem; font-weight: 800; letter-spacing: -4px; margin-bottom: 3rem; }
-        .hero-bottom-grid { display: flex; justify-content: space-between; align-items: flex-end; text-align: left; border-top: 1px solid #222; padding-top: 1.5rem; }
-        .hero-desc { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
-
-        /* Manifesto */
-        .manifesto-section { padding: 8rem 4rem; background-color: #0a0a0a; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; }
-        .manifesto-title { font-size: 4rem; font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 4rem; }
-        .manifesto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; border-top: 1px solid #222; padding-top: 3rem; }
-        .manifesto-grid .stat { font-size: 3.5rem; color: var(--accent); margin-bottom: 1rem; font-weight: 300;}
-        .stat-desc { color: var(--text-muted); font-size: 1.1rem; line-height: 1.5;}
-
-        /* Work */
-        .work-section { padding: 8rem 4rem; }
-        .work-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
-        .section-title { font-size: 3rem; font-weight: 300; letter-spacing: -2px; }
-        .work-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
-        .image-wrapper { width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid #222; }
-        .work-image { width: 100%; min-height: 400px; background-size: cover; background-position: center; transition: transform 0.6s ease; }
-        .large-card .work-image { min-height: 500px; }
-        .image-wrapper:hover .work-image { transform: scale(1.05); }
-        .work-tags { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
-        .tag { color: var(--accent); border: 1px solid rgba(255, 77, 41, 0.3); padding: 4px 10px; border-radius: 20px; font-weight: bold;}
-        .work-info h3 { font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem;}
-
-        /* Leadership */
-        .leadership-section { padding: 8rem 4rem; background: #080808; border-top: 1px solid #1a1a1a; }
-        .message-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3rem; }
-        .message-box { background: #0c0c0c; padding: 4rem 3rem; border-radius: 20px; border: 1px solid #222; position: relative; transition: 0.4s ease; }
-        .message-box:hover { border-color: #444; transform: translateY(-5px); }
-        .quote-icon { font-size: 4rem; color: var(--accent); opacity: 0.2; position: absolute; top: 1rem; left: 2rem; font-family: serif; }
-        .message-text { font-size: 1.6rem; font-weight: 300; line-height: 1.5; color: #e0e0e0; margin-bottom: 3rem; position: relative; z-index: 2; }
-        .leader-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.2rem; }
-
-        /* Pricing */
-        .pricing-section { padding: 4rem 4rem 8rem 4rem; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem;}
-        .bento { background: #0a0a0a; border: 1px solid #222; border-radius: 20px; padding: 2.5rem; transition: 0.4s ease; display: flex; flex-direction: column; }
-        .bento:hover { border-color: #444; transform: translateY(-5px); }
-        .premium-card { background: #111; border-color: var(--accent); }
-        .premium-card .tag { display: inline-block; margin-bottom: 1rem; background: transparent; border: 1px solid var(--accent); }
-        .bento h3 { font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem;}
-        .monthly-fee { font-size: 3.5rem; font-weight: 800; margin: 1.5rem 0; letter-spacing: -2px;}
-        .month { font-size: 1rem; font-weight: 300; color: var(--text-muted); }
-        hr { border: none; height: 1px; background: #222; margin-bottom: 1.5rem; }
-        .features { list-style: none; flex-grow: 1; margin-bottom: 2rem;}
-        .features li { margin-bottom: 1rem; color: #ccc; font-size: 0.95rem; display: flex; align-items: center;}
-        .features li::before { content: ""; display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 12px;}
-        .full-width { text-align: center; display: block; }
-
-        /* ==========================================
-           MOBILE RESPONSIVENESS (SMARTPHONES & TABLETS)
-           ========================================== */
-        @media (max-width: 900px) {
-            /* Disable custom cursor for touch screens */
-            * { cursor: auto !important; }
-            .cursor { display: none !important; }
-
-            /* Spacing Reductions */
-            .navbar { padding: 1.5rem; flex-direction: column; gap: 1.5rem; }
-            .nav-links { gap: 1rem; justify-content: center; }
-            .nav-links a { margin-left: 0; }
-            .btn-primary { width: 100%; text-align: center; margin-top: 0.5rem; }
-            
-            .hero { padding: 6rem 1.5rem 3rem 1.5rem; height: auto; }
-            .top-left { top: 1rem; left: 1rem; }
-            .top-right { top: 1rem; right: 1rem; }
-            .bottom-left { display: none; } /* Hidden to prevent clutter on small screens */
-            
-            .hero-main { font-size: 4rem; letter-spacing: -2px; margin-bottom: 2rem; }
-            .hero-sub { font-size: 1.8rem; }
-            .hero-bottom-grid { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
-
-            .manifesto-section, .work-section, .leadership-section, .pricing-section { padding: 4rem 1.5rem; }
-            
-            .manifesto-title { font-size: 2.5rem; margin-bottom: 2rem; }
-            .manifesto-grid { grid-template-columns: 1fr; gap: 2rem; }
-            
-            .work-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; margin-bottom: 2rem; }
-            .section-title { font-size: 2.5rem; }
-            .work-grid { grid-template-columns: 1fr; }
-            .large-card .work-image, .work-image { min-height: 300px; }
-
-            .message-grid { grid-template-columns: 1fr; gap: 2rem; }
-            .message-box { padding: 2.5rem 1.5rem; }
-            .message-text { font-size: 1.2rem; }
-
-            .pricing-grid { grid-template-columns: 1fr; gap: 2rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     
@@ -138,9 +17,8 @@
             <a href="#work">Concepts</a>
             <a href="#leadership">Leadership</a>
             <a href="#pricing">Retainer</a>
-            <a href="https://instagram.com/icebug.co" target="_blank">Instagram (@icebug.co)</a>
-            <a href="#" class="client-login" onclick="alert('Client Portal is setting up. For billing, contact your account manager.')">Client Portal 🔒</a>
-            
+            <a href="https://instagram.com/icebug.co" target="_blank">Instagram</a>
+            <a href="#" class="client-login" onclick="alert('Portal setting up...')">Client Portal 🔒</a>
             <a href="https://wa.me/919369555426" class="btn-primary">Let's Chat ↗</a>
         </div>
     </nav>
@@ -170,92 +48,56 @@
         </div>
     </section>
 
-    <section id="work" class="work-section anim-up">
-        <div class="work-header">
-            <h2 class="section-title">Selected <span class="accent">Concepts.</span></h2>
-            <a href="https://wa.me/919369555426" class="btn-secondary">Request Private Demos 🔒</a>
-        </div>
-        <div class="work-grid">
-            <div class="work-card large-card">
-                <div class="image-wrapper"><div class="work-image" style="background: radial-gradient(circle at center, #2a1a1a 0%, #050505 100%);"></div></div>
-                <div class="work-info">
-                    <div class="work-tags"><span class="tag">HOSPITALITY</span><span class="tag">CONFIDENTIAL</span></div>
-                    <h3>Premium Cafe Web Experience</h3><p class="tech-detail">Status: Under Development // 2026</p>
-                </div>
-            </div>
-            <div class="work-card small-card">
-                <div class="image-wrapper"><div class="work-image" style="background: linear-gradient(145deg, #1a0f0a, #050505);"></div></div>
-                <div class="work-info">
-                    <div class="work-tags"><span class="tag">E-COMMERCE</span><span class="tag">INTERNAL CONCEPT</span></div>
-                    <h3>Next-Gen Apparel Drop</h3><p class="tech-detail">Status: Agency Concept // 2026</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="leadership" class="leadership-section anim-up">
-        <div class="work-header">
-            <h2 class="section-title">The <span class="accent">Vision.</span></h2>
-        </div>
-        
-        <div class="message-grid">
-            <div class="message-box">
-                <div class="quote-icon">"</div>
-                <p class="message-text">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your code is hand-crafted, pixel by pixel.</p>
-                <div>
-                    <p class="leader-name">Utkarsh Tiwari</p>
-                    <p class="role">// LEAD ARCHITECT & FOUNDER</p>
-                </div>
-            </div>
-
-            <div class="message-box">
-                <div class="quote-icon">"</div>
-                <p class="message-text">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
-                <div>
-                    <p class="leader-name">Ayushi Awasthi</p>
-                    <p class="role">// HEAD OF SALES & STRATEGY</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section id="pricing" class="pricing-section anim-up">
         <h2 class="section-title">Transparent. <span class="accent">Scalable.</span></h2>
         <div class="pricing-grid">
             <div class="price-card bento">
                 <div class="card-head"><h3>The Essential</h3><p class="setup-fee">₹10,000 Setup</p></div>
                 <p class="monthly-fee">₹999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Single Page Experience</li><li>Standard Animations</li><li>Vercel Cloud Hosting</li></ul>
+                <ul class="features"><li>Single Page Experience</li><li>Standard Animations</li><li>Cloud Hosting</li></ul>
                 <a href="#" class="btn-secondary">View SOW ↗</a>
             </div>
-
-            <div class="price-card bento premium-card">
-                <div class="card-head"><div class="tag">MOST POPULAR</div><h3>The Premium</h3><p class="setup-fee">₹25,000 Setup</p></div>
-                <p class="monthly-fee">₹1,999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Multi-Page Custom Site</li><li>Advanced GSAP Motion</li><li>CMS (Easy Content Edits)</li><li>Priority Monthly Support</li></ul>
-                <a href="https://wa.me/919369555426" class="btn-primary full-width">Sign SOW ↗</a>
             </div>
+    </section>
 
-            <div class="price-card bento">
-                <div class="card-head"><h3>The Bespoke</h3><p class="setup-fee">₹50k+ Setup</p></div>
-                <p class="monthly-fee">₹4,999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Full 3D / WebGL Motion</li><li>E-commerce / Booking Setup</li><li>Custom Backend System</li><li>Dedicated Tech Team</li></ul>
-                <a href="https://wa.me/919369555426" class="btn-secondary">Let's Discuss ↗</a>
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">icebug<span class="accent">®</span></div>
+                <p class="tech-detail">Engineering the future of digital commerce.</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <p class="tag">Contact</p>
+                    <a href="mailto:hello@icebug.co">hello@icebug.co</a>
+                    <a href="https://wa.me/919369555426">+91 93695 55426</a>
+                </div>
+                <div class="link-group">
+                    <p class="tag">Social</p>
+                    <a href="#">Instagram</a>
+                    <a href="#">LinkedIn</a>
+                </div>
             </div>
         </div>
-    </section>
+        <div class="footer-bottom">
+            <p class="tech-detail">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</p>
+            <p class="tech-detail">MADE IN KANPUR WITH ❤️</p>
+        </div>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
         const cursor = document.querySelector(".cursor");
-        // Only trigger custom cursor if the device supports hovering (ignores touch screens)
         if(window.matchMedia("(pointer: fine)").matches) {
-            document.addEventListener("mousemove", (e) => { cursor.style.left = e.clientX - 10 + "px"; cursor.style.top = e.clientY - 10 + "px"; });
+            document.addEventListener("mousemove", (e) => { 
+                cursor.style.left = e.clientX - 10 + "px"; 
+                cursor.style.top = e.clientY - 10 + "px"; 
+            });
         }
-        
         function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour12: false }); }
         setInterval(updateClock, 1000); updateClock();
         gsap.from(".anim-up", { y: 50, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power4.out", delay: 0.2 });
     </script>
 </body>
 </html>
+
