@@ -1,13 +1,275 @@
-<section id="work" class="work-section anim-up">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icebug\Studio | Premium Digital Experiences</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Space+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Hides default cursor */
+        }
+
+        :root {
+            --bg-color: #050505; 
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent: #00f0ff; /* Icebug Blue */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Neon Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+
+        .accent { color: var(--accent); }
+
+        /* Tech Typography */
+        .tech-detail, .time-block, .setup-fee, .tag, .stat {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 4rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover { opacity: 0.8; box-shadow: 0 0 15px var(--accent); }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid #333;
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4rem;
+        }
+
+        .top-left { position: absolute; top: 2rem; left: 4rem; }
+        .top-right { position: absolute; top: 2rem; right: 4rem; text-align: right; }
+        .bottom-left { position: absolute; bottom: 2rem; left: 4rem; }
+
+        .hero-content {
+            text-align: center;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .hero-sub {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .hero-main {
+            font-size: 7rem;
+            font-weight: 800;
+            letter-spacing: -4px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-bottom-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            text-align: left;
+            border-top: 1px solid #222;
+            padding-top: 1.5rem;
+        }
+
+        .hero-desc {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Manifesto Section */
+        .manifesto-section {
+            padding: 8rem 4rem;
+            background-color: #0a0a0a;
+            border-top: 1px solid #1a1a1a;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .manifesto-title {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 4rem;
+        }
+
+        .manifesto-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            border-top: 1px solid #222;
+            padding-top: 3rem;
+        }
+
+        .manifesto-grid .stat { font-size: 3.5rem; color: var(--accent); margin-bottom: 1rem; font-weight: 300;}
+        .stat-desc { color: var(--text-muted); font-size: 1.1rem; line-height: 1.5;}
+
+        /* Work Section (Concepts) */
+        .work-section { padding: 8rem 4rem; }
+        .work-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
+        .section-title { font-size: 3rem; font-weight: 300; letter-spacing: -2px; }
+        
+        .work-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+        .image-wrapper { width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid #222; }
+        .work-image { width: 100%; min-height: 400px; background-size: cover; background-position: center; transition: transform 0.6s ease; }
+        .large-card .work-image { min-height: 500px; }
+        .image-wrapper:hover .work-image { transform: scale(1.05); }
+        .work-tags { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
+        .tag { color: var(--accent); border: 1px solid rgba(0,240,255,0.3); padding: 4px 10px; border-radius: 20px; }
+        .work-info h3 { font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem;}
+
+        /* Pricing Grid */
+        .pricing-section { padding: 4rem 4rem 8rem 4rem; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem;}
+        .bento { background: #0a0a0a; border: 1px solid #222; border-radius: 20px; padding: 2.5rem; transition: 0.4s ease; display: flex; flex-direction: column; }
+        .bento:hover { border-color: #444; transform: translateY(-5px); }
+        .premium-card { background: #111; border-color: var(--accent); }
+        .premium-card .tag { display: inline-block; margin-bottom: 1rem; font-weight: bold; background: rgba(0,240,255,0.1); border:none;}
+        
+        .bento h3 { font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem;}
+        .monthly-fee { font-size: 3.5rem; font-weight: 800; margin: 1.5rem 0; letter-spacing: -2px;}
+        .month { font-size: 1rem; font-weight: 300; color: var(--text-muted); }
+        hr { border: none; height: 1px; background: #222; margin-bottom: 1.5rem; }
+        .features { list-style: none; flex-grow: 1; margin-bottom: 2rem;}
+        .features li { margin-bottom: 1rem; color: #ccc; font-size: 0.95rem; display: flex; align-items: center;}
+        .features li::before { content: ""; display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 12px;}
+        .full-width { text-align: center; display: block; }
+
+    </style>
+</head>
+<body>
+    
+    <div class="cursor"></div>
+
+    <nav class="navbar">
+        <div class="logo">icebug<span class="accent">®</span></div>
+        <div class="nav-links">
+            <a href="#work">Concepts</a>
+            <a href="#pricing">Retainer</a>
+            <a href="https://wa.me/91XXXXXXXXXX" class="btn-primary">Let's Chat ↗</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="tech-detail top-left">// 02.01°</div>
+        <div class="tech-detail top-right">EST. 2026<br>KANPUR, UP</div>
+        <div class="tech-detail bottom-left">// LAT: 26.4499° N<br>LON: 80.3319° E</div>
+        
+        <div class="hero-content">
+            <h2 class="hero-sub anim-up">Digital experiences that<br>connect, scale and perform<span class="accent">.</span></h2>
+            <h1 class="hero-main anim-up">Icebug\Studio</h1>
+            
+            <div class="hero-bottom-grid anim-up">
+                <p class="hero-desc">A DESIGN STUDIO TRUSTED BY PREMIUM BRANDS.<br>WE CREATE STORIES PEOPLE REMEMBER.</p>
+                <div class="time-block">
+                    LOCAL TIME <span id="clock">...</span><br>UTC+5:30
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="manifesto-section anim-up">
+        <div class="manifesto-content">
+            <h2 class="manifesto-title">No recycled templates.<br>No hidden fees.<br><span class="accent">Just pure digital craft.</span></h2>
+            <div class="manifesto-grid">
+                <div class="manifesto-item">
+                    <div class="stat">99%</div>
+                    <p class="stat-desc">Faster load times with custom edge deployment.</p>
+                </div>
+                <div class="manifesto-item">
+                    <div class="stat">24h</div>
+                    <p class="stat-desc">Average turnaround time for priority client edits.</p>
+                </div>
+                <div class="manifesto-item">
+                    <div class="stat">Zero</div>
+                    <p class="stat-desc">WordPress templates used. Every pixel is hand-coded.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="work" class="work-section anim-up">
         <div class="work-header">
             <h2 class="section-title">Selected <span class="accent">Concepts.</span></h2>
-            <a href="https://wa.me/YOUR_NUMBER" class="btn-secondary">Request Private Demos 🔒</a>
+            <a href="https://wa.me/91XXXXXXXXXX" class="btn-secondary">Request Private Demos 🔒</a>
         </div>
         
         <div class="work-grid">
             <div class="work-card large-card">
                 <div class="image-wrapper">
-                    <div class="work-image" style="background: radial-gradient(circle at center, #2a2a2a 0%, #050505 100%); filter: blur(5px);"></div>
+                    <div class="work-image" style="background: radial-gradient(circle at center, #1a2a3a 0%, #050505 100%);"></div>
                 </div>
                 <div class="work-info">
                     <div class="work-tags">
@@ -21,7 +283,7 @@
 
             <div class="work-card small-card">
                 <div class="image-wrapper">
-                    <div class="work-image" style="background: linear-gradient(145deg, #1a1a1a, #0a0a0a);"></div>
+                    <div class="work-image" style="background: linear-gradient(145deg, #0a1a2a, #050505);"></div>
                 </div>
                 <div class="work-info">
                     <div class="work-tags">
@@ -34,3 +296,87 @@
             </div>
         </div>
     </section>
+
+    <section id="pricing" class="pricing-section anim-up">
+        <h2 class="section-title">Transparent. <span class="accent">Scalable.</span></h2>
+        
+        <div class="pricing-grid">
+            <div class="price-card bento">
+                <div class="card-head">
+                    <h3>The Essential</h3>
+                    <p class="setup-fee">₹10,000 Setup</p>
+                </div>
+                <p class="monthly-fee">₹999<span class="month">/mo</span></p>
+                <hr>
+                <ul class="features">
+                    <li>Single Page Experience</li>
+                    <li>Standard Animations</li>
+                    <li>Vercel Cloud Hosting</li>
+                </ul>
+                <a href="#" class="btn-secondary">View SOW ↗</a>
+            </div>
+
+            <div class="price-card bento premium-card">
+                <div class="card-head">
+                    <div class="tag">MOST POPULAR</div>
+                    <h3>The Premium</h3>
+                    <p class="setup-fee">₹25,000 Setup</p>
+                </div>
+                <p class="monthly-fee">₹1,999<span class="month">/mo</span></p>
+                <hr>
+                <ul class="features">
+                    <li>Multi-Page Custom Site</li>
+                    <li>Advanced GSAP Motion</li>
+                    <li>CMS (Easy Content Edits)</li>
+                    <li>Priority Monthly Support</li>
+                </ul>
+                <a href="#" class="btn-primary full-width">Sign SOW ↗</a>
+            </div>
+
+            <div class="price-card bento">
+                <div class="card-head">
+                    <h3>The Bespoke</h3>
+                    <p class="setup-fee">₹50k+ Setup</p>
+                </div>
+                <p class="monthly-fee">₹4,999<span class="month">/mo</span></p>
+                <hr>
+                <ul class="features">
+                    <li>Full 3D / WebGL Motion</li>
+                    <li>E-commerce / Booking Setup</li>
+                    <li>Custom Backend System</li>
+                    <li>Dedicated Tech Team</li>
+                </ul>
+                <a href="#" class="btn-secondary">Let's Discuss ↗</a>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // Magic Cursor
+        const cursor = document.querySelector(".cursor");
+        document.addEventListener("mousemove", (e) => {
+            cursor.style.left = e.clientX - 10 + "px";
+            cursor.style.top = e.clientY - 10 + "px";
+        });
+
+        // Live Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Reveal Animations
+        gsap.from(".anim-up", {
+            y: 50,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: "power4.out",
+            delay: 0.2
+        });
+    </script>
+</body>
+</html>
