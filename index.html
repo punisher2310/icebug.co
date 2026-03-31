@@ -7,197 +7,86 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Space+Mono&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none; /* Hides default cursor */
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         :root {
             --bg-color: #050505; 
             --text-main: #ffffff;
             --text-muted: #888888;
-            --accent: #00f0ff; /* Icebug Blue */
+            /* Tumhari pasand ka Premium Orange yahan set hai */
+            --accent: #ff4d29; 
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* Custom Neon Cursor */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            background: var(--accent);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.1s ease;
-        }
-
+        .cursor { width: 20px; height: 20px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.1s ease; }
         .accent { color: var(--accent); }
 
-        /* Tech Typography */
-        .tech-detail, .time-block, .setup-fee, .tag, .stat {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+        .tech-detail, .time-block, .setup-fee, .tag, .stat, .role { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
 
         /* Navbar */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 4rem;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
-
-        .nav-links a {
-            color: var(--text-main);
-            text-decoration: none;
-            margin-left: 2rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #000;
-            padding: 10px 24px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .btn-primary:hover { opacity: 0.8; box-shadow: 0 0 15px var(--accent); }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid #333;
-            padding: 10px 24px;
-            border-radius: 30px;
-            text-decoration: none;
-            display: inline-block;
-            transition: 0.3s;
-        }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 2rem 4rem; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .nav-links a { color: var(--text-main); text-decoration: none; margin-left: 2rem; font-size: 0.9rem; font-weight: 500; }
+        .btn-primary { background: var(--accent); color: #fff; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .btn-primary:hover { opacity: 0.8; box-shadow: 0 0 15px rgba(255, 77, 41, 0.4); }
+        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid #333; padding: 10px 24px; border-radius: 30px; text-decoration: none; display: inline-block; transition: 0.3s; }
         .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* Hero Section */
-        .hero {
-            height: 80vh;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 4rem;
-        }
-
+        /* Hero */
+        .hero { height: 80vh; position: relative; display: flex; align-items: center; justify-content: center; padding: 0 4rem; }
         .top-left { position: absolute; top: 2rem; left: 4rem; }
         .top-right { position: absolute; top: 2rem; right: 4rem; text-align: right; }
         .bottom-left { position: absolute; bottom: 2rem; left: 4rem; }
+        .hero-content { text-align: center; max-width: 1000px; width: 100%; }
+        .hero-sub { font-size: 2.5rem; font-weight: 300; letter-spacing: -1px; line-height: 1.2; margin-bottom: 1rem; }
+        .hero-main { font-size: 7rem; font-weight: 800; letter-spacing: -4px; margin-bottom: 3rem; }
+        .hero-bottom-grid { display: flex; justify-content: space-between; align-items: flex-end; text-align: left; border-top: 1px solid #222; padding-top: 1.5rem; }
+        .hero-desc { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
 
-        .hero-content {
-            text-align: center;
-            max-width: 1000px;
-            width: 100%;
-        }
-
-        .hero-sub {
-            font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: -1px;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-
-        .hero-main {
-            font-size: 7rem;
-            font-weight: 800;
-            letter-spacing: -4px;
-            margin-bottom: 3rem;
-        }
-
-        .hero-bottom-grid {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            text-align: left;
-            border-top: 1px solid #222;
-            padding-top: 1.5rem;
-        }
-
-        .hero-desc {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* Manifesto Section */
-        .manifesto-section {
-            padding: 8rem 4rem;
-            background-color: #0a0a0a;
-            border-top: 1px solid #1a1a1a;
-            border-bottom: 1px solid #1a1a1a;
-        }
-
-        .manifesto-title {
-            font-size: 4rem;
-            font-weight: 800;
-            letter-spacing: -2px;
-            line-height: 1.1;
-            margin-bottom: 4rem;
-        }
-
-        .manifesto-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 3rem;
-            border-top: 1px solid #222;
-            padding-top: 3rem;
-        }
-
+        /* Manifesto */
+        .manifesto-section { padding: 8rem 4rem; background-color: #0a0a0a; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; }
+        .manifesto-title { font-size: 4rem; font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 4rem; }
+        .manifesto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; border-top: 1px solid #222; padding-top: 3rem; }
         .manifesto-grid .stat { font-size: 3.5rem; color: var(--accent); margin-bottom: 1rem; font-weight: 300;}
         .stat-desc { color: var(--text-muted); font-size: 1.1rem; line-height: 1.5;}
 
-        /* Work Section (Concepts) */
+        /* Work */
         .work-section { padding: 8rem 4rem; }
         .work-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
         .section-title { font-size: 3rem; font-weight: 300; letter-spacing: -2px; }
-        
         .work-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
         .image-wrapper { width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid #222; }
         .work-image { width: 100%; min-height: 400px; background-size: cover; background-position: center; transition: transform 0.6s ease; }
         .large-card .work-image { min-height: 500px; }
         .image-wrapper:hover .work-image { transform: scale(1.05); }
         .work-tags { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
-        .tag { color: var(--accent); border: 1px solid rgba(0,240,255,0.3); padding: 4px 10px; border-radius: 20px; }
+        .tag { color: var(--accent); border: 1px solid rgba(255, 77, 41, 0.3); padding: 4px 10px; border-radius: 20px; font-weight: bold;}
         .work-info h3 { font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem;}
 
-        /* Pricing Grid */
+        /* ========================================== */
+        /* NEW: LEADERSHIP & MESSAGE SECTION */
+        /* ========================================== */
+        .about-section { padding: 8rem 4rem; background: #080808; border-top: 1px solid #1a1a1a; }
+        
+        .founder-message { max-width: 900px; margin-bottom: 6rem; }
+        .greeting { color: var(--accent); font-family: 'Space Mono', monospace; margin-bottom: 1.5rem; letter-spacing: 1px; font-size: 0.9rem; }
+        .message-text { font-size: 2.5rem; font-weight: 300; line-height: 1.4; color: #e0e0e0; margin-bottom: 2.5rem; letter-spacing: -1px; }
+        .founder-signature .name { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.2rem; }
+        
+        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .team-card { display: flex; flex-direction: column; }
+        .team-img { width: 100%; height: 350px; border-radius: 15px; background: linear-gradient(145deg, #1a1a1a, #0a0a0a); margin-bottom: 1.5rem; filter: grayscale(100%); transition: 0.4s ease; border: 1px solid #222; }
+        .team-card:hover .team-img { filter: grayscale(0%); border-color: var(--accent); }
+        .team-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.3rem; }
+
+        /* Pricing */
         .pricing-section { padding: 4rem 4rem 8rem 4rem; }
         .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem;}
         .bento { background: #0a0a0a; border: 1px solid #222; border-radius: 20px; padding: 2.5rem; transition: 0.4s ease; display: flex; flex-direction: column; }
         .bento:hover { border-color: #444; transform: translateY(-5px); }
         .premium-card { background: #111; border-color: var(--accent); }
-        .premium-card .tag { display: inline-block; margin-bottom: 1rem; font-weight: bold; background: rgba(0,240,255,0.1); border:none;}
-        
+        .premium-card .tag { display: inline-block; margin-bottom: 1rem; background: transparent; border: 1px solid var(--accent); }
         .bento h3 { font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem;}
         .monthly-fee { font-size: 3.5rem; font-weight: 800; margin: 1.5rem 0; letter-spacing: -2px;}
         .month { font-size: 1rem; font-weight: 300; color: var(--text-muted); }
@@ -206,7 +95,6 @@
         .features li { margin-bottom: 1rem; color: #ccc; font-size: 0.95rem; display: flex; align-items: center;}
         .features li::before { content: ""; display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 12px;}
         .full-width { text-align: center; display: block; }
-
     </style>
 </head>
 <body>
@@ -217,6 +105,7 @@
         <div class="logo">icebug<span class="accent">®</span></div>
         <div class="nav-links">
             <a href="#work">Concepts</a>
+            <a href="#about">Team</a>
             <a href="#pricing">Retainer</a>
             <a href="https://wa.me/91XXXXXXXXXX" class="btn-primary">Let's Chat ↗</a>
         </div>
@@ -269,7 +158,7 @@
         <div class="work-grid">
             <div class="work-card large-card">
                 <div class="image-wrapper">
-                    <div class="work-image" style="background: radial-gradient(circle at center, #1a2a3a 0%, #050505 100%);"></div>
+                    <div class="work-image" style="background: radial-gradient(circle at center, #2a1a1a 0%, #050505 100%);"></div>
                 </div>
                 <div class="work-info">
                     <div class="work-tags">
@@ -283,7 +172,7 @@
 
             <div class="work-card small-card">
                 <div class="image-wrapper">
-                    <div class="work-image" style="background: linear-gradient(145deg, #0a1a2a, #050505);"></div>
+                    <div class="work-image" style="background: linear-gradient(145deg, #1a0f0a, #050505);"></div>
                 </div>
                 <div class="work-info">
                     <div class="work-tags">
@@ -293,6 +182,43 @@
                     <h3>Next-Gen Apparel Drop</h3>
                     <p class="tech-detail">Status: Agency Concept // 2026</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-section anim-up">
+        
+        <div class="founder-message">
+            <p class="greeting">// A NOTE TO OUR FUTURE PARTNERS</p>
+            <h3 class="message-text">"We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your growth is our only metric for success."</h3>
+            <div class="founder-signature">
+                <p class="name">Founder Name</p> 
+                <p class="role">// FOUNDER & LEAD ENGINEER</p>
+            </div>
+        </div>
+
+        <div class="work-header">
+            <h2 class="section-title">The <span class="accent">Engineers.</span></h2>
+        </div>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-img" style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop'); background-size: cover; background-position: center;"></div>
+                <h4 class="team-name">Founder Name</h4>
+                <p class="role">Lead Architect</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-img" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop'); background-size: cover; background-position: center;"></div>
+                <h4 class="team-name">Co-Founder Name</h4>
+                <p class="role">Head of Sales & Strategy</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-img" style="display:flex; align-items:center; justify-content:center; border: 1px dashed #333; background: transparent;">
+                    <span class="role" style="color: #555;">HIRING SOON</span>
+                </div>
+                <h4 class="team-name" style="color: #555;">Join Us</h4>
+                <p class="role" style="color: #444;">Kanpur HQ</p>
             </div>
         </div>
     </section>
@@ -353,14 +279,12 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
-        // Magic Cursor
         const cursor = document.querySelector(".cursor");
         document.addEventListener("mousemove", (e) => {
             cursor.style.left = e.clientX - 10 + "px";
             cursor.style.top = e.clientY - 10 + "px";
         });
 
-        // Live Clock
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour12: false });
@@ -368,7 +292,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Reveal Animations
         gsap.from(".anim-up", {
             y: 50,
             opacity: 0,
