@@ -3,30 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Icebug\Studio</title>
+    <title>Icebug\Studio | Premium Web Agency</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Space+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
+    
     <div class="cursor"></div>
 
     <div id="sowModal" class="sow-modal">
         <div class="modal-container">
             <div class="modal-header">
-                <h3>Project Scope & Terms</h3>
+                <div>
+                    <p class="role">// ICEBUG OFFICIAL SCOPE</p>
+                    <h3 id="modalTitle">Project Scope</h3>
+                </div>
                 <span class="close-btn" onclick="closeSOW()">&times;</span>
             </div>
             <iframe id="sowFrame" src=""></iframe>
         </div>
     </div>
 
+    <nav class="navbar">
+        <div class="logo">icebug<span class="accent">®</span></div>
+        <div class="nav-links">
+            <a href="#vision">Vision</a>
+            <a href="#pricing">Plans</a>
+            <a href="https://wa.me/919369555426" class="btn-primary">Connect</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <p class="role">// KANPUR'S DIGITAL ARCHITECTS</p>
+            <h1 class="hero-main">Icebug\Studio</h1>
+            <p class="tech-detail">ENGINEERING HIGH-PERFORMANCE WEB ASSETS</p>
+        </div>
+    </header>
+
+    <section id="vision" class="leadership">
+        <h2 class="section-title">The <span class="accent">Founders.</span></h2>
+        <div class="message-grid">
+            <div class="message-box">
+                <p class="message-text">"We don't build sites. We build revenue engines."</p>
+                <p class="leader-name">Utkarsh Tiwari</p>
+                <p class="role">// LEAD ARCHITECT</p>
+            </div>
+            <div class="message-box">
+                <p class="message-text">"Our strategy is simple: Performance above all."</p>
+                <p class="leader-name">Ayushi Awasthi</p>
+                <p class="role">// STRATEGY HEAD</p>
+            </div>
+        </div>
+    </section>
+
     <section id="pricing" class="pricing-section">
+        <h2 class="section-title">Airtight <span class="accent">Plans.</span></h2>
         <div class="pricing-grid">
+            
             <div class="bento">
                 <h3>The Essential</h3>
                 <p class="monthly-fee">₹10,000</p>
+                <ul class="features">
+                    <li>1-Page Custom Site</li>
+                    <li>Timeline: 5-7 Days</li>
+                </ul>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing')" class="btn-secondary">View Scope</button>
+                    <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'Essential Plan Scope')" class="btn-secondary">View Scope</button>
                     <a href="https://wa.me/919369555426?text=Hi%20Icebug!%20I%20want%20to%20sign%20the%20Essential%20Plan%20SOW." class="btn-primary" style="text-align: center;">Sign SOW 🔒</a>
                 </div>
             </div>
@@ -34,8 +77,12 @@
             <div class="bento premium-card">
                 <h3>The Premium</h3>
                 <p class="monthly-fee">₹25,000</p>
+                <ul class="features">
+                    <li>Up to 5 Custom Pages</li>
+                    <li>Timeline: 10-14 Days</li>
+                </ul>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing')" class="btn-secondary">View Scope</button>
+                    <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'Premium Plan Scope')" class="btn-secondary" style="border-color: #444;">View Scope</button>
                     <a href="https://wa.me/919369555426?text=Hi%20Icebug!%20I%20want%20to%20sign%20the%20Premium%20Plan%20SOW." class="btn-primary" style="text-align: center;">Sign SOW 🔒</a>
                 </div>
             </div>
@@ -43,13 +90,22 @@
             <div class="bento">
                 <h3>The Bespoke</h3>
                 <p class="monthly-fee">₹50,000+</p>
+                <ul class="features">
+                    <li>Complex Architecture</li>
+                    <li>Timeline: 21-30 Days</li>
+                </ul>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing')" class="btn-secondary">View Scope</button>
+                    <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'Bespoke Plan Scope')" class="btn-secondary">View Scope</button>
                     <a href="https://wa.me/919369555426?text=Hi%20Icebug!%20I%20want%20to%20discuss%20the%20Bespoke%20Plan." class="btn-primary" style="text-align: center;">Discuss SOW 🔒</a>
                 </div>
             </div>
         </div>
     </section>
+
+    <footer class="main-footer">
+        <div class="logo">icebug<span class="accent">®</span></div>
+        <p class="role" style="margin-top: 1rem;">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
