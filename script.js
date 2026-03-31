@@ -1,50 +1,24 @@
-// Magic Cursor Logic (Follows Mouse smoothly)
+// Magic Cursor Logic
 const cursor = document.querySelector(".cursor");
-let mouseX = 0;
-let mouseY = 0;
-let cursorX = 0;
-let cursorY = 0;
-
 document.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+    cursor.style.left = e.clientX - 10 + "px";
+    cursor.style.top = e.clientY - 10 + "px";
 });
 
-// Smooth cursor delay using requestAnimationFrame
-function animateCursor() {
-    let distX = mouseX - cursorX;
-    let distY = mouseY - cursorY;
-    cursorX = cursorX + (distX * 0.2);
-    cursorY = cursorY + (distY * 0.2);
-    cursor.style.left = cursorX + "px";
-    cursor.style.top = cursorY + "px";
-    requestAnimationFrame(animateCursor);
+// Live Clock for that Tech vibe
+function updateClock() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+    document.getElementById('clock').textContent = timeString;
 }
-animateCursor();
+setInterval(updateClock, 1000);
 
-// GSAP Cinematic Reveal
-gsap.from(".navbar", {
-    y: -30,
+// GSAP Reveal
+gsap.from(".anim-up", {
+    y: 40,
     opacity: 0,
-    duration: 1.5,
-    ease: "power4.out"
-});
-
-gsap.from(".anim-elem", {
-    y: 60,
-    opacity: 0,
-    duration: 1.5,
-    stagger: 0.2, // Ek ke baad ek reveal hoga
-    ease: "expo.out",
-    delay: 0.3
-});
-
-// Orb breathing animation
-gsap.to(".glow-orb", {
-    scale: 1.2,
-    opacity: 0.6,
-    duration: 4,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
+    duration: 1.2,
+    stagger: 0.2,
+    ease: "power4.out",
+    delay: 0.2
 });
