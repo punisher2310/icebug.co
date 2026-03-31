@@ -1,4 +1,4 @@
-// Custom Cursor Logic
+// Cursor
 const cursor = document.querySelector(".cursor");
 if(window.matchMedia("(pointer: fine)").matches) {
     document.addEventListener("mousemove", (e) => {
@@ -7,18 +7,17 @@ if(window.matchMedia("(pointer: fine)").matches) {
     });
 }
 
-// SOW Viewer Logic (No-Exit Experience)
+// Modal Logic
 function openSOW(link, title) {
     const modal = document.getElementById('sowModal');
     const frame = document.getElementById('sowFrame');
     
-    // Google Drive Link Hack for Iframe Preview
     let embedLink = link.replace('/view?usp=sharing', '/preview');
     
     document.getElementById('modalTitle').innerText = title;
     frame.src = embedLink;
     modal.style.display = "flex";
-    document.body.style.overflow = "hidden"; // Stop background scroll
+    document.body.style.overflow = "hidden";
 }
 
 function closeSOW() {
@@ -26,5 +25,10 @@ function closeSOW() {
     const frame = document.getElementById('sowFrame');
     modal.style.display = "none";
     frame.src = "";
-    document.body.style.overflow = "auto"; // Re-enable scroll
+    document.body.style.overflow = "auto";
 }
+
+// GSAP Animations
+gsap.from(".anim-up", {
+    y: 50, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power4.out"
+});
