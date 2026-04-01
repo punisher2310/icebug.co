@@ -98,6 +98,22 @@
                 <div class="portal-detail"><strong>PHONE_NO</strong> <span id="client-phone">--</span></div>
                 <div class="portal-detail"><strong>EXPIRY_DATE</strong> <span id="expiry-date">--/--/----</span></div>
 
+                <div style="margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
+                    <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// FINANCIAL_RECORDS</p>
+                    <h3 style="margin: 10px 0; font-size: 1rem;">BILLING HISTORY</h3>
+                    
+                    <div style="font-size: 0.8rem; font-family: 'Space Mono'; color: #888;">
+                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
+                            <span>Project Setup (50% Advance)</span>
+                            <span id="setup-paid">PENDING ⏳</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
+                            <span>Project Delivery (50% Final)</span>
+                            <span id="final-paid">PENDING ⏳</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="policy-box">
                     <strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.
                 </div>
@@ -303,7 +319,6 @@
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('active'), 10);
             
-            // If already logged in this session, show dashboard directly
             const savedData = sessionStorage.getItem('icebug_user');
             if (savedData) {
                 showDashboard(JSON.parse(savedData));
@@ -366,6 +381,17 @@
             document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
             document.getElementById('client-email').innerText = data["Email_I'd"] || "NOT PROVIDED";
             document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
+
+            // UPDATED: Financial Record Logic
+            const setupEl = document.getElementById('setup-paid');
+            const finalEl = document.getElementById('final-paid');
+
+            // Maps Supabase data to Dashboard (Defaults to Pending if empty)
+            setupEl.innerText = data.Setup_Status || "PENDING ⏳";
+            setupEl.style.color = data.Setup_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
+
+            finalEl.innerText = data.Final_Status || "PENDING ⏳";
+            finalEl.style.color = data.Final_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
         }
 
         function logout() {
