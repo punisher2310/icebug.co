@@ -30,7 +30,7 @@
         .bot-toggle { background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .bot-window { position: absolute; bottom: 80px; right: 0; width: 300px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: none; overflow: hidden; }
         .bot-header { background: var(--primary); color: white; padding: 15px; font-weight: bold; }
-        .bot-body { padding: 15px; font-size: 0.9rem; }
+        .bot-body { padding: 15px; font-size: 0.9rem; max-height: 200px; overflow-y: auto; }
         .bot-btn { width: 100%; text-align: left; padding: 10px; margin-bottom: 5px; border: 1px solid #eee; background: #f9fafb; cursor: pointer; border-radius: 6px; }
     </style>
 </head>
@@ -54,7 +54,7 @@
             <p><strong>Bill Cycle:</strong> Monthly</p>
 
             <div class="policy-alert">
-                <strong>No-Refund Policy:</strong> Services cancel karne par purana balance refund nahi kiya jayega. Aapka access current cycle ke khatam hone tak chalu rahega.
+                <strong>No-Refund Policy:</strong> Any cancellations will not be eligible for a refund. Your access will remain active until the end of your current billing cycle.
             </div>
 
             <button class="btn btn-pay" onclick="handlePayment()">Renew Subscription Now</button>
@@ -66,15 +66,16 @@
         <div class="bot-window" id="botWindow">
             <div class="bot-header">Kabir Assistant 🤖</div>
             <div class="bot-body" id="botBody">
-                <p>Hello! Main Kabir hoon. Main aapki kaise madad kar sakta hoon?</p>
-                <button class="bot-btn" onclick="botReply('refund')">Refund Policy kya hai?</button>
-                <button class="bot-btn" onclick="botReply('cancel')">Subscription kaise cancel karein?</button>
+                <p>Hello! I am Kabir. How can I help you today?</p>
+                <button class="bot-btn" onclick="botReply('refund')">What is the Refund Policy?</button>
+                <button class="bot-btn" onclick="botReply('cancel')">How to cancel my subscription?</button>
             </div>
         </div>
         <button class="bot-toggle" onclick="toggleBot()">💬</button>
     </div>
 
     <script>
+        // Supabase Initialization
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
         
         let currentClientExpiry = "";
@@ -93,10 +94,9 @@
                 document.getElementById('plan-name').innerText = data.Plan_Type || "The Premium";
                 document.getElementById('client-name-display').innerText = data.Client_Name || "Client";
                 
-                // --- NEW: Display Email & Phone from Database ---
-                document.getElementById('client-email').innerText = data.email || "Not Provided";
-                document.getElementById('client-phone').innerText = data.phone_number || "Not Provided";
-                // ------------------------------------------------
+                // Using bracket notation for column with apostrophe
+                document.getElementById('client-email').innerText = data["Email_I'd"] || "Not Provided";
+                document.getElementById('client-phone').innerText = data.Phone_Number || "Not Provided";
             } else {
                 console.error("Database Error:", error);
                 document.getElementById('plan-status').innerText = "Error Loading";
@@ -117,9 +117,9 @@
         }
 
         function handleCancel() {
-            const confirmAction = confirm("Are you sure? Hamari No-Refund policy hai.");
+            const confirmAction = confirm("Are you sure? We have a strict No-Refund policy.");
             if(confirmAction) {
-                alert("Auto-renewal band kar diya gaya hai. Access " + (currentClientExpiry || "cycle end") + " tak rahega.");
+                alert("Auto-renewal has been deactivated. Your access will remain active until " + (currentClientExpiry || "the end of the cycle") + ".");
             }
         }
 
@@ -131,10 +131,12 @@
         function botReply(type) {
             const body = document.getElementById('botBody');
             if(type === 'refund') {
-                body.innerHTML += `<p style="color:var(--danger)"><b>Kabir:</b> Hamari strict No-Refund policy hai.</p>`;
+                body.innerHTML += `<p style="color:var(--danger)"><b>Kabir:</b> We have a strict No-Refund policy. Your payment covers the current cycle regardless of usage.</p>`;
             } else if(type === 'cancel') {
-                body.innerHTML += `<p><b>Kabir:</b> Aap dashboard par "Cancel Membership" button click kar sakte hain.</p>`;
+                body.innerHTML += `<p><b>Kabir:</b> To cancel, click the "Cancel Membership" button. Your service will continue until your expiry date.</p>`;
             }
+            // Auto-scroll to bottom of chat
+            body.scrollTop = body.scrollHeight;
         }
 
         window.onload = fetchClientDashboard;
