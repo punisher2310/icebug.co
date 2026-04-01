@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Portal | Your Project Name</title>
+    <title>Client Portal | Subscriptions</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         :root {
             --primary: #4f46e5;
@@ -14,46 +17,39 @@
         }
         body { font-family: 'Inter', sans-serif; background: #f3f4f6; margin: 0; padding: 20px; }
         .container { max-width: 800px; margin: 0 auto; }
-        
-        /* Dashboard Card */
         .card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-top: 20px; }
         .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; background: #dcfce7; color: var(--success); }
-        
-        /* Buttons */
         .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; margin-top: 15px; transition: 0.3s; }
         .btn-pay { background: var(--primary); color: white; }
         .btn-pay:hover { background: #4338ca; }
         .btn-cancel { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
         .btn-cancel:hover { background: #fef2f2; }
-
-        /* No-Refund Banner */
         .policy-alert { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; font-size: 0.9rem; color: #92400e; }
-
-        /* Custom Chatbot 'Kabir' */
+        
+        /* Kabir Bot Styles */
         #kabir-bot { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
         .bot-toggle { background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .bot-window { position: absolute; bottom: 80px; right: 0; width: 300px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: none; overflow: hidden; }
         .bot-header { background: var(--primary); color: white; padding: 15px; font-weight: bold; }
         .bot-body { padding: 15px; font-size: 0.9rem; }
         .bot-btn { width: 100%; text-align: left; padding: 10px; margin-bottom: 5px; border: 1px solid #eee; background: #f9fafb; cursor: pointer; border-radius: 6px; }
-        .bot-btn:hover { background: #f3f4f6; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>Client Portal</h1>
+            <h1>Welcome, <span id="client-name-display">Client</span>!</h1>
             <p>Manage your subscriptions and billing.</p>
         </header>
 
         <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2>Current Plan: <span style="color:var(--primary)">Premium</span></h2>
-                <span class="status-badge">Active</span>
+                <h2>Current Plan: <span style="color:var(--primary)" id="plan-name">Loading...</span></h2>
+                <span class="status-badge" id="plan-status">Checking...</span>
             </div>
             
-            <p><strong>Expiry Date:</strong> <span id="expiry-date">15 April, 2026</span></p>
+            <p><strong>Expiry Date:</strong> <span id="expiry-date">--/--/----</span></p>
             <p><strong>Bill Cycle:</strong> Monthly</p>
 
             <div class="policy-alert">
@@ -72,43 +68,78 @@
                 <p>Hello! Main Kabir hoon. Main aapki kaise madad kar sakta hoon?</p>
                 <button class="bot-btn" onclick="botReply('refund')">Refund Policy kya hai?</button>
                 <button class="bot-btn" onclick="botReply('cancel')">Subscription kaise cancel karein?</button>
-                <button class="bot-btn" onclick="botReply('help')">Human Support se baat karni hai</button>
             </div>
         </div>
         <button class="bot-toggle" onclick="toggleBot()">💬</button>
     </div>
 
     <script>
-        // Chatbot Logic
+        // 1. SUPABASE CONFIGURATION
+        // Note: Make sure the URL is in format 'https://your-id.supabase.co'
+        const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
+        
+        let currentClientExpiry = "";
+
+        // 2. FETCH DATA FROM DATABASE (PascalCase column names)
+        async function fetchClientDashboard() {
+            const { data, error } = await _supabase
+                .from('subscriptions')
+                .select('*')
+                .limit(1)
+                .single();
+
+            if (data) {
+                currentClientExpiry = data.Expiry_Date;
+                document.getElementById('expiry-date').innerText = data.Expiry_Date;
+                document.getElementById('plan-status').innerText = data.Is_Active ? "Active" : "Expired";
+                document.getElementById('plan-name').innerText = data.Plan_Type || "The Premium";
+                document.getElementById('client-name-display').innerText = data.Client_Name || "Client";
+            } else {
+                console.error("Database Error:", error);
+                document.getElementById('plan-status').innerText = "Error Loading";
+            }
+        }
+
+        // 3. PAYMENT LOGIC (Redirect based on Plan_Type)
+        function handlePayment() {
+            const plan = document.getElementById('plan-name').innerText.trim();
+            
+            // Logic to match Plan_Type with Razorpay Links
+            if (plan.includes("Bespoke")) {
+                window.location.href = "https://rzp.io/rzp/g8movGN";
+            } else if (plan.includes("Premium")) {
+                window.location.href = "https://rzp.io/rzp/tQ5dw83H";
+            } else if (plan.includes("Essential")) {
+                window.location.href = "https://rzp.io/rzp/uQQlcFu";
+            } else {
+                alert("Please select a valid plan or contact support.");
+            }
+        }
+
+        // 4. CANCELLATION LOGIC
+        function handleCancel() {
+            const confirmAction = confirm("Are you sure? Hamari No-Refund policy hai.");
+            if(confirmAction) {
+                alert("Auto-renewal band kar diya gaya hai. Access " + (currentClientExpiry || "cycle end") + " tak rahega.");
+            }
+        }
+
+        // 5. KABIR CHATBOT LOGIC
         function toggleBot() {
-            const window = document.getElementById('botWindow');
-            window.style.display = window.style.display === 'block' ? 'none' : 'block';
+            const win = document.getElementById('botWindow');
+            win.style.display = win.style.display === 'block' ? 'none' : 'block';
         }
 
         function botReply(type) {
             const body = document.getElementById('botBody');
             if(type === 'refund') {
-                body.innerHTML += `<p style="color:var(--danger)"><b>Kabir:</b> Hamari strict No-Refund policy hai. Payment ke baad refund possible nahi hai.</p>`;
+                body.innerHTML += `<p style="color:var(--danger)"><b>Kabir:</b> Hamari strict No-Refund policy hai.</p>`;
             } else if(type === 'cancel') {
-                body.innerHTML += `<p><b>Kabir:</b> Aap dashboard par "Cancel Membership" button daba sakte hain. Service expiry date tak chalti rahegi.</p>`;
-            } else if(type === 'help') {
-                body.innerHTML += `<p><b>Kabir:</b> Aap humein WhatsApp par contact kar sakte hain: <a href="https://wa.me/91XXXXXXXXXX">Click Here</a></p>`;
+                body.innerHTML += `<p><b>Kabir:</b> Aap dashboard par "Cancel Membership" button click kar sakte hain.</p>`;
             }
         }
 
-        // Payment Redirect
-        function handlePayment() {
-            // Yahan apna Razorpay/Stripe link daalein
-            window.location.href = "https://rzp.io/l/your-link";
-        }
-
-        // Cancellation Logic
-        function handleCancel() {
-            const confirmAction = confirm("Kya aap sure hain? No-Refund policy ke mutabik paise wapas nahi milenge.");
-            if(confirmAction) {
-                alert("Aapka auto-renewal band kar diya gaya hai. Access 15 April tak rahega.");
-            }
-        }
+        window.onload = fetchClientDashboard;
     </script>
 </body>
 </html>
