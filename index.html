@@ -14,19 +14,19 @@
         html { scroll-behavior: smooth; }
         body { overflow-x: hidden; width: 100%; }
 
-        /* Portal Modal Styles (Glassmorphism + Premium Dark) */
-        .portal-modal {
+        /* Shared Modal Styles */
+        .portal-modal, .privacy-modal {
             display: none; position: fixed; z-index: 3000; left: 0; top: 0; 
             width: 100%; height: 100%; background-color: rgba(0,0,0,0.96);
             backdrop-filter: blur(15px); justify-content: center; align-items: center;
             padding: 20px; box-sizing: border-box;
         }
-        .portal-content {
+        .portal-content, .privacy-content {
             background: #0a0a0a; color: white; padding: 40px; border-radius: 4px; 
             width: 100%; max-width: 550px; border: 1px solid #222; position: relative;
             transform: translateY(20px); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .portal-modal.active .portal-content { transform: translateY(0); }
+        .active .portal-content, .active .privacy-content { transform: translateY(0); }
         
         .portal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #222; padding-bottom: 20px; }
         .status-badge { background: #16a34a; color: white; padding: 4px 12px; font-size: 0.7rem; font-family: 'Space Mono'; }
@@ -35,6 +35,11 @@
         .close-portal { cursor: pointer; font-size: 14px; color: #666; font-family: 'Space Mono'; letter-spacing: 2px; }
         .close-portal:hover { color: #4f46e5; }
         
+        /* Login Form Styles */
+        .login-input { width: 100%; padding: 14px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.9rem; }
+        .login-input:focus { border-color: #4f46e5; }
+        .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #666; margin-bottom: 5px; text-transform: uppercase; }
+
         .policy-box { background: #111; padding: 15px; border-left: 2px solid #4f46e5; margin: 25px 0; font-size: 0.8rem; color: #666; line-height: 1.6; }
 
         /* Kabir Chatbot Styles */
@@ -48,9 +53,8 @@
 
         /* Phone Enhancements */
         @media (max-width: 768px) {
-            .portal-content { padding: 30px 20px; }
-            .hero-main { font-size: 15vw; } /* Smooth scaling for title */
-            .price-card { margin-bottom: 20px; }
+            .portal-content, .privacy-content { padding: 30px 20px; }
+            .hero-main { font-size: 15vw; }
             #kabir-bot { bottom: 20px; right: 20px; }
             .bot-window { width: 280px; right: 0; }
         }
@@ -62,29 +66,58 @@
 
     <div id="portalModal" class="portal-modal">
         <div class="portal-content">
-            <div class="portal-header">
-                <div>
-                    <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// ACCESS_GRANTED</p>
-                    <h2 style="margin: 5px 0; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
+            <span class="close-portal" onclick="closePortal()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
+
+            <div id="login-view">
+                <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// AUTH_REQUIRED</p>
+                <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">CLIENT LOGIN</h2>
+                <div style="margin-top: 25px;">
+                    <label class="login-label">Registered Email</label>
+                    <input type="email" id="login-email" class="login-input" placeholder="name@company.com">
+                    <label class="login-label">Phone Number</label>
+                    <input type="text" id="login-phone" class="login-input" placeholder="+91 XXXXX XXXXX">
+                    <button class="btn-primary" onclick="handleLogin()" style="width: 100%; margin-left: 0; padding: 16px;">ACCESS PORTAL ↗</button>
+                    <p id="login-error" style="color:#dc2626; font-size:0.7rem; margin-top:10px; display:none; font-family:'Space Mono';">// ERROR: INVALID CREDENTIALS</p>
                 </div>
-                <span class="close-portal" onclick="closePortal()">[ CLOSE ]</span>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin:0; font-size: 0.8rem; font-family: 'Space Mono'; color: #444;">ACTIVE_PLAN: <span id="plan-name" style="color: white;">LOADING...</span></h3>
-                <span class="status-badge" id="plan-status">...</span>
+            <div id="dashboard-view" style="display:none;">
+                <div class="portal-header" style="border:none; margin-bottom:10px;">
+                    <div>
+                        <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// SESSION_ACTIVE</p>
+                        <h2 style="margin: 5px 0; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin:0; font-size: 0.8rem; font-family: 'Space Mono'; color: #444;">ACTIVE_PLAN: <span id="plan-name" style="color: white;">...</span></h3>
+                    <span class="status-badge" id="plan-status">ACTIVE</span>
+                </div>
+
+                <div class="portal-detail"><strong>EMAIL_ID</strong> <span id="client-email">--</span></div>
+                <div class="portal-detail"><strong>PHONE_NO</strong> <span id="client-phone">--</span></div>
+                <div class="portal-detail"><strong>EXPIRY_DATE</strong> <span id="expiry-date">--/--/----</span></div>
+
+                <div class="policy-box">
+                    <strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.
+                </div>
+
+                <button class="btn-primary" onclick="handlePayment()" style="width: 100%; margin-left: 0; padding: 16px; font-weight: 600;">RENEW SUBSCRIPTION ↗</button>
+                <button class="btn-secondary" onclick="logout()" style="width: 100%; margin-top: 12px; border-color: #222; color: #555; padding: 14px;">LOGOUT SESSION</button>
             </div>
+        </div>
+    </div>
 
-            <div class="portal-detail"><strong>EMAIL_ID</strong> <span id="client-email">--</span></div>
-            <div class="portal-detail"><strong>PHONE_NO</strong> <span id="client-phone">--</span></div>
-            <div class="portal-detail"><strong>EXPIRY_DATE</strong> <span id="expiry-date">--/--/----</span></div>
-
-            <div class="policy-box">
-                <strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.
+    <div id="privacyModal" class="privacy-modal">
+        <div class="privacy-content">
+            <span class="close-portal" onclick="closePrivacy()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
+            <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// LEGAL_TERMS</p>
+            <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">PRIVACY & TERMS</h2>
+            <div style="margin-top: 20px; max-height: 300px; overflow-y: auto; font-size: 0.85rem; color: #888; line-height: 1.6;">
+                <p><strong>No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable. Since we provide custom digital services and immediate allocation of resources, we do not offer refunds once a cycle starts.</p>
+                <p><strong>Cancellations:</strong> You can cancel your subscription anytime. Your access to the premium portal and support will continue until the end of the current paid billing period.</p>
+                <p><strong>Data Usage:</strong> We store your basic contact information and plan details securely via Supabase for subscription management only.</p>
             </div>
-
-            <button class="btn-primary" onclick="handlePayment()" style="width: 100%; margin-left: 0; padding: 16px; font-weight: 600;">RENEW SUBSCRIPTION ↗</button>
-            <button class="btn-secondary" onclick="handleCancel()" style="width: 100%; margin-top: 12px; border-color: #222; color: #555; padding: 14px;">CANCEL MEMBERSHIP</button>
         </div>
     </div>
 
@@ -244,7 +277,7 @@
                 </div>
                 <div class="link-group">
                     <p class="role">// NAVIGATION</p>
-                    <a href="#work">Selected Work</a>
+                    <a href="javascript:void(0)" onclick="openPrivacy()">Privacy Policy</a>
                     <a href="#pricing">Pricing Plans</a>
                     <a href="#leadership">The Vision</a>
                 </div>
@@ -264,23 +297,19 @@
         
         let currentClientExpiry = "";
 
-        async function openPortal() {
+        // MODAL HANDLERS
+        function openPortal() {
             const modal = document.getElementById('portalModal');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('active'), 10);
-
-            const { data, error } = await _supabase.from('subscriptions').select('*').limit(1).single();
             
-            if (data) {
-                currentClientExpiry = data.Expiry_Date;
-                document.getElementById('expiry-date').innerText = data.Expiry_Date;
-                document.getElementById('plan-status').innerText = data.Is_Active ? "ACTIVE" : "EXPIRED";
-                document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM PLAN";
-                document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
-                
-                // Handling Bracket Notation for Column with Apostrophe
-                document.getElementById('client-email').innerText = data["Email_I'd"] || "NOT PROVIDED";
-                document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
+            // If already logged in this session, show dashboard directly
+            const savedData = sessionStorage.getItem('icebug_user');
+            if (savedData) {
+                showDashboard(JSON.parse(savedData));
+            } else {
+                document.getElementById('login-view').style.display = 'block';
+                document.getElementById('dashboard-view').style.display = 'none';
             }
         }
 
@@ -288,6 +317,61 @@
             const modal = document.getElementById('portalModal');
             modal.classList.remove('active');
             setTimeout(() => modal.style.display = 'none', 400);
+        }
+
+        function openPrivacy() {
+            const modal = document.getElementById('privacyModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closePrivacy() {
+            const modal = document.getElementById('privacyModal');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 400);
+        }
+
+        // LOGIN LOGIC
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const phone = document.getElementById('login-phone').value.trim();
+            const errorMsg = document.getElementById('login-error');
+
+            if(!email || !phone) { alert("Please enter both details."); return; }
+
+            const { data, error } = await _supabase
+                .from('subscriptions')
+                .select('*')
+                .eq("Email_I'd", email)
+                .eq('Phone_Number', phone)
+                .single();
+
+            if (data) {
+                sessionStorage.setItem('icebug_user', JSON.stringify(data));
+                showDashboard(data);
+                errorMsg.style.display = 'none';
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function showDashboard(data) {
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+
+            currentClientExpiry = data.Expiry_Date;
+            document.getElementById('expiry-date').innerText = data.Expiry_Date;
+            document.getElementById('plan-status').innerText = data.Is_Active ? "ACTIVE" : "EXPIRED";
+            document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM PLAN";
+            document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
+            document.getElementById('client-email').innerText = data["Email_I'd"] || "NOT PROVIDED";
+            document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
+        }
+
+        function logout() {
+            sessionStorage.removeItem('icebug_user');
+            document.getElementById('login-view').style.display = 'block';
+            document.getElementById('dashboard-view').style.display = 'none';
         }
 
         function handlePayment() {
@@ -303,7 +387,6 @@
             }
         }
 
-        // Chatbot Logic
         function toggleBot() {
             const win = document.getElementById('botWindow');
             win.style.display = win.style.display === 'block' ? 'none' : 'block';
