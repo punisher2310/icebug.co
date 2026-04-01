@@ -26,7 +26,6 @@
         .btn-cancel:hover { background: #fef2f2; }
         .policy-alert { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; font-size: 0.9rem; color: #92400e; }
         
-        /* Kabir Bot Styles */
         #kabir-bot { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
         .bot-toggle { background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .bot-window { position: absolute; bottom: 80px; right: 0; width: 300px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: none; overflow: hidden; }
@@ -49,6 +48,8 @@
                 <span class="status-badge" id="plan-status">Checking...</span>
             </div>
             
+            <p><strong>Email:</strong> <span id="client-email">--</span></p>
+            <p><strong>Phone:</strong> <span id="client-phone">--</span></p>
             <p><strong>Expiry Date:</strong> <span id="expiry-date">--/--/----</span></p>
             <p><strong>Bill Cycle:</strong> Monthly</p>
 
@@ -74,13 +75,10 @@
     </div>
 
     <script>
-        // 1. SUPABASE CONFIGURATION
-        // Note: Make sure the URL is in format 'https://your-id.supabase.co'
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
         
         let currentClientExpiry = "";
 
-        // 2. FETCH DATA FROM DATABASE (PascalCase column names)
         async function fetchClientDashboard() {
             const { data, error } = await _supabase
                 .from('subscriptions')
@@ -94,17 +92,19 @@
                 document.getElementById('plan-status').innerText = data.Is_Active ? "Active" : "Expired";
                 document.getElementById('plan-name').innerText = data.Plan_Type || "The Premium";
                 document.getElementById('client-name-display').innerText = data.Client_Name || "Client";
+                
+                // --- NEW: Display Email & Phone from Database ---
+                document.getElementById('client-email').innerText = data.email || "Not Provided";
+                document.getElementById('client-phone').innerText = data.phone_number || "Not Provided";
+                // ------------------------------------------------
             } else {
                 console.error("Database Error:", error);
                 document.getElementById('plan-status').innerText = "Error Loading";
             }
         }
 
-        // 3. PAYMENT LOGIC (Redirect based on Plan_Type)
         function handlePayment() {
             const plan = document.getElementById('plan-name').innerText.trim();
-            
-            // Logic to match Plan_Type with Razorpay Links
             if (plan.includes("Bespoke")) {
                 window.location.href = "https://rzp.io/rzp/g8movGN";
             } else if (plan.includes("Premium")) {
@@ -116,7 +116,6 @@
             }
         }
 
-        // 4. CANCELLATION LOGIC
         function handleCancel() {
             const confirmAction = confirm("Are you sure? Hamari No-Refund policy hai.");
             if(confirmAction) {
@@ -124,7 +123,6 @@
             }
         }
 
-        // 5. KABIR CHATBOT LOGIC
         function toggleBot() {
             const win = document.getElementById('botWindow');
             win.style.display = win.style.display === 'block' ? 'none' : 'block';
