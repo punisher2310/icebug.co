@@ -6,10 +6,79 @@
     <title>Icebug\Studio | Premium Digital Experiences</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Space+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        /* Merged Dashboard Modal Styles */
+        .portal-modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; 
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px); justify-content: center; align-items: center;
+        }
+        .portal-content {
+            background: #111; color: white; padding: 40px; border-radius: 20px; 
+            width: 90%; max-width: 600px; border: 1px solid #333; position: relative;
+        }
+        .portal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .status-badge { background: #16a34a; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; }
+        .portal-detail { margin: 15px 0; font-size: 1.1rem; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .portal-detail strong { color: #4f46e5; }
+        .close-portal { cursor: pointer; font-size: 30px; color: #666; }
+        .close-portal:hover { color: white; }
+        .policy-box { background: #1a1a1a; padding: 15px; border-left: 4px solid #f59e0b; margin: 20px 0; font-size: 0.9rem; color: #ccc; }
+        
+        /* Chatbot Customization */
+        #kabir-bot { position: fixed; bottom: 20px; right: 20px; z-index: 3000; }
+        .bot-toggle { background: #4f46e5; color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .bot-window { position: absolute; bottom: 80px; right: 0; width: 300px; background: #111; border-radius: 12px; border: 1px solid #333; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: none; overflow: hidden; }
+        .bot-header { background: #4f46e5; color: white; padding: 15px; font-weight: bold; }
+        .bot-body { padding: 15px; font-size: 0.9rem; color: #ccc; max-height: 250px; overflow-y: auto; }
+        .bot-btn { width: 100%; text-align: left; padding: 10px; margin-bottom: 5px; border: 1px solid #333; background: #1a1a1a; color: white; cursor: pointer; border-radius: 6px; }
+    </style>
 </head>
 <body>
     
     <div class="cursor"></div>
+
+    <div id="portalModal" class="portal-modal">
+        <div class="portal-content">
+            <div class="portal-header">
+                <div>
+                    <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.8rem;">// CLIENT ACCESS</p>
+                    <h2 style="margin: 5px 0;">Welcome, <span id="client-name-display">Client</span></h2>
+                </div>
+                <span class="close-portal" onclick="closePortal()">&times;</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin:0;">Plan: <span id="plan-name" style="color: #4f46e5;">Loading...</span></h3>
+                <span class="status-badge" id="plan-status">Active</span>
+            </div>
+
+            <div class="portal-detail"><strong>Email:</strong> <span id="client-email">--</span></div>
+            <div class="portal-detail"><strong>Phone:</strong> <span id="client-phone">--</span></div>
+            <div class="portal-detail"><strong>Expiry Date:</strong> <span id="expiry-date">--/--/----</span></div>
+
+            <div class="policy-box">
+                <strong>No-Refund Policy:</strong> Any cancellations will not be eligible for a refund. Access remains active until the end of the current cycle.
+            </div>
+
+            <button class="btn-primary full-width" onclick="handlePayment()" style="width: 100%; margin-left: 0; margin-top: 10px;">Renew Subscription Now</button>
+            <button class="btn-secondary" onclick="handleCancel()" style="width: 100%; margin-top: 10px; border-color: #dc2626; color: #dc2626;">Cancel Membership</button>
+        </div>
+    </div>
+
+    <div id="kabir-bot">
+        <div class="bot-window" id="botWindow">
+            <div class="bot-header">Kabir Assistant 🤖</div>
+            <div class="bot-body" id="botBody">
+                <p>Hello! I am Kabir. How can I help you today?</p>
+                <button class="bot-btn" onclick="botReply('refund')">What is the Refund Policy?</button>
+                <button class="bot-btn" onclick="botReply('cancel')">How to cancel my subscription?</button>
+            </div>
+        </div>
+        <button class="bot-toggle" onclick="toggleBot()">💬</button>
+    </div>
 
     <div id="sowModal" class="sow-modal">
         <div class="modal-container">
@@ -31,147 +100,79 @@
             <a href="#leadership">Leadership</a>
             <a href="#pricing">Retainer</a>
             <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
-            <a href="#" class="client-login" onclick="alert('Client Portal is setting up. For billing, contact your account manager.')">Client Portal 🔒</a>
+            <a href="javascript:void(0)" class="client-login" onclick="openPortal()">Client Portal 🔒</a>
             <a href="https://wa.me/919214847729" class="btn-primary">Let's Chat ↗</a>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="tech-detail top-left">// 02.01°</div>
-        <div class="tech-detail top-right">EST. 2026<br>KANPUR, UP</div>
-        <div class="tech-detail bottom-left">// LAT: 26.4499° N<br>LON: 80.3319° E</div>
-        <div class="hero-content">
-            <h2 class="hero-sub anim-up">Digital experiences that<br>connect, scale and perform<span class="accent">.</span></h2>
-            <h1 class="hero-main anim-up">Icebug\Studio</h1>
-            <div class="hero-bottom-grid anim-up">
-                <p class="hero-desc">A DESIGN STUDIO TRUSTED BY PREMIUM BRANDS.<br>WE CREATE STORIES PEOPLE REMEMBER.</p>
-                <div class="time-block">LOCAL TIME <span id="clock">...</span><br>UTC+5:30</div>
-            </div>
-        </div>
-    </header>
-
-    <section class="manifesto-section anim-up">
-        <div class="manifesto-content">
-            <h2 class="manifesto-title">No recycled templates.<br>No hidden fees.<br><span class="accent">Just pure digital craft.</span></h2>
-            <div class="manifesto-grid">
-                <div class="manifesto-item"><div class="stat">99%</div><p class="stat-desc">Faster load times with custom edge deployment.</p></div>
-                <div class="manifesto-item"><div class="stat">24h</div><p class="stat-desc">Average turnaround time for priority client edits.</p></div>
-                <div class="manifesto-item"><div class="stat">Zero</div><p class="stat-desc">WordPress templates used. Every pixel is hand-coded.</p></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="work" class="work-section anim-up">
-        <div class="work-header">
-            <h2 class="section-title">Selected <span class="accent">Concepts.</span></h2>
-            <a href="https://wa.me/919214847729" class="btn-secondary">Request Private Demos 🔒</a>
-        </div>
-        <div class="work-grid">
-            <div class="work-card large-card">
-                <div class="image-wrapper"><div class="work-image" style="background: radial-gradient(circle at center, #2a1a1a 0%, #050505 100%);"></div></div>
-                <div class="work-info">
-                    <div class="work-tags"><span class="tag">HOSPITALITY</span><span class="tag">CONFIDENTIAL</span></div>
-                    <h3>Premium Cafe Web Experience</h3><p class="tech-detail">Status: Under Development // 2026</p>
-                </div>
-            </div>
-            <div class="work-card small-card">
-                <div class="image-wrapper"><div class="work-image" style="background: linear-gradient(145deg, #1a0f0a, #050505);"></div></div>
-                <div class="work-info">
-                    <div class="work-tags"><span class="tag">E-COMMERCE</span><span class="tag">INTERNAL CONCEPT</span></div>
-                    <h3>Next-Gen Apparel Drop</h3><p class="tech-detail">Status: Agency Concept // 2026</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="leadership" class="leadership-section anim-up">
-        <div class="work-header">
-            <h2 class="section-title">The <span class="accent">Vision.</span></h2>
-        </div>
-        <div class="message-grid">
-            <div class="message-box">
-                <div class="quote-icon">"</div>
-                <p class="message-text">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your code is hand-crafted, pixel by pixel.</p>
-                <div>
-                    <p class="leader-name">Utkarsh Tiwari</p>
-                    <p class="role">// LEAD ARCHITECT & FOUNDER</p>
-                </div>
-            </div>
-            <div class="message-box">
-                <div class="quote-icon">"</div>
-                <p class="message-text">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
-                <div>
-                    <p class="leader-name">Ayushi Awasthi</p>
-                    <p class="role">// HEAD OF SALES & STRATEGY</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="pricing-section anim-up">
-        <h2 class="section-title">Transparent. <span class="accent">Scalable.</span></h2>
-        <div class="pricing-grid">
-            
-            <div class="price-card bento">
-                <div class="card-head"><h3>The Essential</h3><p class="setup-fee">₹10,000 Setup</p></div>
-                <p class="monthly-fee">₹999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Single Page Experience</li><li>Standard Animations</li><li>Vercel Cloud Hosting</li></ul>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary" style="width: 100%;">View SOW ↗</button>
-                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width" style="margin-left: 0;">Sign SOW 🔒</a>
-                </div>
-            </div>
-
-            <div class="price-card bento premium-card">
-                <div class="card-head"><div class="tag">MOST POPULAR</div><h3>The Premium</h3><p class="setup-fee">₹25,000 Setup</p></div>
-                <p class="monthly-fee">₹1,999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Multi-Page Custom Site</li><li>Advanced GSAP Motion</li><li>CMS (Easy Content Edits)</li><li>Priority Monthly Support</li></ul>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary" style="border-color: #555; width: 100%;">View SOW ↗</button>
-                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width" style="margin-left: 0;">Sign SOW 🔒</a>
-                </div>
-            </div>
-
-            <div class="price-card bento">
-                <div class="card-head"><h3>The Bespoke</h3><p class="setup-fee">₹50k+ Setup</p></div>
-                <p class="monthly-fee">₹4,999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Full 3D / WebGL Motion</li><li>E-commerce / Booking Setup</li><li>Custom Backend System</li><li>Dedicated Tech Team</li></ul>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke - Scope of Work')" class="btn-secondary" style="width: 100%;">View SOW ↗</button>
-                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20ready%20to%20discuss%20the%20Bespoke%20Plan." class="btn-primary full-width" style="margin-left: 0;">Let's Discuss 🔒</a>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <footer class="main-footer anim-up">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <div class="logo">icebug<span class="accent">®</span></div>
-                <p class="footer-tagline">High-performance digital experiences <br>engineered in Kanpur, UP.</p>
-            </div>
-            <div class="footer-links">
-                <div class="link-group">
-                    <p class="role">// CONNECT</p>
-                    <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
-                    <a href="mailto:hello@icebug.co">Email Us ↗</a>
-                </div>
-                <div class="link-group">
-                    <p class="role">// NAVIGATION</p>
-                    <a href="#work">Selected Work</a>
-                    <a href="#pricing">Pricing Plans</a>
-                    <a href="#leadership">The Vision</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="tech-detail">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
-            <div class="tech-detail">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
-        </div>
-    </footer>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
+
+    <script>
+        // 3. MERGED SUPABASE & PORTAL LOGIC
+        const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
+        
+        let currentClientExpiry = "";
+
+        // Open Portal and Fetch Data
+        async function openPortal() {
+            document.getElementById('portalModal').style.display = 'flex';
+            
+            const { data, error } = await _supabase
+                .from('subscriptions')
+                .select('*')
+                .limit(1)
+                .single();
+
+            if (data) {
+                currentClientExpiry = data.Expiry_Date;
+                document.getElementById('expiry-date').innerText = data.Expiry_Date;
+                document.getElementById('plan-status').innerText = data.Is_Active ? "Active" : "Expired";
+                document.getElementById('plan-name').innerText = data.Plan_Type || "Premium Plan";
+                document.getElementById('client-name-display').innerText = data.Client_Name || "Client";
+                
+                // FIXED: Using bracket notation for Email_I'd with apostrophe
+                document.getElementById('client-email').innerText = data["Email_I'd"] || "Not Provided";
+                document.getElementById('client-phone').innerText = data.Phone_Number || "Not Provided";
+            } else {
+                console.error("Supabase Error:", error);
+                alert("Could not load portal data. Check connection.");
+            }
+        }
+
+        function closePortal() {
+            document.getElementById('portalModal').style.display = 'none';
+        }
+
+        function handlePayment() {
+            const plan = document.getElementById('plan-name').innerText;
+            if (plan.includes("Bespoke")) window.location.href = "https://rzp.io/rzp/g8movGN";
+            else if (plan.includes("Premium")) window.location.href = "https://rzp.io/rzp/tQ5dw83H";
+            else if (plan.includes("Essential")) window.location.href = "https://rzp.io/rzp/uQQlcFu";
+            else alert("Contact your account manager for renewal.");
+        }
+
+        function handleCancel() {
+            if(confirm("Are you sure? We have a strict No-Refund policy.")) {
+                alert("Auto-renewal has been deactivated. Your access will remain active until " + (currentClientExpiry || "the end of your cycle") + ".");
+            }
+        }
+
+        // Chatbot Logic
+        function toggleBot() {
+            const win = document.getElementById('botWindow');
+            win.style.display = win.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function botReply(type) {
+            const body = document.getElementById('botBody');
+            if(type === 'refund') {
+                body.innerHTML += `<p style="color:#4f46e5"><b>Kabir:</b> We have a strict No-Refund policy. Your payment covers the current cycle.</p>`;
+            } else if(type === 'cancel') {
+                body.innerHTML += `<p style="color:#4f46e5"><b>Kabir:</b> You can use the "Cancel Membership" button in the portal.</p>`;
+            }
+            body.scrollTop = body.scrollHeight;
+        }
+    </script>
 </body>
 </html>
