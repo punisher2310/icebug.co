@@ -14,7 +14,7 @@
         html { scroll-behavior: smooth; }
         body { overflow-x: hidden; width: 100%; cursor: none; } 
 
-        /* CUSTOM CURSOR CSS */
+        /* CUSTOM CURSOR CSS (FIXED) */
         .cursor {
             width: 20px; height: 20px; border: 1px solid #4f46e5; border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 10000;
@@ -25,7 +25,7 @@
 
         /* Shared Modal Styles */
         .portal-modal, .privacy-modal, .sow-modal {
-            display: none; position: fixed; z-index: 9000; left: 0; top: 0; 
+            display: none; position: fixed; z-index: 3000; left: 0; top: 0; 
             width: 100%; height: 100%; background-color: rgba(0,0,0,0.96);
             backdrop-filter: blur(15px); justify-content: center; align-items: center;
             padding: 20px; box-sizing: border-box;
@@ -140,9 +140,9 @@
             <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// LEGAL_TERMS</p>
             <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">PRIVACY & TERMS</h2>
             <div style="margin-top: 20px; max-height: 300px; overflow-y: auto; font-size: 0.85rem; color: #888; line-height: 1.6;">
-                <p><strong>1. No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable. Once a cycle starts, resources are allocated immediately.</p>
-                <p><strong>2. Cancellations:</strong> You can cancel anytime; access remains until the current cycle ends.</p>
-                <p><strong>3. Data Privacy:</strong> We store basic contact info via Supabase solely for subscription management.</p>
+                <p><strong>No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable.</p>
+                <p><strong>Cancellations:</strong> You can cancel anytime; access remains until cycle end.</p>
+                <p><strong>Data Usage:</strong> We store basic contact info securely via Supabase.</p>
                 <hr style="border-color: #222; margin: 15px 0;">
                 <p><strong>Contact Support:</strong></p>
                 <p>Email: <a href="mailto:hello@icebug.co" style="color:#4f46e5;">hello@icebug.co</a></p>
@@ -325,6 +325,8 @@
     <script>
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
         
+        let currentClientExpiry = "";
+
         // --- CUSTOM CURSOR LOGIC ---
         const cursor = document.querySelector('.cursor');
         document.addEventListener('mousemove', (e) => {
@@ -403,6 +405,7 @@
             document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM PLAN";
             document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
             
+            // EMAIL & PHONE DISPLAY (ADDED BACK)
             document.getElementById('client-email').innerText = data.Email_Id || "NOT PROVIDED";
             document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
 
