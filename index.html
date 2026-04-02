@@ -12,19 +12,45 @@
     <style>
         /* --- MOBILE & SMOOTH ENHANCEMENTS --- */
         html { scroll-behavior: smooth; }
-        body { overflow-x: hidden; width: 100%; cursor: none; } /* Cursor none to show custom cursor */
+        body { overflow-x: hidden; width: 100%; cursor: none; }
 
-        /* CUSTOM CURSOR CSS (RESTORED) */
+        /* CUSTOM CURSOR CSS */
         .cursor {
-            width: 20px; height: 20px; border: 1px solid #4f46e5; border-radius: 50%;
-            position: fixed; pointer-events: none; z-index: 9999;
+            width: 20px; height: 20px; border: 1px solid #ff4d29; border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 99999;
             transition: transform 0.1s ease, background 0.3s ease;
             transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255, 77, 41, 0.5);
         }
+
+        /* --- LAYOUT FIXES (Safeguard for broken Grids) --- */
+        section { padding: 6rem 4rem; }
+        .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 3rem; letter-spacing: -1px; }
+        .manifesto-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 3rem; line-height: 1.2; }
+        
+        .manifesto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .stat { font-size: 3.5rem; font-weight: 800; color: #ff4d29; margin-bottom: 0.5rem; letter-spacing: -2px; }
+        
+        .work-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; }
+        .work-card { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+        .image-wrapper { height: 350px; width: 100%; overflow: hidden; }
+        .work-image { width: 100%; height: 100%; }
+        .work-info { padding: 2rem; }
+        .work-tags { display: flex; gap: 10px; margin-bottom: 1rem; }
+        .tag { font-family: 'Space Mono'; font-size: 0.65rem; color: #ff4d29; border: 1px solid #222; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
+        
+        .message-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .message-box { background: #0a0a0a; padding: 3rem; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; }
+        .quote-icon { font-size: 3rem; color: #ff4d29; margin-bottom: 1rem; font-family: serif; }
+        
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .price-card { background: #0a0a0a; padding: 3rem; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; }
+        .premium-card { border-color: #ff4d29; }
+        .full-width { width: 100%; text-align: center; display: block; box-sizing: border-box; }
 
         /* Shared Modal Styles */
         .portal-modal, .privacy-modal, .sow-modal {
-            display: none; position: fixed; z-index: 3000; left: 0; top: 0; 
+            display: none; position: fixed; z-index: 5000; left: 0; top: 0; 
             width: 100%; height: 100%; background-color: rgba(0,0,0,0.96);
             backdrop-filter: blur(15px); justify-content: center; align-items: center;
             padding: 20px; box-sizing: border-box;
@@ -40,27 +66,26 @@
         .status-badge { background: #16a34a; color: white; padding: 4px 12px; font-size: 0.7rem; font-family: 'Space Mono'; }
         .portal-detail { margin: 18px 0; font-size: 0.95rem; color: #888; font-family: 'Space Mono'; display: flex; justify-content: space-between; }
         .portal-detail strong { color: white; }
-        .close-portal { cursor: pointer; font-size: 14px; color: #666; font-family: 'Space Mono'; letter-spacing: 2px; }
-        .close-portal:hover { color: #4f46e5; }
+        .close-portal { cursor: pointer; font-size: 14px; color: #666; font-family: 'Space Mono'; letter-spacing: 2px; text-transform: uppercase; }
+        .close-portal:hover { color: #ff4d29; }
         
-        /* Login Form Styles */
         .login-input { width: 100%; padding: 14px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.9rem; }
-        .login-input:focus { border-color: #4f46e5; }
+        .login-input:focus { border-color: #ff4d29; }
         .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #666; margin-bottom: 5px; text-transform: uppercase; }
 
-        .policy-box { background: #111; padding: 15px; border-left: 2px solid #4f46e5; margin: 25px 0; font-size: 0.8rem; color: #666; line-height: 1.6; }
+        .policy-box { background: #111; padding: 15px; border-left: 2px solid #ff4d29; margin: 25px 0; font-size: 0.8rem; color: #666; line-height: 1.6; }
 
-        /* Kabir Chatbot Styles */
         #kabir-bot { position: fixed; bottom: 30px; right: 30px; z-index: 4000; }
-        .bot-toggle { background: #4f46e5; color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(79,70,229,0.4); }
+        .bot-toggle { background: #ff4d29; color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(255,77,41,0.4); }
         .bot-window { position: absolute; bottom: 75px; right: 0; width: 320px; background: #0a0a0a; border: 1px solid #222; display: none; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
         .bot-header { background: #111; color: white; padding: 15px; font-weight: 500; font-family: 'Space Mono'; font-size: 0.75rem; border-bottom: 1px solid #222; }
         .bot-body { padding: 20px; font-size: 0.85rem; color: #888; max-height: 250px; overflow-y: auto; }
         .bot-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; cursor: pointer; font-family: 'Inter'; font-size: 0.8rem; }
-        .bot-btn:hover { background: #4f46e5; }
+        .bot-btn:hover { background: #ff4d29; }
 
-        /* Phone Enhancements */
         @media (max-width: 768px) {
+            section { padding: 4rem 2rem; }
+            .manifesto-grid, .work-grid, .message-grid, .pricing-grid { grid-template-columns: 1fr; }
             .portal-content, .privacy-content { padding: 30px 20px; }
             .hero-main { font-size: 15vw; }
             #kabir-bot { bottom: 20px; right: 20px; }
@@ -79,14 +104,14 @@
             <span class="close-portal" onclick="closePortal()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
 
             <div id="login-view">
-                <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// AUTH_REQUIRED</p>
+                <p style="color: #ff4d29; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// AUTH_REQUIRED</p>
                 <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">CLIENT LOGIN</h2>
                 <div style="margin-top: 25px;">
                     <label class="login-label">Registered Email</label>
                     <input type="email" id="login-email" class="login-input" placeholder="name@company.com">
                     <label class="login-label">Phone Number</label>
                     <input type="text" id="login-phone" class="login-input" placeholder="+91 XXXXX XXXXX">
-                    <button class="btn-primary" onclick="handleLogin()" style="width: 100%; margin-left: 0; padding: 16px;">ACCESS PORTAL ↗</button>
+                    <button class="btn-primary full-width" onclick="handleLogin()" style="padding: 16px;">ACCESS PORTAL ↗</button>
                     <p id="login-error" style="color:#dc2626; font-size:0.7rem; margin-top:10px; display:none; font-family:'Space Mono';">// ERROR: INVALID CREDENTIALS</p>
                 </div>
             </div>
@@ -94,7 +119,7 @@
             <div id="dashboard-view" style="display:none;">
                 <div class="portal-header" style="border:none; margin-bottom:10px;">
                     <div>
-                        <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// SESSION_ACTIVE</p>
+                        <p style="color: #ff4d29; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// SESSION_ACTIVE</p>
                         <h2 style="margin: 5px 0; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
                     </div>
                 </div>
@@ -109,7 +134,7 @@
                 <div class="portal-detail"><strong>EXPIRY_DATE</strong> <span id="expiry-date">--/--/----</span></div>
 
                 <div style="margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
-                    <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// FINANCIAL_RECORDS</p>
+                    <p style="color: #ff4d29; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// FINANCIAL_RECORDS</p>
                     <h3 style="margin: 10px 0; font-size: 1rem;">BILLING HISTORY</h3>
                     <div style="font-size: 0.8rem; font-family: 'Space Mono'; color: #888;">
                         <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
@@ -127,8 +152,8 @@
                     <strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.
                 </div>
 
-                <button class="btn-primary" onclick="handlePayment()" style="width: 100%; margin-left: 0; padding: 16px; font-weight: 600;">RENEW SUBSCRIPTION ↗</button>
-                <button class="btn-secondary" onclick="logout()" style="width: 100%; margin-top: 12px; border-color: #222; color: #555; padding: 14px;">LOGOUT SESSION</button>
+                <button class="btn-primary full-width" onclick="handlePayment()" style="padding: 16px; font-weight: 600;">RENEW SUBSCRIPTION ↗</button>
+                <button class="btn-secondary full-width" onclick="logout()" style="margin-top: 12px; border-color: #222; color: #555; padding: 14px;">LOGOUT SESSION</button>
             </div>
         </div>
     </div>
@@ -136,7 +161,7 @@
     <div id="privacyModal" class="privacy-modal">
         <div class="privacy-content">
             <span class="close-portal" onclick="closePrivacy()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
-            <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// LEGAL_TERMS</p>
+            <p style="color: #ff4d29; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// LEGAL_TERMS</p>
             <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">PRIVACY & TERMS</h2>
             <div style="margin-top: 20px; max-height: 300px; overflow-y: auto; font-size: 0.85rem; color: #888; line-height: 1.6;">
                 <p><strong>No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable.</p>
@@ -150,7 +175,7 @@
         <div class="modal-container" style="background:#0a0a0a; width:90%; max-width:1000px; height:80vh; position:relative; border:1px solid #222; padding: 40px; border-radius: 4px;">
             <div class="portal-header">
                 <div>
-                    <p class="role" style="font-family:'Space Mono'; font-size:0.6rem; color:#4f46e5;">// OFFICIAL_SCOPE</p>
+                    <p class="role" style="font-family:'Space Mono'; font-size:0.6rem; color:#ff4d29;">// OFFICIAL_SCOPE</p>
                     <h3 id="modalTitle" style="color: white; margin:0;">Project Scope</h3>
                 </div>
                 <span class="close-portal" onclick="closeSOW()">[ CLOSE ]</span>
@@ -160,7 +185,7 @@
     </div>
 
     <nav class="navbar">
-        <div class="logo">icebug<span class="accent">®</span></div>
+        <div class="logo">icebug<span class="accent" style="color:#ff4d29;">®</span></div>
         <div class="nav-links">
             <a href="#work">Concepts</a>
             <a href="#leadership">Leadership</a>
@@ -176,7 +201,7 @@
         <div class="tech-detail top-right">EST. 2026<br>KANPUR, UP</div>
         <div class="tech-detail bottom-left">// LAT: 26.4499° N<br>LON: 80.3319° E</div>
         <div class="hero-content">
-            <h2 class="hero-sub anim-up">Digital experiences that<br>connect, scale and perform<span class="accent">.</span></h2>
+            <h2 class="hero-sub anim-up">Digital experiences that<br>connect, scale and perform<span class="accent" style="color:#ff4d29;">.</span></h2>
             <h1 class="hero-main anim-up">Icebug\Studio</h1>
             <div class="hero-bottom-grid anim-up">
                 <p class="hero-desc">A DESIGN STUDIO TRUSTED BY PREMIUM BRANDS.<br>WE CREATE STORIES PEOPLE REMEMBER.</p>
@@ -187,7 +212,7 @@
 
     <section class="manifesto-section anim-up">
         <div class="manifesto-content">
-            <h2 class="manifesto-title">No recycled templates.<br>No hidden fees.<br><span class="accent">Just pure digital craft.</span></h2>
+            <h2 class="manifesto-title">No recycled templates.<br>No hidden fees.<br><span class="accent" style="color:#ff4d29;">Just pure digital craft.</span></h2>
             <div class="manifesto-grid">
                 <div class="manifesto-item"><div class="stat">99%</div><p class="stat-desc">Faster load times with custom edge deployment.</p></div>
                 <div class="manifesto-item"><div class="stat">24h</div><p class="stat-desc">Average turnaround time for priority client edits.</p></div>
@@ -198,8 +223,8 @@
 
     <section id="work" class="work-section anim-up">
         <div class="work-header">
-            <h2 class="section-title">Selected <span class="accent">Concepts.</span></h2>
-            <a href="https://wa.me/919214847729" class="btn-secondary">Request Private Demos 🔒</a>
+            <h2 class="section-title">Selected <span class="accent" style="color:#ff4d29;">Concepts.</span></h2>
+            <a href="https://wa.me/919214847729" class="btn-secondary" style="margin-bottom: 20px;">Request Private Demos 🔒</a>
         </div>
         <div class="work-grid">
             <div class="work-card large-card">
@@ -221,7 +246,7 @@
 
     <section id="leadership" class="leadership-section anim-up">
         <div class="work-header">
-            <h2 class="section-title">The <span class="accent">Vision.</span></h2>
+            <h2 class="section-title">The <span class="accent" style="color:#ff4d29;">Vision.</span></h2>
         </div>
         <div class="message-grid">
             <div class="message-box">
@@ -244,67 +269,27 @@
     </section>
 
     <section id="pricing" class="pricing-section anim-up">
-        <h2 class="section-title">Transparent. <span class="accent">Scalable.</span></h2>
+        <h2 class="section-title">Transparent. <span class="accent" style="color:#ff4d29;">Scalable.</span></h2>
         <div class="pricing-grid">
             <div class="price-card bento">
                 <div class="card-head"><h3>The Essential</h3><p class="setup-fee">₹10,000 Setup</p></div>
                 <p class="monthly-fee">₹999<span class="month">/mo</span></p><hr>
                 <ul class="features"><li>Single Page Experience</li><li>Standard Animations</li><li>Vercel Cloud Hosting</li></ul>
                 <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary" style="width: 100%;">View SOW ↗</button>
-                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width" style="margin-left: 0;">Sign SOW 🔒</a>
+                    <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary full-width">View SOW ↗</button>
+                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width">Sign SOW 🔒</a>
                 </div>
             </div>
             <div class="price-card bento premium-card">
-                <div class="card-head"><div class="tag">MOST POPULAR</div><h3>The Premium</h3><p class="setup-fee">₹25,000 Setup</p></div>
+                <div class="card-head"><div class="tag" style="position:absolute; top:-10px; right:20px; background:#ff4d29; color:white; padding:4px 8px; font-size:0.7rem; border-radius:4px; font-family:'Space Mono';">MOST POPULAR</div><h3>The Premium</h3><p class="setup-fee">₹25,000 Setup</p></div>
                 <p class="monthly-fee">₹1,999<span class="month">/mo</span></p><hr>
                 <ul class="features"><li>Multi-Page Custom Site</li><li>Advanced GSAP Motion</li><li>CMS (Easy Content Edits)</li><li>Priority Monthly Support</li></ul>
                 <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary" style="border-color: #555; width: 100%;">View SOW ↗</button>
-                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width" style="margin-left: 0;">Sign SOW 🔒</a>
+                    <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary full-width" style="border-color: #555;">View SOW ↗</button>
+                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width">Sign SOW 🔒</a>
                 </div>
             </div>
             <div class="price-card bento">
                 <div class="card-head"><h3>The Bespoke</h3><p class="setup-fee">₹50k+ Setup</p></div>
                 <p class="monthly-fee">₹4,999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Full 3D / WebGL Motion</li><li>E-commerce / Booking Setup</li><li>Custom Backend System</li><li>Dedicated Tech Team</li></ul>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke - Scope of Work')" class="btn-secondary" style="width: 100%;">View SOW ↗</button>
-                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20ready%20to%20discuss%20the%20Bespoke%20Plan." class="btn-primary full-width" style="margin-left: 0;">Let's Discuss 🔒</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="main-footer anim-up">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <div class="logo">icebug<span class="accent">®</span></div>
-                <p class="footer-tagline">High-performance digital experiences <br>engineered in Kanpur, UP.</p>
-            </div>
-            <div class="footer-links">
-                <div class="link-group">
-                    <p class="role">// CONNECT</p>
-                    <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
-                    <a href="mailto:hello@icebug.co">Email Us ↗</a>
-                </div>
-                <div class="link-group">
-                    <p class="role">// NAVIGATION</p>
-                    <a href="javascript:void(0)" onclick="openPrivacy()">Privacy Policy</a>
-                    <a href="#pricing">Pricing Plans</a>
-                    <a href="#leadership">The Vision</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="tech-detail">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
-            <div class="tech-detail">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
-        </div>
-    </footer>
-
-    <div id="kabir-bot">
-        <div class="bot-window" id="botWindow">
-            <div class="bot-header">ICEBUG\KABIR_ASSISTANT</div>
-            <div class="bot-body" id="botBody">
-                <p>Hello. I am Kabir. Systems are operational. How can I assist you?</p>
-            
+                <ul class="f
