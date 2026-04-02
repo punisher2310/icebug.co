@@ -94,8 +94,8 @@
                 document.getElementById('plan-name').innerText = data.Plan_Type || "The Premium";
                 document.getElementById('client-name-display').innerText = data.Client_Name || "Client";
                 
-                // Using bracket notation for column with apostrophe
-                document.getElementById('client-email').innerText = data["Email_I'd"] || "Not Provided";
+                // Mapping registered email for display
+                document.getElementById('client-email').innerText = data.Email_Id || "Not Provided";
                 document.getElementById('client-phone').innerText = data.Phone_Number || "Not Provided";
             } else {
                 console.error("Database Error:", error);
