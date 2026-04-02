@@ -4,92 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Icebug\Studio | Premium Digital Experiences</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Space+Mono&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
-        /* --- YOUR ORIGINAL 5 AM STYLES --- */
+        /* --- CORE STYLES & FORTEX VIBE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        :root { --bg-color: #050505; --text-main: #ffffff; --text-muted: #888888; --accent: #ff4d29; --nav-bg: rgba(5, 5, 5, 0.8); }
+        :root { 
+            --bg-color: #030303; /* Slightly darker, deep premium black */
+            --surface: #0a0a0a; 
+            --border-light: #1f1f1f;
+            --text-main: #ffffff; 
+            --text-muted: #888888; 
+            --accent: #ff4d29; 
+            --nav-bg: rgba(3, 3, 3, 0.85); 
+        }
         
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
         /* CUSTOM CURSOR */
         .cursor {
-            width: 20px; height: 20px; background: var(--accent); border-radius: 50%;
+            width: 18px; height: 18px; background: var(--accent); border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 99999;
-            transition: transform 0.1s ease; box-shadow: 0 0 10px rgba(255, 77, 41, 0.5);
+            transition: transform 0.15s ease-out; box-shadow: 0 0 15px rgba(255, 77, 41, 0.5);
             transform: translate(-50%, -50%);
         }
 
         /* NAVIGATION */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 2rem 4rem; position: fixed; width: 100%; top: 0; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(10px); }
-        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; position: fixed; width: 100%; top: 0; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: -1.5px; }
         .accent { color: var(--accent); }
         .nav-links { display: flex; align-items: center; }
-        .nav-links a { color: var(--text-main); text-decoration: none; margin-left: 2rem; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        .nav-links a { color: var(--text-main); text-decoration: none; margin-left: 2.5rem; font-size: 0.85rem; font-weight: 600; transition: color 0.3s ease; }
         .nav-links a:hover { color: var(--accent); }
         
         /* BUTTONS */
-        .client-login { border: 1px solid #333; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem !important; }
-        .btn-primary { background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; border: none; display: inline-block; text-align: center; }
-        .btn-primary:hover { opacity: 0.8; box-shadow: 0 0 15px rgba(255, 77, 41, 0.4); }
-        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid #333; padding: 12px 24px; border-radius: 30px; text-decoration: none; display: inline-block; transition: 0.3s; cursor: pointer; text-align: center; }
+        .client-login { border: 1px solid #333; padding: 8px 20px; border-radius: 6px; transition: border-color 0.3s; }
+        .client-login:hover { border-color: var(--accent); }
+        .btn-primary { background: var(--accent); color: #fff; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: transform 0.3s, background 0.3s; cursor: pointer; border: none; display: inline-block; text-align: center; }
+        .btn-primary:hover { background: #e03c1c; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255, 77, 41, 0.2); }
+        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--border-light); padding: 14px 32px; border-radius: 6px; text-decoration: none; display: inline-block; transition: all 0.3s; cursor: pointer; text-align: center; }
         .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
         /* SECTIONS & LAYOUT */
-        section { padding: 6rem 4rem; }
-        .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 3rem; }
+        section { padding: 8rem 4rem; }
+        .section-title { font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; margin-bottom: 4rem; letter-spacing: -0.04em; line-height: 1; }
         
+        /* FORTEX BENTO CARD SYSTEM */
+        .bento-card { 
+            background: var(--surface); border: 1px solid var(--border-light); 
+            border-radius: 16px; overflow: hidden; 
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease; 
+        }
+        .bento-card:hover { transform: translateY(-8px); border-color: #444; }
+
         /* HERO */
         .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 4rem; }
-        .hero-main { font-size: clamp(3rem, 10vw, 7rem); font-weight: 800; letter-spacing: -4px; margin-bottom: 2rem; }
-        .hero-sub { font-size: clamp(1rem, 3vw, 2.5rem); font-weight: 300; color: var(--text-muted); }
-        .tech-detail { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text-muted); position: absolute; }
-        .top-left { top: 7rem; left: 4rem; }
-        .top-right { top: 7rem; right: 4rem; text-align: right; }
+        .hero-main { font-size: clamp(4rem, 12vw, 10rem); font-weight: 900; letter-spacing: -0.06em; margin-bottom: 1rem; text-transform: uppercase; line-height: 0.85; }
+        .hero-sub { font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 400; color: #ddd; max-width: 800px; line-height: 1.3; text-align: center; margin: 0 auto; letter-spacing: -1px; }
+        .tech-detail { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-muted); position: absolute; text-transform: uppercase; letter-spacing: 1px; }
+        .top-left { top: 8rem; left: 4rem; }
+        .top-right { top: 8rem; right: 4rem; text-align: right; }
         .bottom-left { bottom: 3rem; left: 4rem; }
+        .hero-content { text-align: center; z-index: 2; width: 100%; }
 
-        /* GRIDS */
-        .manifesto-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 3rem; line-height: 1.3; }
+        /* MANIFESTO */
+        .manifesto-title { font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; margin-bottom: 4rem; line-height: 1.1; letter-spacing: -2px; }
         .manifesto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .stat { font-size: 3.5rem; font-weight: 800; color: var(--accent); margin-bottom: 0.5rem; }
+        .manifesto-item { padding: 4rem 3rem; display: flex; flex-direction: column; justify-content: space-between; }
+        .stat { font-size: 5rem; font-weight: 900; color: var(--accent); margin-bottom: 1rem; letter-spacing: -3px; line-height: 1; }
         
+        /* WORK GRID */
         .work-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; }
-        .work-card { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; overflow: hidden; }
-        .image-wrapper { height: 350px; width: 100%; }
-        .work-info { padding: 2rem; }
-        .work-tags { display: flex; gap: 10px; margin-bottom: 1rem; }
-        .tag { font-family: 'Space Mono'; font-size: 0.65rem; color: var(--accent); border: 1px solid #222; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
+        .image-wrapper { height: 450px; width: 100%; overflow: hidden; border-bottom: 1px solid var(--border-light); }
+        .work-image { width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .work-card:hover .work-image { transform: scale(1.05); }
+        .work-card:hover { border-color: var(--accent); }
+        .work-info { padding: 2.5rem; }
+        .work-tags { display: flex; gap: 10px; margin-bottom: 1.5rem; }
+        .tag { font-family: 'Space Mono'; font-size: 0.65rem; color: var(--accent); border: 1px solid #333; padding: 6px 12px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
         
+        /* LEADERSHIP */
         .message-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        .message-box { background: #0a0a0a; padding: 3rem; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; }
-        .quote-icon { font-size: 3rem; color: var(--accent); margin-bottom: 1rem; font-family: serif; }
-        .leader-name { margin-top: 2rem; font-weight: bold; }
-        .role { font-family: 'Space Mono'; font-size: 0.7rem; color: var(--text-muted); }
+        .message-box { padding: 4rem 3rem; display: flex; flex-direction: column; justify-content: space-between; }
+        .quote-icon { font-size: 4rem; color: var(--accent); margin-bottom: 1rem; font-family: serif; line-height: 0.5; }
+        .leader-name { margin-top: 2rem; font-weight: 800; font-size: 1.2rem; }
+        .role { font-family: 'Space Mono'; font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; text-transform: uppercase; }
 
+        /* PRICING GRID */
         .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .price-card { background: #0a0a0a; padding: 3rem; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; }
-        .premium-card { border-color: var(--accent); position: relative; }
-        .monthly-fee { font-size: 2.5rem; font-weight: 800; margin: 1rem 0; }
-        .setup-fee { font-family: 'Space Mono'; color: var(--text-muted); font-size: 0.8rem; }
-        .features { list-style: none; margin: 1.5rem 0; flex-grow: 1; }
-        .features li { padding: 0.5rem 0; border-bottom: 1px solid #111; font-size: 0.9rem; color: var(--text-muted); }
+        .price-card { padding: 3.5rem 3rem; display: flex; flex-direction: column; position: relative; }
+        .premium-card { border-color: var(--accent); background: linear-gradient(180deg, rgba(255,77,41,0.05) 0%, #0a0a0a 100%); }
+        .premium-card:hover { border-color: var(--accent); box-shadow: 0 10px 40px rgba(255, 77, 41, 0.1); }
+        .setup-fee { font-family: 'Space Mono'; color: var(--accent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+        .monthly-fee { font-size: 4rem; font-weight: 900; margin: 1.5rem 0; letter-spacing: -3px; }
+        .features { list-style: none; margin: 2rem 0; flex-grow: 1; }
+        .features li { padding: 0.8rem 0; border-bottom: 1px solid #1a1a1a; font-size: 0.95rem; color: #aaa; }
+        .price-badge { position: absolute; top: 0; right: 0; background: var(--accent); color: white; padding: 8px 20px; font-size: 0.7rem; font-weight: 800; font-family: 'Space Mono'; border-bottom-left-radius: 12px; }
 
         /* FOOTER */
-        .main-footer { padding: 6rem 4rem 2rem 4rem; background: #080808; border-top: 1px solid #1a1a1a; }
-        .footer-top { display: flex; justify-content: space-between; margin-bottom: 4rem; }
-        .footer-links { display: flex; gap: 4rem; }
-        .footer-links a { display: block; color: var(--text-main); text-decoration: none; margin-bottom: 10px; font-size: 0.9rem; transition: 0.3s; }
+        .main-footer { padding: 8rem 4rem 2rem 4rem; background: #000; border-top: 1px solid var(--border-light); }
+        .footer-top { display: flex; justify-content: space-between; margin-bottom: 5rem; }
+        .footer-links { display: flex; gap: 5rem; }
+        .footer-links a { display: block; color: var(--text-main); text-decoration: none; margin-bottom: 12px; font-size: 0.95rem; transition: 0.3s; font-weight: 500; }
         .footer-links a:hover { color: var(--accent); }
-        .footer-bottom { display: flex; justify-content: space-between; border-top: 1px solid #1a1a1a; padding-top: 2rem; font-size: 0.75rem; color: var(--text-muted); }
+        .footer-bottom { display: flex; justify-content: space-between; border-top: 1px solid var(--border-light); padding-top: 2rem; font-size: 0.75rem; color: var(--text-muted); font-family: 'Space Mono'; text-transform: uppercase; }
 
-        /* MODALS */
+        /* MODALS (Portal, Privacy, SOW) */
         .portal-modal, .privacy-modal, .sow-modal { display: none; position: fixed; z-index: 5000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.96); backdrop-filter: blur(15px); justify-content: center; align-items: center; padding: 20px; }
-        .portal-content, .privacy-content { background: #0a0a0a; padding: 40px; border-radius: 8px; width: 100%; max-width: 550px; border: 1px solid #222; transform: translateY(20px); transition: 0.4s ease; }
+        .portal-content, .privacy-content { background: #0a0a0a; padding: 40px; border-radius: 12px; width: 100%; max-width: 550px; border: 1px solid #222; transform: translateY(20px); transition: 0.4s ease; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .active { display: flex !important; }
         .active .portal-content, .active .privacy-content { transform: translateY(0); }
         
@@ -97,31 +123,33 @@
         .close-portal { cursor: pointer; font-size: 14px; color: #666; font-family: 'Space Mono'; letter-spacing: 2px; }
         .close-portal:hover { color: var(--accent); }
         
-        .login-input { width: 100%; padding: 14px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.9rem; border-radius: 4px; }
+        .login-input { width: 100%; padding: 16px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.95rem; border-radius: 6px; transition: 0.3s; }
         .login-input:focus { border-color: var(--accent); }
-        .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #666; margin-bottom: 5px; text-transform: uppercase; }
-        .portal-detail { display: flex; justify-content: space-between; margin: 18px 0; font-family: 'Space Mono'; font-size: 0.9rem; color: #888; border-bottom: 1px solid #111; padding-bottom: 8px; }
+        .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #666; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .portal-detail { display: flex; justify-content: space-between; margin: 18px 0; font-family: 'Space Mono'; font-size: 0.9rem; color: #888; border-bottom: 1px solid #111; padding-bottom: 12px; }
         .status-badge { background: #16a34a; color: white; padding: 4px 12px; font-size: 0.7rem; font-family: 'Space Mono'; border-radius: 4px; }
-        .policy-box { background: #111; padding: 15px; border-left: 2px solid var(--accent); margin: 25px 0; font-size: 0.8rem; color: #666; line-height: 1.6; }
+        .policy-box { background: #111; padding: 15px; border-left: 2px solid var(--accent); margin: 25px 0; font-size: 0.85rem; color: #888; line-height: 1.6; border-radius: 4px; }
 
         /* BOT */
         #kabir-bot { position: fixed; bottom: 30px; right: 30px; z-index: 4000; }
-        .bot-toggle { background: var(--accent); color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(255,77,41,0.4); }
-        .bot-window { position: absolute; bottom: 75px; right: 0; width: 320px; background: #0a0a0a; border: 1px solid #222; display: none; overflow: hidden; border-radius: 8px; }
-        .bot-header { background: #111; padding: 15px; font-family: 'Space Mono'; font-size: 0.75rem; border-bottom: 1px solid #222; }
+        .bot-toggle { background: var(--accent); color: white; width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(255,77,41,0.4); transition: transform 0.3s; }
+        .bot-toggle:hover { transform: scale(1.05); }
+        .bot-window { position: absolute; bottom: 85px; right: 0; width: 340px; background: #0a0a0a; border: 1px solid #222; display: none; overflow: hidden; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
+        .bot-header { background: #111; padding: 18px 20px; font-family: 'Space Mono'; font-size: 0.75rem; border-bottom: 1px solid #222; letter-spacing: 1px; }
         .bot-body { padding: 20px; font-size: 0.85rem; color: #888; max-height: 250px; overflow-y: auto; }
-        .bot-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; cursor: pointer; border-radius: 4px; font-family: 'Inter'; }
+        .bot-btn { width: 100%; text-align: left; padding: 12px 15px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; cursor: pointer; border-radius: 6px; font-family: 'Inter'; font-weight: 500; transition: 0.3s; }
         .bot-btn:hover { background: var(--accent); border-color: var(--accent); }
 
         @media (max-width: 768px) {
             * { cursor: auto !important; } .cursor { display: none !important; }
-            section { padding: 4rem 2rem; }
+            section { padding: 5rem 2rem; }
             .hero { padding: 0 2rem; text-align: center; }
             .top-left, .top-right, .bottom-left { display: none; }
             .hero-main { font-size: 15vw; }
             .manifesto-grid, .work-grid, .message-grid, .pricing-grid { grid-template-columns: 1fr; }
-            .footer-top { flex-direction: column; gap: 2rem; }
+            .footer-top { flex-direction: column; gap: 3rem; }
             .nav-links { display: none; }
+            .price-card, .message-box, .manifesto-item { padding: 2.5rem 2rem; }
         }
     </style>
 </head>
@@ -135,14 +163,14 @@
             
             <div id="login-view">
                 <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// AUTH_REQUIRED</p>
-                <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">CLIENT LOGIN</h2>
-                <div style="margin-top: 25px;">
+                <h2 style="margin: 10px 0; font-weight: 900; letter-spacing: -1px; font-size: 2rem;">CLIENT LOGIN</h2>
+                <div style="margin-top: 30px;">
                     <label class="login-label">Registered Email</label>
                     <input type="email" id="login-email" class="login-input" placeholder="name@company.com">
                     <label class="login-label">Phone Number</label>
                     <input type="text" id="login-phone" class="login-input" placeholder="+91 XXXXX XXXXX">
-                    <button class="btn-primary" onclick="handleLogin()" style="width: 100%; padding: 16px;">ACCESS PORTAL ↗</button>
-                    <p id="login-error" style="color:#dc2626; font-size:0.7rem; margin-top:10px; display:none; font-family:'Space Mono';">// ERROR: INVALID CREDENTIALS</p>
+                    <button class="btn-primary" onclick="handleLogin()" style="width: 100%; padding: 16px; margin-top: 10px;">ACCESS PORTAL ↗</button>
+                    <p id="login-error" style="color:#dc2626; font-size:0.7rem; margin-top:15px; display:none; font-family:'Space Mono';">// ERROR: INVALID CREDENTIALS</p>
                 </div>
             </div>
 
@@ -150,31 +178,31 @@
                 <div class="portal-header" style="border:none; margin-bottom:10px;">
                     <div>
                         <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// SESSION_ACTIVE</p>
-                        <h2 style="margin: 5px 0; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
+                        <h2 style="margin: 5px 0; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; font-size: 1.8rem;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
                     </div>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="margin:0; font-size: 0.8rem; font-family: 'Space Mono'; color: #444;">ACTIVE_PLAN: <span id="plan-name" style="color: white;">...</span></h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <h3 style="margin:0; font-size: 0.9rem; font-family: 'Space Mono'; color: #666;">PLAN: <span id="plan-name" style="color: white;">...</span></h3>
                     <span class="status-badge" id="plan-status">ACTIVE</span>
                 </div>
                 <div class="portal-detail"><strong>EMAIL_ID</strong> <span id="client-email" style="color:white;">--</span></div>
                 <div class="portal-detail"><strong>PHONE_NO</strong> <span id="client-phone" style="color:white;">--</span></div>
                 <div class="portal-detail"><strong>EXPIRY_DATE</strong> <span id="expiry-date" style="color:white;">--/--/----</span></div>
 
-                <div style="margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
+                <div style="margin-top: 35px; border-top: 1px solid #222; padding-top: 25px;">
                     <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// FINANCIAL_RECORDS</p>
-                    <h3 style="margin: 10px 0; font-size: 1rem;">BILLING HISTORY</h3>
-                    <div style="font-size: 0.8rem; font-family: 'Space Mono'; color: #888;">
-                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
-                            <span>Project Setup (50% Advance)</span><span id="setup-paid">PENDING ⏳</span>
+                    <h3 style="margin: 15px 0; font-size: 1.1rem;">BILLING HISTORY</h3>
+                    <div style="font-size: 0.85rem; font-family: 'Space Mono'; color: #888;">
+                        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #111;">
+                            <span>Project Setup (50%)</span><span id="setup-paid">PENDING ⏳</span>
                         </div>
-                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
-                            <span>Project Delivery (50% Final)</span><span id="final-paid">PENDING ⏳</span>
+                        <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #111;">
+                            <span>Project Delivery (50%)</span><span id="final-paid">PENDING ⏳</span>
                         </div>
                     </div>
                 </div>
                 <div class="policy-box"><strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.</div>
-                <button class="btn-primary" onclick="handlePayment()" style="width: 100%; padding: 16px; margin-bottom: 10px;">RENEW SUBSCRIPTION ↗</button>
+                <button class="btn-primary" onclick="handlePayment()" style="width: 100%; padding: 16px; margin-bottom: 15px;">RENEW SUBSCRIPTION ↗</button>
                 <button class="btn-secondary" onclick="logout()" style="width: 100%; padding: 14px;">LOGOUT SESSION</button>
             </div>
         </div>
@@ -184,8 +212,8 @@
         <div class="privacy-content">
             <span class="close-portal" onclick="closePrivacy()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
             <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// LEGAL_TERMS</p>
-            <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">PRIVACY & TERMS</h2>
-            <div style="margin-top: 20px; max-height: 300px; overflow-y: auto; font-size: 0.85rem; color: #888; line-height: 1.6;">
+            <h2 style="margin: 10px 0; font-weight: 900; letter-spacing: -1px; font-size: 2rem;">PRIVACY & TERMS</h2>
+            <div style="margin-top: 25px; max-height: 40vh; overflow-y: auto; font-size: 0.95rem; color: #888; line-height: 1.8; padding-right: 15px;">
                 <p><strong>No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable. Since we provide custom digital services and immediate allocation of resources, we do not offer refunds once a cycle starts.</p><br>
                 <p><strong>Cancellations:</strong> You can cancel your subscription anytime. Your access to the premium portal and support will continue until the end of the current paid billing period.</p><br>
                 <p><strong>Data Usage:</strong> We store your basic contact information and plan details securely via Supabase for subscription management only.</p>
@@ -194,15 +222,15 @@
     </div>
 
     <div id="sowModal" class="sow-modal">
-        <div style="background:#0a0a0a; width:90%; max-width:1000px; height:80vh; position:relative; border:1px solid #222; border-radius: 8px; display:flex; flex-direction:column;">
-            <div class="portal-header" style="padding:20px 30px; margin:0;">
+        <div style="background:#0a0a0a; width:90%; max-width:1100px; height:85vh; position:relative; border:1px solid #222; border-radius: 12px; display:flex; flex-direction:column; overflow: hidden;">
+            <div class="portal-header" style="padding:25px 35px; margin:0; background: #111;">
                 <div>
-                    <p class="role" style="color:var(--accent);">// OFFICIAL_SCOPE</p>
-                    <h3 id="modalTitle" style="color: white; margin:0;">Project Scope</h3>
+                    <p class="role" style="color:var(--accent); font-family: 'Space Mono'; font-size: 0.7rem;">// OFFICIAL_SCOPE</p>
+                    <h3 id="modalTitle" style="color: white; margin:0; font-size: 1.5rem; font-weight: 800;">Project Scope</h3>
                 </div>
                 <span class="close-portal" onclick="closeSOW()">[ CLOSE ]</span>
             </div>
-            <iframe id="sowFrame" src="" style="width:100%; flex-grow:1; border:none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></iframe>
+            <iframe id="sowFrame" src="" style="width:100%; flex-grow:1; border:none; background: #fff;"></iframe>
         </div>
     </div>
 
@@ -214,7 +242,7 @@
             <a href="#pricing">Retainer</a>
             <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
             <a href="javascript:void(0)" class="client-login" onclick="openPortal()">Client Portal 🔒</a>
-            <a href="https://wa.me/919214847729" class="btn-primary" style="margin-left: 2rem;">Let's Chat ↗</a>
+            <a href="https://wa.me/919214847729" class="btn-primary" style="margin-left: 2rem; padding: 10px 24px;">Let's Chat ↗</a>
         </div>
     </nav>
 
@@ -225,9 +253,9 @@
         <div class="hero-content">
             <h2 class="hero-sub anim-up">Digital experiences that<br>connect, scale and perform<span class="accent">.</span></h2>
             <h1 class="hero-main anim-up">Icebug\Studio</h1>
-            <div class="hero-bottom-grid anim-up" style="display: flex; justify-content: space-between; align-items: flex-end;">
-                <p class="hero-desc" style="font-size: 0.9rem; color: var(--text-muted);">A DESIGN STUDIO TRUSTED BY PREMIUM BRANDS.<br>WE CREATE STORIES PEOPLE REMEMBER.</p>
-                <div class="time-block tech-detail" style="position: static; text-align: right;">LOCAL TIME <span id="clock">...</span><br>UTC+5:30</div>
+            <div class="hero-bottom-grid anim-up" style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 4rem;">
+                <p class="hero-desc" style="font-size: 0.85rem; color: var(--text-muted); max-width: 300px; line-height: 1.6; font-weight: 500; text-align: left;">A DESIGN STUDIO TRUSTED BY PREMIUM BRANDS.<br>WE CREATE STORIES PEOPLE REMEMBER.</p>
+                <div class="tech-detail" style="position: static; text-align: right;">LOCAL TIME <span id="clock">...</span><br>UTC+5:30</div>
             </div>
         </div>
     </header>
@@ -235,30 +263,32 @@
     <section class="manifesto-section anim-up">
         <h2 class="manifesto-title">No recycled templates.<br>No hidden fees.<br><span class="accent">Just pure digital craft.</span></h2>
         <div class="manifesto-grid">
-            <div class="manifesto-item"><div class="stat">99%</div><p class="stat-desc text-muted">Faster load times with custom edge deployment.</p></div>
-            <div class="manifesto-item"><div class="stat">24h</div><p class="stat-desc text-muted">Average turnaround time for priority client edits.</p></div>
-            <div class="manifesto-item"><div class="stat">Zero</div><p class="stat-desc text-muted">WordPress templates used. Every pixel is hand-coded.</p></div>
+            <div class="manifesto-item bento-card"><div class="stat">99%</div><p class="role text-muted">FASTER LOAD TIMES WITH CUSTOM EDGE DEPLOYMENT.</p></div>
+            <div class="manifesto-item bento-card"><div class="stat">24h</div><p class="role text-muted">AVERAGE TURNAROUND TIME FOR PRIORITY CLIENT EDITS.</p></div>
+            <div class="manifesto-item bento-card"><div class="stat">Zero</div><p class="role text-muted">WORDPRESS TEMPLATES USED. EVERY PIXEL IS HAND-CODED.</p></div>
         </div>
     </section>
 
     <section id="work" class="work-section anim-up">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
             <h2 class="section-title" style="margin: 0;">Selected <span class="accent">Concepts.</span></h2>
             <a href="https://wa.me/919214847729" class="btn-secondary">Request Private Demos 🔒</a>
         </div>
         <div class="work-grid">
-            <div class="work-card large-card">
+            <div class="work-card large-card bento-card" style="padding: 0;">
                 <div class="image-wrapper"><div class="work-image" style="background: radial-gradient(circle at center, #2a1a1a 0%, #050505 100%);"></div></div>
                 <div class="work-info">
                     <div class="work-tags"><span class="tag">HOSPITALITY</span><span class="tag">CONFIDENTIAL</span></div>
-                    <h3>Premium Cafe Web Experience</h3><p class="role" style="margin-top: 10px;">Status: Under Development // 2026</p>
+                    <h3 style="font-size: 2rem; font-weight: 800;">Premium Cafe Web Experience</h3>
+                    <p class="role" style="margin-top: 15px;">Status: Under Development // 2026</p>
                 </div>
             </div>
-            <div class="work-card">
+            <div class="work-card bento-card" style="padding: 0;">
                 <div class="image-wrapper"><div class="work-image" style="background: linear-gradient(145deg, #1a0f0a, #050505);"></div></div>
                 <div class="work-info">
                     <div class="work-tags"><span class="tag">E-COMMERCE</span><span class="tag">INTERNAL CONCEPT</span></div>
-                    <h3>Next-Gen Apparel Drop</h3><p class="role" style="margin-top: 10px;">Status: Agency Concept // 2026</p>
+                    <h3 style="font-size: 2rem; font-weight: 800;">Next-Gen Apparel Drop</h3>
+                    <p class="role" style="margin-top: 15px;">Status: Agency Concept // 2026</p>
                 </div>
             </div>
         </div>
@@ -267,18 +297,18 @@
     <section id="leadership" class="leadership-section anim-up">
         <h2 class="section-title">The <span class="accent">Vision.</span></h2>
         <div class="message-grid">
-            <div class="message-box">
+            <div class="message-box bento-card">
                 <div class="quote-icon">"</div>
-                <p style="font-size: 1.1rem; line-height: 1.6;">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your code is hand-crafted, pixel by pixel.</p>
-                <div>
+                <p style="font-size: 1.25rem; line-height: 1.6; color: #ddd; font-weight: 500;">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your code is hand-crafted, pixel by pixel.</p>
+                <div style="border-top: 1px solid #222; margin-top: 3rem; padding-top: 1.5rem;">
                     <p class="leader-name">Utkarsh Tiwari</p>
                     <p class="role">// LEAD ARCHITECT & FOUNDER</p>
                 </div>
             </div>
-            <div class="message-box">
+            <div class="message-box bento-card">
                 <div class="quote-icon">"</div>
-                <p style="font-size: 1.1rem; line-height: 1.6;">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
-                <div>
+                <p style="font-size: 1.25rem; line-height: 1.6; color: #ddd; font-weight: 500;">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
+                <div style="border-top: 1px solid #222; margin-top: 3rem; padding-top: 1.5rem;">
                     <p class="leader-name">Ayushi Awasthi</p>
                     <p class="role">// HEAD OF SALES & STRATEGY</p>
                 </div>
@@ -289,22 +319,25 @@
     <section id="pricing" class="pricing-section anim-up">
         <h2 class="section-title">Transparent. <span class="accent">Scalable.</span></h2>
         <div class="pricing-grid">
-            <div class="price-card">
-                <h3>The Essential</h3><p class="setup-fee">₹10,000 Setup</p>
-                <div class="monthly-fee">₹999<span style="font-size: 1rem; color: #888;">/mo</span></div>
+            <div class="price-card bento-card">
+                <h3 style="font-size: 2rem; font-weight: 900;">The Essential</h3>
+                <p class="setup-fee">₹10,000 Setup</p>
+                <div class="monthly-fee">₹999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
                 <hr style="border: 0; border-top: 1px solid #222;">
                 <ul class="features">
                     <li>Single Page Experience</li>
                     <li>Standard Animations</li>
                     <li>Vercel Cloud Hosting</li>
                 </ul>
-                <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 10px;">View SOW ↗</button>
+                <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 15px;">View SOW ↗</button>
                 <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary" style="width: 100%;">Sign SOW 🔒</a>
             </div>
-            <div class="price-card premium-card">
-                <div style="position: absolute; top: -10px; right: 20px; background: var(--accent); color: white; padding: 4px 10px; font-size: 0.7rem; border-radius: 4px; font-weight: bold; font-family: 'Space Mono';">MOST POPULAR</div>
-                <h3>The Premium</h3><p class="setup-fee">₹25,000 Setup</p>
-                <div class="monthly-fee">₹1,999<span style="font-size: 1rem; color: #888;">/mo</span></div>
+            
+            <div class="price-card bento-card premium-card">
+                <div class="price-badge">MOST POPULAR</div>
+                <h3 style="font-size: 2rem; font-weight: 900;">The Premium</h3>
+                <p class="setup-fee">₹25,000 Setup</p>
+                <div class="monthly-fee">₹1,999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
                 <hr style="border: 0; border-top: 1px solid #222;">
                 <ul class="features">
                     <li style="color: white; font-weight: bold;">Multi-Page Custom Site</li>
@@ -312,12 +345,14 @@
                     <li>CMS (Easy Content Edits)</li>
                     <li>Priority Monthly Support</li>
                 </ul>
-                <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 10px; border-color: #555;">View SOW ↗</button>
+                <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 15px; border-color: #555;">View SOW ↗</button>
                 <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary" style="width: 100%;">Sign SOW 🔒</a>
             </div>
-            <div class="price-card">
-                <h3>The Bespoke</h3><p class="setup-fee">₹50k+ Setup</p>
-                <div class="monthly-fee">₹4,999<span style="font-size: 1rem; color: #888;">/mo</span></div>
+            
+            <div class="price-card bento-card">
+                <h3 style="font-size: 2rem; font-weight: 900;">The Bespoke</h3>
+                <p class="setup-fee">₹50k+ Setup</p>
+                <div class="monthly-fee">₹4,999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
                 <hr style="border: 0; border-top: 1px solid #222;">
                 <ul class="features">
                     <li>Full 3D / WebGL Motion</li>
@@ -325,7 +360,7 @@
                     <li>Custom Backend System</li>
                     <li>Dedicated Tech Team</li>
                 </ul>
-                <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 10px;">View SOW ↗</button>
+                <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 15px;">View SOW ↗</button>
                 <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20ready%20to%20discuss%20the%20Bespoke%20Plan." class="btn-primary" style="width: 100%;">Let's Discuss 🔒</a>
             </div>
         </div>
@@ -334,18 +369,18 @@
     <footer class="main-footer anim-up">
         <div class="footer-top">
             <div>
-                <div class="logo">icebug<span class="accent">®</span></div>
-                <p class="role" style="margin-top: 10px;">High-performance digital experiences <br>engineered in Kanpur, UP.</p>
+                <div class="logo" style="font-size: 3rem; letter-spacing: -2px;">icebug<span class="accent">®</span></div>
+                <p class="role" style="margin-top: 15px; font-size: 0.9rem; max-width: 300px;">High-performance digital experiences engineered in Kanpur, UP.</p>
             </div>
             <div class="footer-links">
                 <div>
-                    <p class="role" style="margin-bottom: 10px; color: var(--accent);">// CONNECT</p>
+                    <p class="role" style="margin-bottom: 15px; color: var(--accent);">// CONNECT</p>
                     <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
                     <a href="https://wa.me/919214847729" target="_blank">WhatsApp ↗</a>
                     <a href="mailto:hello@icebug.co">Email Us ↗</a>
                 </div>
                 <div>
-                    <p class="role" style="margin-bottom: 10px; color: var(--accent);">// NAVIGATION</p>
+                    <p class="role" style="margin-bottom: 15px; color: var(--accent);">// NAVIGATION</p>
                     <a href="javascript:void(0)" onclick="openPrivacy()">Privacy Policy & Terms</a>
                     <a href="#pricing">Pricing Plans</a>
                     <a href="#leadership">The Vision</a>
@@ -353,16 +388,18 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <div class="role">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
-            <div class="role">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
+            <div class="role" style="font-size: 0.75rem;">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
+            <div class="role" style="font-size: 0.75rem;">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
         </div>
     </footer>
 
     <div id="kabir-bot">
         <div class="bot-window" id="botWindow">
-            <div class="bot-header">ICEBUG\KABIR_ASSISTANT</div>
+            <div class="bot-header">
+                <span style="font-weight: 800; letter-spacing: 1px;">ICEBUG\KABIR</span>
+            </div>
             <div class="bot-body" id="botBody">
-                <p>Hello. I am Kabir. Systems are operational. How can I assist you?</p>
+                <p style="background: #111; padding: 12px; border-radius: 6px; border-left: 2px solid var(--accent); margin-bottom: 15px;">Hello. I am Kabir. Systems are operational. How can I assist you?</p>
                 <button class="bot-btn" onclick="botReply('refund')">What is the Refund Policy?</button>
                 <button class="bot-btn" onclick="botReply('cancel')">How to cancel subscription?</button>
             </div>
@@ -371,7 +408,6 @@
     </div>
 
     <script>
-        // Supabase Connect
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
 
         // Original Custom Cursor
@@ -412,7 +448,7 @@
         }
         function closeSOW() {
             document.getElementById('sowModal').classList.remove('active');
-            document.getElementById('sowFrame').src = '';
+            setTimeout(() => { document.getElementById('sowFrame').src = ''; }, 300);
             document.body.style.overflow = "auto";
         }
 
@@ -470,8 +506,8 @@
 
         function botReply(type) {
             const body = document.getElementById('botBody');
-            if(type === 'refund') body.innerHTML += `<p style="color:var(--accent); margin-top:10px;"><b>KABIR:</b> Strictly non-refundable once cycle starts.</p>`;
-            else if(type === 'cancel') body.innerHTML += `<p style="color:var(--accent); margin-top:10px;"><b>KABIR:</b> Cancel via dashboard. Access remains until expiry.</p>`;
+            if(type === 'refund') body.innerHTML += `<p style="background: #111; padding: 12px; border-radius: 6px; border-left: 2px solid var(--accent); margin-top: 10px;"><b>KABIR:</b> Strictly non-refundable once cycle starts.</p>`;
+            else if(type === 'cancel') body.innerHTML += `<p style="background: #111; padding: 12px; border-radius: 6px; border-left: 2px solid var(--accent); margin-top: 10px;"><b>KABIR:</b> Cancel via dashboard. Access remains until expiry.</p>`;
             body.scrollTop = body.scrollHeight;
         }
     </script>
