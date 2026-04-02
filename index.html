@@ -1,161 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Icebug\Studio | Premium Digital Experiences</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Space+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        html { scroll-behavior: smooth; }
-        body { overflow-x: hidden; width: 100%; cursor: none; }
-        
-        /* Modal visibility logic */
-        .portal-modal, .privacy-modal, .sow-modal { display: none; position: fixed; z-index: 9000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.96); backdrop-filter: blur(15px); justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        .active { display: flex !important; }
-        .portal-content, .privacy-content { background: #0a0a0a; color: white; padding: 40px; border-radius: 4px; width: 100%; max-width: 550px; border: 1px solid #222; transform: translateY(20px); transition: 0.4s; }
-    </style>
-</head>
-<body>
-    <div class="cursor"></div>
-
-    <div id="portalModal" class="portal-modal">
-        <div class="portal-content">
-            <span class="close-portal" onclick="closePortal()" style="position:absolute; right:20px; top:20px; cursor:pointer;">[ CLOSE ]</span>
-            <div id="login-view">
-                <p style="color: #ff4d29; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// AUTH_REQUIRED</p>
-                <h2 style="margin: 10px 0; font-weight: 800;">CLIENT LOGIN</h2>
-                <input type="email" id="login-email" class="login-input" placeholder="Registered Email">
-                <input type="text" id="login-phone" class="login-input" placeholder="Phone Number">
-                <button class="btn-primary" onclick="handleLogin()" style="width: 100%; margin: 0; padding: 16px;">ACCESS PORTAL ↗</button>
-                <p id="login-error" style="color:#dc2626; font-size:0.7rem; margin-top:10px; display:none;">// ERROR: INVALID CREDENTIALS</p>
-            </div>
-            <div id="dashboard-view" style="display:none;">
-                <h2 style="margin-bottom: 20px;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
-                <div class="portal-detail"><strong>EMAIL</strong> <span id="client-email">--</span></div>
-                <div class="portal-detail"><strong>PHONE</strong> <span id="client-phone">--</span></div>
-                <div class="portal-detail"><strong>EXPIRY</strong> <span id="expiry-date">--</span></div>
-                <div style="margin-top: 20px;">
-                    <p style="font-size: 0.8rem; color: #888;">BILLING STATUS:</p>
-                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
-                        <span>Setup (50%)</span><span id="setup-paid">PENDING</span>
-                    </div>
-                </div>
-                <button class="btn-secondary" onclick="logout()" style="width: 100%; margin-top: 20px;">LOGOUT SESSION</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="privacyModal" class="privacy-modal">
-        <div class="privacy-content">
-            <span class="close-portal" onclick="closePrivacy()" style="position:absolute; right:20px; top:20px; cursor:pointer;">[ CLOSE ]</span>
-            <h2 style="margin-bottom: 20px;">PRIVACY & TERMS</h2>
-            <p style="color: #888; font-size: 0.9rem; line-height: 1.6;">All payments are non-refundable. Contact: hello@icebug.co or +91 92148 47729.</p>
-        </div>
-    </div>
-
-    <div id="sowModal" class="sow-modal">
-        <div class="portal-content" style="max-width: 900px; height: 80vh;">
-            <h3 id="modalTitle" style="color: white; margin-bottom: 10px;">Scope of Work</h3>
-            <iframe id="sowFrame" src="" style="width:100%; height:85%; border:none;"></iframe>
-            <button onclick="closeSOW()" class="btn-secondary" style="margin-top:10px;">Close</button>
-        </div>
-    </div>
-
-    <nav class="navbar">
-        <div class="logo">icebug<span class="accent">®</span></div>
-        <div class="nav-links">
-            <a href="#work">Concepts</a><a href="#leadership">Leadership</a><a href="#pricing">Retainer</a>
-            <a href="javascript:void(0)" onclick="openPortal()">Client Portal 🔒</a>
-            <a href="https://wa.me/919214847729" class="btn-primary">Let's Chat ↗</a>
-        </div>
-    </nav>
-
-    <header class="hero">
-        <div class="hero-content">
-            <h2 class="hero-sub">Digital experiences that connect.</h2>
-            <h1 class="hero-main">Icebug\Studio</h1>
-        </div>
-    </header>
-
-    <section class="manifesto-section">
-        <h2 class="manifesto-title">No recycled templates. <span class="accent">Pure digital craft.</span></h2>
-    </section>
-
-    <section id="work" class="work-section">
-        <h2 class="section-title">Selected <span class="accent">Concepts.</span></h2>
-        <div class="work-grid">
-            <div class="work-card large-card"><div class="image-wrapper"><div class="work-image" style="background:#111;"></div></div></div>
-            <div class="work-card small-card"><div class="image-wrapper"><div class="work-image" style="background:#111;"></div></div></div>
-        </div>
-    </section>
-
-    <section id="leadership" class="leadership-section">
-        <div class="message-grid">
-            <div class="message-box"><p class="message-text">We engineer high-performance assets.</p><p class="leader-name">Utkarsh Tiwari</p></div>
-            <div class="message-box"><p class="message-text">Relationships begin at launch.</p><p class="leader-name">Ayushi Awasthi</p></div>
-        </div>
-    </section>
-
-    <section id="pricing" class="pricing-section">
-        <div class="pricing-grid">
-            <div class="price-card bento">
-                <h3>The Essential</h3>
-                <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view', 'Essential SOW')" class="btn-secondary">View SOW ↗</button>
-            </div>
-            <div class="price-card bento">
-                <h3>The Premium</h3>
-                <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view', 'Premium SOW')" class="btn-secondary">View SOW ↗</button>
-            </div>
-            <div class="price-card bento">
-                <h3>The Bespoke</h3>
-                <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view', 'Bespoke SOW')" class="btn-secondary">View SOW ↗</button>
-            </div>
-        </div>
-    </section>
-
-    <footer class="main-footer">
+<footer class="main-footer anim-up">
         <div class="footer-top">
-            <div class="logo">icebug<span class="accent">®</span></div>
-            <div class="link-group">
-                <a href="javascript:void(0)" onclick="openPrivacy()">Privacy Policy</a>
+            <div class="footer-brand">
+                <div class="logo">icebug<span class="accent">®</span></div>
+                <p class="footer-tagline">High-performance digital experiences <br>engineered in Kanpur, UP.</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <p class="role">// CONNECT</p>
+                    <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
+                    <a href="mailto:hello@icebug.co">Email Us ↗</a>
+                </div>
+                <div class="link-group">
+                    <p class="role">// NAVIGATION</p>
+                    <a href="javascript:void(0)" onclick="openPrivacy()">Privacy Policy</a>
+                    <a href="#pricing">Pricing Plans</a>
+                    <a href="#leadership">The Vision</a>
+                </div>
             </div>
         </div>
-        <div class="footer-bottom">© 2026 ICEBUG STUDIO.</div>
-    </footer>
+        <div class="footer-bottom">
+            <div class="tech-detail">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
+            <div class="tech-detail">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
+        </div>
+    </footer> <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="script.js"></script>
 
     <script>
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
-        
+
+        // CUSTOM CURSOR
         const cursor = document.querySelector('.cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        function openPortal() { document.getElementById('portalModal').classList.add('active'); }
-        function closePortal() { document.getElementById('portalModal').classList.remove('active'); }
-        function openPrivacy() { document.getElementById('privacyModal').classList.add('active'); }
-        function closePrivacy() { document.getElementById('privacyModal').classList.remove('active'); }
-        function openSOW(l, t) { document.getElementById('modalTitle').innerText = t; document.getElementById('sowFrame').src = l; document.getElementById('sowModal').classList.add('active'); }
-        function closeSOW() { document.getElementById('sowModal').classList.remove('active'); }
+        // MODAL HANDLERS (Exactly like 5 AM logic)
+        function openPortal() {
+            const modal = document.getElementById('portalModal');
+            modal.classList.add('active'); 
+            const savedData = sessionStorage.getItem('icebug_user');
+            if (savedData) showDashboard(JSON.parse(savedData));
+        }
 
+        function closePortal() {
+            document.getElementById('portalModal').classList.remove('active');
+        }
+
+        function openPrivacy() {
+            document.getElementById('privacyModal').classList.add('active');
+        }
+
+        function closePrivacy() {
+            document.getElementById('privacyModal').classList.remove('active');
+        }
+
+        function openSOW(link, title) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('sowFrame').src = link;
+            document.getElementById('sowModal').classList.add('active');
+        }
+
+        function closeSOW() {
+            document.getElementById('sowModal').classList.remove('active');
+            document.getElementById('sowFrame').src = '';
+        }
+
+        // LOGIN LOGIC
         async function handleLogin() {
             const email = document.getElementById('login-email').value.trim();
             const phone = document.getElementById('login-phone').value.trim();
-            const { data } = await _supabase.from('subscriptions').select('*').eq("Email_Id", email).eq('Phone_Number', phone).single();
-            if (data) { 
-                document.getElementById('login-view').style.display = 'none';
-                document.getElementById('dashboard-view').style.display = 'block';
-                document.getElementById('client-name-display').innerText = data.Client_Name;
-                document.getElementById('client-email').innerText = data.Email_Id;
-                document.getElementById('client-phone').innerText = data.Phone_Number;
-                document.getElementById('expiry-date').innerText = data.Expiry_Date;
-                document.getElementById('setup-paid').innerText = data.Setup_Status || "PENDING";
-            } else { document.getElementById('login-error').style.display = 'block'; }
+            const { data, error } = await _supabase.from('subscriptions').select('*').eq("Email_Id", email).eq('Phone_Number', phone).single();
+
+            if (data) {
+                sessionStorage.setItem('icebug_user', JSON.stringify(data));
+                showDashboard(data);
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
         }
-        function logout() { location.reload(); }
+
+        function showDashboard(data) {
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+            document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
+            
+            // EMAIL & PHONE DISPLAY (ADDED BACK)
+            document.getElementById('client-email').innerText = data.Email_Id || "NOT PROVIDED";
+            document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
+            document.getElementById('expiry-date').innerText = data.Expiry_Date || "--/--/----";
+
+            const setupEl = document.getElementById('setup-paid');
+            const finalEl = document.getElementById('final-paid');
+            setupEl.innerText = data.Setup_Status || "PENDING ⏳";
+            setupEl.style.color = data.Setup_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
+            finalEl.innerText = data.Final_Status || "PENDING ⏳";
+            finalEl.style.color = data.Final_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
+        }
+
+        function logout() {
+            sessionStorage.removeItem('icebug_user');
+            document.getElementById('login-view').style.display = 'block';
+            document.getElementById('dashboard-view').style.display = 'none';
+        }
+
+        function handlePayment() {
+            const plan = document.getElementById('plan-name').innerText;
+            if (plan.includes("Bespoke")) window.location.href = "https://rzp.io/rzp/g8movGN";
+            else if (plan.includes("Premium")) window.location.href = "https://rzp.io/rzp/tQ5dw83H";
+            else window.location.href = "https://rzp.io/rzp/uQQlcFu";
+        }
+
+        function toggleBot() {
+            const win = document.getElementById('botWindow');
+            win.style.display = win.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function botReply(type) {
+            const body = document.getElementById('botBody');
+            if(type === 'refund') body.innerHTML += `<p style="color:#4f46e5; margin-top:10px;"><b>KABIR:</b> Our refund policy is strictly non-refundable.</p>`;
+            else if(type === 'cancel') body.innerHTML += `<p style="color:#4f46e5; margin-top:10px;"><b>KABIR:</b> Cancel via dashboard button.</p>`;
+            body.scrollTop = body.scrollHeight;
+        }
     </script>
 </body>
 </html>
