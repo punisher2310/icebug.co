@@ -12,17 +12,17 @@
     <style>
         /* --- MOBILE & SMOOTH ENHANCEMENTS --- */
         html { scroll-behavior: smooth; }
-        body { overflow-x: hidden; width: 100%; cursor: none; } /* Cursor none to show custom cursor */
+        body { overflow-x: hidden; width: 100%; cursor: none; } 
 
-        /* CUSTOM CURSOR CSS (ORANGE COLOR RESTORED) */
+        /* CUSTOM CURSOR CSS (ORANGE FIXED) */
         .cursor {
             width: 20px; height: 20px; 
-            border: 1px solid #ff6b00; /* Orange Border */
+            border: 1px solid #ff6b00 !important; 
             border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 10000;
             transition: transform 0.1s ease, background 0.3s ease;
             transform: translate(-50%, -50%);
-            background: rgba(255, 107, 0, 0.1); /* Light Orange Background */
+            background: rgba(255, 107, 0, 0.2) !important;
         }
 
         /* Shared Modal Styles */
@@ -33,7 +33,7 @@
             padding: 20px; box-sizing: border-box;
         }
 
-        /* FIX: Ensure active class shows the modal */
+        /* FIX: MAKES WINDOWS OPEN */
         .portal-modal.active, .privacy-modal.active, .sow-modal.active {
             display: flex !important;
         }
@@ -52,14 +52,12 @@
         .close-portal { cursor: pointer; font-size: 14px; color: #666; font-family: 'Space Mono'; letter-spacing: 2px; }
         .close-portal:hover { color: #4f46e5; }
         
-        /* Login Form Styles */
         .login-input { width: 100%; padding: 14px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.9rem; }
         .login-input:focus { border-color: #4f46e5; }
         .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #666; margin-bottom: 5px; text-transform: uppercase; }
 
         .policy-box { background: #111; padding: 15px; border-left: 2px solid #4f46e5; margin: 25px 0; font-size: 0.8rem; color: #666; line-height: 1.6; }
 
-        /* Kabir Chatbot Styles */
         #kabir-bot { position: fixed; bottom: 30px; right: 30px; z-index: 4000; }
         .bot-toggle { background: #4f46e5; color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(79,70,229,0.4); }
         .bot-window { position: absolute; bottom: 75px; right: 0; width: 320px; background: #0a0a0a; border: 1px solid #222; display: none; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
@@ -68,7 +66,6 @@
         .bot-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; cursor: pointer; font-family: 'Inter'; font-size: 0.8rem; }
         .bot-btn:hover { background: #4f46e5; }
 
-        /* Phone Enhancements */
         @media (max-width: 768px) {
             .portal-content, .privacy-content { padding: 30px 20px; }
             .hero-main { font-size: 15vw; }
@@ -86,7 +83,6 @@
     <div id="portalModal" class="portal-modal">
         <div class="portal-content">
             <span class="close-portal" onclick="closePortal()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
-
             <div id="login-view">
                 <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// AUTH_REQUIRED</p>
                 <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">CLIENT LOGIN</h2>
@@ -107,7 +103,6 @@
                         <h2 style="margin: 5px 0; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
                     </div>
                 </div>
-
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="margin:0; font-size: 0.8rem; font-family: 'Space Mono'; color: #444;">ACTIVE_PLAN: <span id="plan-name" style="color: white;">...</span></h3>
                     <span class="status-badge" id="plan-status">ACTIVE</span>
@@ -122,20 +117,14 @@
                     <h3 style="margin: 10px 0; font-size: 1rem;">BILLING HISTORY</h3>
                     <div style="font-size: 0.8rem; font-family: 'Space Mono'; color: #888;">
                         <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
-                            <span>Project Setup (50% Advance)</span>
-                            <span id="setup-paid">PENDING ⏳</span>
+                            <span>Project Setup (50% Advance)</span><span id="setup-paid">PENDING ⏳</span>
                         </div>
                         <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
-                            <span>Project Delivery (50% Final)</span>
-                            <span id="final-paid">PENDING ⏳</span>
+                            <span>Project Delivery (50% Final)</span><span id="final-paid">PENDING ⏳</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="policy-box">
-                    <strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.
-                </div>
-
+                <div class="policy-box"><strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until cycle end.</div>
                 <button class="btn-primary" onclick="handlePayment()" style="width: 100%; margin-left: 0; padding: 16px; font-weight: 600;">RENEW SUBSCRIPTION ↗</button>
                 <button class="btn-secondary" onclick="logout()" style="width: 100%; margin-top: 12px; border-color: #222; color: #555; padding: 14px;">LOGOUT SESSION</button>
             </div>
@@ -151,139 +140,13 @@
                 <p><strong>No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable.</p>
                 <p><strong>Cancellations:</strong> You can cancel anytime; access remains until cycle end.</p>
                 <p><strong>Data Usage:</strong> We store basic contact info securely via Supabase.</p>
+                <hr style="border-color: #222; margin: 15px 0;">
+                <p><strong>Contact Support:</strong></p>
+                <p>Email: hello@icebug.co</p>
+                <p>WhatsApp: +91 92148 47729</p>
             </div>
         </div>
     </div>
-
-    <div id="sowModal" class="sow-modal">
-        <div class="modal-container" style="background:#0a0a0a; width:90%; max-width:1000px; height:80vh; position:relative; border:1px solid #222;">
-            <div class="portal-header" style="padding:20px;">
-                <div>
-                    <p class="role" style="font-family:'Space Mono'; font-size:0.6rem; color:#4f46e5;">// OFFICIAL_SCOPE</p>
-                    <h3 id="modalTitle" style="color: white; margin:0;">Project Scope</h3>
-                </div>
-                <span class="close-portal" onclick="closeSOW()">[ CLOSE ]</span>
-            </div>
-            <iframe id="sowFrame" src="" style="width:100%; height:calc(100% - 100px); border:none;"></iframe>
-        </div>
-    </div>
-
-    <nav class="navbar">
-        <div class="logo">icebug<span class="accent">®</span></div>
-        <div class="nav-links">
-            <a href="#work">Concepts</a>
-            <a href="#leadership">Leadership</a>
-            <a href="#pricing">Retainer</a>
-            <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
-            <a href="javascript:void(0)" class="client-login" onclick="openPortal()">Client Portal 🔒</a>
-            <a href="https://wa.me/919214847729" class="btn-primary">Let's Chat ↗</a>
-        </div>
-    </nav>
-
-    <header class="hero">
-        <div class="tech-detail top-left">// 02.01°</div>
-        <div class="tech-detail top-right">EST. 2026<br>KANPUR, UP</div>
-        <div class="tech-detail bottom-left">// LAT: 26.4499° N<br>LON: 80.3319° E</div>
-        <div class="hero-content">
-            <h2 class="hero-sub anim-up">Digital experiences that<br>connect, scale and perform<span class="accent">.</span></h2>
-            <h1 class="hero-main anim-up">Icebug\Studio</h1>
-            <div class="hero-bottom-grid anim-up">
-                <p class="hero-desc">A DESIGN STUDIO TRUSTED BY PREMIUM BRANDS.<br>WE CREATE STORIES PEOPLE REMEMBER.</p>
-                <div class="time-block">LOCAL TIME <span id="clock">...</span><br>UTC+5:30</div>
-            </div>
-        </div>
-    </header>
-
-    <section class="manifesto-section anim-up">
-        <div class="manifesto-content">
-            <h2 class="manifesto-title">No recycled templates.<br>No hidden fees.<br><span class="accent">Just pure digital craft.</span></h2>
-            <div class="manifesto-grid">
-                <div class="manifesto-item"><div class="stat">99%</div><p class="stat-desc">Faster load times with custom edge deployment.</p></div>
-                <div class="manifesto-item"><div class="stat">24h</div><p class="stat-desc">Average turnaround time for priority client edits.</p></div>
-                <div class="manifesto-item"><div class="stat">Zero</div><p class="stat-desc">WordPress templates used. Every pixel is hand-coded.</p></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="work" class="work-section anim-up">
-        <div class="work-header">
-            <h2 class="section-title">Selected <span class="accent">Concepts.</span></h2>
-            <a href="https://wa.me/919214847729" class="btn-secondary">Request Private Demos 🔒</a>
-        </div>
-        <div class="work-grid">
-            <div class="work-card large-card">
-                <div class="image-wrapper"><div class="work-image" style="background: radial-gradient(circle at center, #2a1a1a 0%, #050505 100%);"></div></div>
-                <div class="work-info">
-                    <div class="work-tags"><span class="tag">HOSPITALITY</span><span class="tag">CONFIDENTIAL</span></div>
-                    <h3>Premium Cafe Web Experience</h3><p class="tech-detail">Status: Under Development // 2026</p>
-                </div>
-            </div>
-            <div class="work-card small-card">
-                <div class="image-wrapper"><div class="work-image" style="background: linear-gradient(145deg, #1a0f0a, #050505);"></div></div>
-                <div class="work-info">
-                    <div class="work-tags"><span class="tag">E-COMMERCE</span><span class="tag">INTERNAL CONCEPT</span></div>
-                    <h3>Next-Gen Apparel Drop</h3><p class="tech-detail">Status: Agency Concept // 2026</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="leadership" class="leadership-section anim-up">
-        <div class="work-header">
-            <h2 class="section-title">The <span class="accent">Vision.</span></h2>
-        </div>
-        <div class="message-grid">
-            <div class="message-box">
-                <div class="quote-icon">"</div>
-                <p class="message-text">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your code is hand-crafted, pixel by pixel.</p>
-                <div>
-                    <p class="leader-name">Utkarsh Tiwari</p>
-                    <p class="role">// LEAD ARCHITECT & FOUNDER</p>
-                </div>
-            </div>
-            <div class="message-box">
-                <div class="quote-icon">"</div>
-                <p class="message-text">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
-                <div>
-                    <p class="leader-name">Ayushi Awasthi</p>
-                    <p class="role">// HEAD OF SALES & STRATEGY</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="pricing-section anim-up">
-        <h2 class="section-title">Transparent. <span class="accent">Scalable.</span></h2>
-        <div class="pricing-grid">
-            <div class="price-card bento">
-                <div class="card-head"><h3>The Essential</h3><p class="setup-fee">₹10,000 Setup</p></div>
-                <p class="monthly-fee">₹999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Single Page Experience</li><li>Standard Animations</li><li>Vercel Cloud Hosting</li></ul>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary" style="width: 100%;">View SOW ↗</button>
-                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width" style="margin-left: 0;">Sign SOW 🔒</a>
-                </div>
-            </div>
-            <div class="price-card bento premium-card">
-                <div class="card-head"><div class="tag">MOST POPULAR</div><h3>The Premium</h3><p class="setup-fee">₹25,000 Setup</p></div>
-                <p class="monthly-fee">₹1,999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Multi-Page Custom Site</li><li>Advanced GSAP Motion</li><li>CMS (Easy Content Edits)</li><li>Priority Monthly Support</li></ul>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary" style="border-color: #555; width: 100%;">View SOW ↗</button>
-                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width" style="margin-left: 0;">Sign SOW 🔒</a>
-                </div>
-            </div>
-            <div class="price-card bento">
-                <div class="card-head"><h3>The Bespoke</h3><p class="setup-fee">₹50k+ Setup</p></div>
-                <p class="monthly-fee">₹4,999<span class="month">/mo</span></p><hr>
-                <ul class="features"><li>Full 3D / WebGL Motion</li><li>E-commerce / Booking Setup</li><li>Custom Backend System</li><li>Dedicated Tech Team</li></ul>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                    <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke - Scope of Work')" class="btn-secondary" style="width: 100%;">View SOW ↗</button>
-                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20ready%20to%20discuss%20the%20Bespoke%20Plan." class="btn-primary full-width" style="margin-left: 0;">Let's Discuss 🔒</a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <footer class="main-footer anim-up">
         <div class="footer-top">
@@ -309,131 +172,50 @@
             <div class="tech-detail">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
             <div class="tech-detail">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
         </div>
-    </footer>
+    </footer> 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
 
     <script>
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
-
-        // --- CUSTOM CURSOR LOGIC ---
+        
         const cursor = document.querySelector('.cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // --- MODAL HANDLERS ---
-        function openPortal() {
-            const modal = document.getElementById('portalModal');
-            modal.classList.add('active'); // Added to make visible
-            const savedData = sessionStorage.getItem('icebug_user');
-            if (savedData) showDashboard(JSON.parse(savedData));
-        }
+        function openPortal() { document.getElementById('portalModal').classList.add('active'); const saved = sessionStorage.getItem('icebug_user'); if (saved) showDashboard(JSON.parse(saved)); }
+        function closePortal() { document.getElementById('portalModal').classList.remove('active'); }
+        function openPrivacy() { document.getElementById('privacyModal').classList.add('active'); }
+        function closePrivacy() { document.getElementById('privacyModal').classList.remove('active'); }
+        function openSOW(link, title) { const m = document.getElementById('sowModal'); document.getElementById('modalTitle').innerText = title; document.getElementById('sowFrame').src = link; m.classList.add('active'); }
+        function closeSOW() { document.getElementById('sowModal').classList.remove('active'); document.getElementById('sowFrame').src = ''; }
 
-        function closePortal() {
-            const modal = document.getElementById('portalModal');
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 400);
-        }
-
-        function openPrivacy() {
-            const modal = document.getElementById('privacyModal');
-            modal.classList.add('active'); // Added to make visible
-        }
-
-        function closePrivacy() {
-            const modal = document.getElementById('privacyModal');
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 400);
-        }
-
-        function openSOW(link, title) {
-            const modal = document.getElementById('sowModal');
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('sowFrame').src = link;
-            modal.classList.add('active'); // Added to make visible
-        }
-
-        function closeSOW() {
-            const modal = document.getElementById('sowModal');
-            modal.classList.remove('active');
-            document.getElementById('sowFrame').src = '';
-        }
-
-        // --- LOGIN LOGIC ---
         async function handleLogin() {
             const email = document.getElementById('login-email').value.trim();
             const phone = document.getElementById('login-phone').value.trim();
-            const errorMsg = document.getElementById('login-error');
-
-            if(!email || !phone) { alert("Please enter both details."); return; }
-
-            const { data, error } = await _supabase
-                .from('subscriptions')
-                .select('*')
-                .eq("Email_Id", email) 
-                .eq('Phone_Number', phone)
-                .single();
-
-            if (data) {
-                sessionStorage.setItem('icebug_user', JSON.stringify(data));
-                showDashboard(data);
-                errorMsg.style.display = 'none';
-            } else {
-                errorMsg.style.display = 'block';
-            }
+            const { data, error } = await _supabase.from('subscriptions').select('*').eq("Email_Id", email).eq('Phone_Number', phone).single();
+            if (data) { sessionStorage.setItem('icebug_user', JSON.stringify(data)); showDashboard(data); } 
+            else { document.getElementById('login-error').style.display = 'block'; }
         }
 
         function showDashboard(data) {
             document.getElementById('login-view').style.display = 'none';
             document.getElementById('dashboard-view').style.display = 'block';
-
             document.getElementById('expiry-date').innerText = data.Expiry_Date || "--/--/----";
             document.getElementById('plan-status').innerText = data.Is_Active ? "ACTIVE" : "EXPIRED";
             document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM PLAN";
             document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
-            
-            // EMAIL & PHONE DISPLAY
-            document.getElementById('client-email').innerText = data.Email_Id || "NOT PROVIDED";
-            document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
-
-            const setupEl = document.getElementById('setup-paid');
-            const finalEl = document.getElementById('final-paid');
-            setupEl.innerText = data.Setup_Status || "PENDING ⏳";
-            setupEl.style.color = data.Setup_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
-            finalEl.innerText = data.Final_Status || "PENDING ⏳";
-            finalEl.style.color = data.Final_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
+            document.getElementById('client-email').innerText = data.Email_Id || "--";
+            document.getElementById('client-phone').innerText = data.Phone_Number || "--";
+            const s = document.getElementById('setup-paid'); const f = document.getElementById('final-paid');
+            s.innerText = data.Setup_Status || "PENDING"; s.style.color = data.Setup_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
+            f.innerText = data.Final_Status || "PENDING"; f.style.color = data.Final_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
         }
-
-        function logout() {
-            sessionStorage.removeItem('icebug_user');
-            document.getElementById('login-view').style.display = 'block';
-            document.getElementById('dashboard-view').style.display = 'none';
-        }
-
-        function handlePayment() {
-            const plan = document.getElementById('plan-name').innerText;
-            if (plan.includes("Bespoke")) window.location.href = "https://rzp.io/rzp/g8movGN";
-            else if (plan.includes("Premium")) window.location.href = "https://rzp.io/rzp/tQ5dw83H";
-            else window.location.href = "https://rzp.io/rzp/uQQlcFu";
-        }
-
-        function toggleBot() {
-            const win = document.getElementById('botWindow');
-            win.style.display = win.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function botReply(type) {
-            const body = document.getElementById('botBody');
-            if(type === 'refund') {
-                body.innerHTML += `<p style="color:#4f46e5; margin-top:10px;"><b>KABIR:</b> Our refund policy is strictly non-refundable.</p>`;
-            } else if(type === 'cancel') {
-                body.innerHTML += `<p style="color:#4f46e5; margin-top:10px;"><b>KABIR:</b> Cancel via dashboard button.</p>`;
-            }
-            body.scrollTop = body.scrollHeight;
-        }
+        function logout() { sessionStorage.removeItem('icebug_user'); location.reload(); }
+        function handlePayment() { const p = document.getElementById('plan-name').innerText; if (p.includes("Bespoke")) window.location.href = "https://rzp.io/rzp/g8movGN"; else if (p.includes("Premium")) window.location.href = "https://rzp.io/rzp/tQ5dw83H"; else window.location.href = "https://rzp.io/rzp/uQQlcFu"; }
     </script>
 </body>
 </html>
