@@ -1,12 +1,12 @@
 * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-:root { --bg-color: #050505; --text-main: #ffffff; --text-muted: #888888; --accent: #ff6b00; } /* FIXED: Pure Orange Accent */
-body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+:root { --bg-color: #050505; --text-main: #ffffff; --text-muted: #888888; --accent: #ff4d29; }
+body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-/* Custom Cursor (FIXED: Removed Difference mode, using Orange) */
+/* Custom Cursor (ORANGE FIXED) */
 .cursor { 
     width: 20px; 
     height: 20px; 
-    background: var(--accent); 
+    background: #ff4d29; /* Solid Orange */
     border-radius: 50%; 
     position: fixed; 
     pointer-events: none; 
@@ -14,38 +14,21 @@ body { background-color: var(--bg-color); color: var(--text-main); font-family: 
     transition: transform 0.1s ease; 
 }
 
-/* Typography & Utility */
 .accent { color: var(--accent); }
-.tech-detail, .time-block, .setup-fee, .tag, .stat, .role { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
-
-/* Navbar */
 .navbar { display: flex; justify-content: space-between; align-items: center; padding: 2rem 4rem; }
-.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
-.nav-links { display: flex; align-items: center; flex-wrap: wrap; }
-.nav-links a { color: var(--text-main); text-decoration: none; margin-left: 2rem; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
-.nav-links a:hover { color: var(--accent); }
-.client-login { border: 1px solid #333; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem !important; }
-.client-login:hover { border-color: var(--accent); }
-.btn-primary { background: var(--accent); color: #fff; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: 0.3s; margin-left: 2rem; cursor: pointer; border: none;}
-.btn-primary:hover { opacity: 0.8; box-shadow: 0 0 15px rgba(255, 107, 41, 0.4); color: #fff !important; }
-.btn-secondary { background: transparent; color: var(--text-main); border: 1px solid #333; padding: 10px 24px; border-radius: 30px; text-decoration: none; display: inline-block; transition: 0.3s; cursor: pointer; }
-.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.logo { font-size: 1.5rem; font-weight: 800; }
+.nav-links a { color: #fff; text-decoration: none; margin-left: 2rem; font-size: 0.9rem; }
+.btn-primary { background: var(--accent); color: #fff; padding: 10px 24px; border-radius: 30px; text-decoration: none; border: none; }
+.btn-secondary { background: transparent; border: 1px solid #333; color: #fff; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
 
-/* Other styles remain the same as your code */
-.hero { height: 80vh; min-height: 600px; position: relative; display: flex; align-items: center; justify-content: center; padding: 0 4rem; }
-.top-left { position: absolute; top: 2rem; left: 4rem; }
-.top-right { position: absolute; top: 2rem; right: 4rem; text-align: right; }
-.hero-content { text-align: center; max-width: 1000px; width: 100%; }
-.hero-main { font-size: 7rem; font-weight: 800; letter-spacing: -4px; margin-bottom: 3rem; }
+/* Sections */
+.hero { height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+.hero-main { font-size: 6rem; letter-spacing: -4px; }
+.manifesto-section, .work-section, .leadership-section, .pricing-section { padding: 6rem 4rem; }
+.work-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.price-card { border: 1px solid #222; padding: 2rem; border-radius: 15px; }
 
-/* NAYA: SOW MODAL Logic */
-.active { display: flex !important; }
-.sow-modal {
-    display: none; position: fixed; z-index: 9999999; left: 0; top: 0;
-    width: 100%; height: 100%; background: rgba(0,0,0,0.95);
-    backdrop-filter: blur(10px); align-items: center; justify-content: center;
-}
-.modal-container {
-    background: #111; width: 90%; max-width: 1000px; height: 85vh;
-    border: 1px solid var(--accent); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
-}
+/* Modal Input Fix */
+.login-input { width: 100%; padding: 12px; background: #111; border: 1px solid #222; color: #fff; margin-bottom: 10px; border-radius: 4px; }
+.portal-detail { display: flex; justify-content: space-between; margin: 10px 0; color: #888; border-bottom: 1px solid #111; padding-bottom: 5px; }
