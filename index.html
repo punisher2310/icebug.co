@@ -188,145 +188,88 @@
         </div>
     </header>
 
-    <footer class="main-footer anim-up">
-        <div class="footer-top">
-            <div class="footer-brand">
-                <div class="logo">icebug<span class="accent">®</span></div>
-                <p class="footer-tagline">High-performance digital experiences <br>engineered in Kanpur, UP.</p>
+    <section class="manifesto-section anim-up">
+        <div class="manifesto-content">
+            <h2 class="manifesto-title">No recycled templates.<br>No hidden fees.<br><span class="accent">Just pure digital craft.</span></h2>
+            <div class="manifesto-grid">
+                <div class="manifesto-item"><div class="stat">99%</div><p class="stat-desc">Faster load times with custom edge deployment.</p></div>
+                <div class="manifesto-item"><div class="stat">24h</div><p class="stat-desc">Average turnaround time for priority client edits.</p></div>
+                <div class="manifesto-item"><div class="stat">Zero</div><p class="stat-desc">WordPress templates used. Every pixel is hand-coded.</p></div>
             </div>
-            <div class="footer-links">
-                <div class="link-group">
-                    <p class="role">// CONNECT</p>
-                    <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
-                    <a href="mailto:hello@icebug.co">Email Us ↗</a>
+        </div>
+    </section>
+
+    <section id="work" class="work-section anim-up">
+        <div class="work-header">
+            <h2 class="section-title">Selected <span class="accent">Concepts.</span></h2>
+            <a href="https://wa.me/919214847729" class="btn-secondary">Request Private Demos 🔒</a>
+        </div>
+        <div class="work-grid">
+            <div class="work-card large-card">
+                <div class="image-wrapper"><div class="work-image" style="background: radial-gradient(circle at center, #2a1a1a 0%, #050505 100%);"></div></div>
+                <div class="work-info">
+                    <div class="work-tags"><span class="tag">HOSPITALITY</span><span class="tag">CONFIDENTIAL</span></div>
+                    <h3>Premium Cafe Web Experience</h3><p class="tech-detail">Status: Under Development // 2026</p>
                 </div>
-                <div class="link-group">
-                    <p class="role">// NAVIGATION</p>
-                    <a href="javascript:void(0)" onclick="openPrivacy()">Privacy Policy</a>
-                    <a href="#pricing">Pricing Plans</a>
-                    <a href="#leadership">The Vision</a>
+            </div>
+            <div class="work-card small-card">
+                <div class="image-wrapper"><div class="work-image" style="background: linear-gradient(145deg, #1a0f0a, #050505);"></div></div>
+                <div class="work-info">
+                    <div class="work-tags"><span class="tag">E-COMMERCE</span><span class="tag">INTERNAL CONCEPT</span></div>
+                    <h3>Next-Gen Apparel Drop</h3><p class="tech-detail">Status: Agency Concept // 2026</p>
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <div class="tech-detail">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
-            <div class="tech-detail">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
+    </section>
+
+    <section id="leadership" class="leadership-section anim-up">
+        <div class="work-header">
+            <h2 class="section-title">The <span class="accent">Vision.</span></h2>
         </div>
-    </footer>
+        <div class="message-grid">
+            <div class="message-box">
+                <div class="quote-icon">"</div>
+                <p class="message-text">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your code is hand-crafted, pixel by pixel.</p>
+                <div>
+                    <p class="leader-name">Utkarsh Tiwari</p>
+                    <p class="role">// LEAD ARCHITECT & FOUNDER</p>
+                </div>
+            </div>
+            <div class="message-box">
+                <div class="quote-icon">"</div>
+                <p class="message-text">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
+                <div>
+                    <p class="leader-name">Ayushi Awasthi</p>
+                    <p class="role">// HEAD OF SALES & STRATEGY</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="script.js"></script>
-
-    <script>
-        const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
-        
-        let currentClientExpiry = "";
-
-        // MODAL HANDLERS
-        function openPortal() {
-            const modal = document.getElementById('portalModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
-            const savedData = sessionStorage.getItem('icebug_user');
-            if (savedData) showDashboard(JSON.parse(savedData));
-            else {
-                document.getElementById('login-view').style.display = 'block';
-                document.getElementById('dashboard-view').style.display = 'none';
-            }
-        }
-        function closePortal() {
-            const modal = document.getElementById('portalModal');
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 400);
-        }
-        function openPrivacy() {
-            const modal = document.getElementById('privacyModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
-        }
-        function closePrivacy() {
-            const modal = document.getElementById('privacyModal');
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 400);
-        }
-
-        // --- LOGIN LOGIC (UPDATED WITH YOUR FIX) ---
-        async function handleLogin() {
-            const email = document.getElementById('login-email').value.trim();
-            const phone = document.getElementById('login-phone').value.trim();
-            const errorMsg = document.getElementById('login-error');
-
-            if(!email || !phone) { alert("Please enter both details."); return; }
-
-            const { data, error } = await _supabase
-                .from('subscriptions')
-                .select('*')
-                .eq("Email_Id", email) // <--- EXTRA CODE APPLIED: NO APOSTROPHE
-                .eq('Phone_Number', phone)
-                .single();
-
-            if (data) {
-                sessionStorage.setItem('icebug_user', JSON.stringify(data));
-                showDashboard(data);
-                errorMsg.style.display = 'none';
-            } else {
-                errorMsg.style.display = 'block';
-            }
-        }
-
-        function showDashboard(data) {
-            document.getElementById('login-view').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'block';
-
-            currentClientExpiry = data.Expiry_Date;
-            document.getElementById('expiry-date').innerText = data.Expiry_Date;
-            document.getElementById('plan-status').innerText = data.Is_Active ? "ACTIVE" : "EXPIRED";
-            document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM PLAN";
-            document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
-            
-            // UPDATED: Column name for correct display
-            document.getElementById('client-email').innerText = data.Email_Id || "NOT PROVIDED";
-            document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
-
-            // Financial Record Logic
-            const setupEl = document.getElementById('setup-paid');
-            const finalEl = document.getElementById('final-paid');
-            setupEl.innerText = data.Setup_Status || "PENDING ⏳";
-            setupEl.style.color = data.Setup_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
-            finalEl.innerText = data.Final_Status || "PENDING ⏳";
-            finalEl.style.color = data.Final_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
-        }
-
-        function logout() {
-            sessionStorage.removeItem('icebug_user');
-            document.getElementById('login-view').style.display = 'block';
-            document.getElementById('dashboard-view').style.display = 'none';
-        }
-
-        function handlePayment() {
-            const plan = document.getElementById('plan-name').innerText;
-            if (plan.includes("Bespoke")) window.location.href = "https://rzp.io/rzp/g8movGN";
-            else if (plan.includes("Premium")) window.location.href = "https://rzp.io/rzp/tQ5dw83H";
-            else if (plan.includes("Essential")) window.location.href = "https://rzp.io/rzp/uQQlcFu";
-        }
-
-        function handleCancel() {
-            if(confirm("Are you sure? We have a strict No-Refund policy.")) {
-                alert("Auto-renewal deactivated. Access remains active until " + (currentClientExpiry || "cycle end") + ".");
-            }
-        }
-
-        function toggleBot() {
-            const win = document.getElementById('botWindow');
-            win.style.display = win.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function botReply(type) {
-            const body = document.getElementById('botBody');
-            if(type === 'refund') body.innerHTML += `<p style="color:#4f46e5; margin-top:10px;"><b>KABIR:</b> Our refund policy is strictly non-refundable.</p>`;
-            else if(type === 'cancel') body.innerHTML += `<p style="color:#4f46e5; margin-top:10px;"><b>KABIR:</b> Cancel via dashboard button.</p>`;
-            body.scrollTop = body.scrollHeight;
-        }
-    </script>
-</body>
-</html>
+    <section id="pricing" class="pricing-section anim-up">
+        <h2 class="section-title">Transparent. <span class="accent">Scalable.</span></h2>
+        <div class="pricing-grid">
+            <div class="price-card bento">
+                <div class="card-head"><h3>The Essential</h3><p class="setup-fee">₹10,000 Setup</p></div>
+                <p class="monthly-fee">₹999<span class="month">/mo</span></p><hr>
+                <ul class="features"><li>Single Page Experience</li><li>Standard Animations</li><li>Vercel Cloud Hosting</li></ul>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
+                    <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary" style="width: 100%;">View SOW ↗</button>
+                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width" style="margin-left: 0;">Sign SOW 🔒</a>
+                </div>
+            </div>
+            <div class="price-card bento premium-card">
+                <div class="card-head"><div class="tag">MOST POPULAR</div><h3>The Premium</h3><p class="setup-fee">₹25,000 Setup</p></div>
+                <p class="monthly-fee">₹1,999<span class="month">/mo</span></p><hr>
+                <ul class="features"><li>Multi-Page Custom Site</li><li>Advanced GSAP Motion</li><li>CMS (Easy Content Edits)</li><li>Priority Monthly Support</li></ul>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
+                    <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary" style="border-color: #555; width: 100%;">View SOW ↗</button>
+                    <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary full-width" style="margin-left: 0;">Sign SOW 🔒</a>
+                </div>
+            </div>
+            <div class="price-card bento">
+                <div class="card-head"><h3>The Bespoke</h3><p class="setup-fee">₹50k+ Setup</p></div>
+                <p class="monthly-fee">₹4,999<span class="month">/mo</span></p><hr>
+                <ul class="features"><li>Full 3D / WebGL Motion</li><li>E-commerce / Booking Setup</li><li>Custom Backend System</li><li>Dedicated Tech Team</li></ul>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
+                    <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY
