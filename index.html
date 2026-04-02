@@ -14,7 +14,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        /* --- CORE ELITE STYLES --- */
         :root { 
             --bg-color: #030303; 
             --surface: #0a0a0a; 
@@ -29,7 +28,6 @@
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* ELITE CURSOR */
         .cursor {
             width: 15px; height: 15px; background: var(--accent); border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 99999;
@@ -39,7 +37,6 @@
         }
         .cursor-hover { width: 50px; height: 50px; background: #fff; box-shadow: none; }
 
-        /* NAVIGATION */
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; position: fixed; width: 100%; top: 0; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s; }
         .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: -1.5px; text-transform: uppercase; }
         .accent { color: var(--accent); }
@@ -47,28 +44,24 @@
         .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.3s; }
         .nav-links a:hover { color: var(--accent); }
         
-        /* BUTTONS */
         .btn-primary { background: var(--accent); color: #fff; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); border: none; display: inline-block; text-align: center; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
         .btn-primary:hover { background: #fff; color: #000; transform: translateY(-4px); box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1); }
         .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--border-light); padding: 14px 32px; border-radius: 6px; text-decoration: none; display: inline-block; transition: all 0.3s; text-align: center; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
         .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* INFINITE MARQUEE TICKER */
         .ticker-wrap { width: 100%; overflow: hidden; background: var(--accent); padding: 1rem 0; border-top: 1px solid #fff; border-bottom: 1px solid #fff; transform: rotate(-2deg); margin: 4rem -2rem; position: relative; z-index: 10;}
         .ticker { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker 25s linear infinite; font-family: 'Space Mono'; font-weight: bold; font-size: 1.2rem; color: #000; text-transform: uppercase; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
-        /* FORTEX HERO SECTION (Image Adjusted) */
         .hero { position: relative; width: 100%; height: 100vh; display: flex; align-items: flex-end; background: #000; padding: 4rem; overflow: hidden; }
         
-        /* User's Specific Image Background */
         .hero-bg { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
-            background: url('hero.jpeg') no-repeat center center / cover; 
+            background: url('icebug.co hero image.jpg') no-repeat center center; 
+            background-size: cover;
             opacity: 0.9;
         }
         
-        /* Dark vignette overlay to make text pop without hiding the hands */
         .hero-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;
             background: linear-gradient(to top, rgba(3,3,3,1) 0%, rgba(3,3,3,0) 40%, rgba(3,3,3,0.8) 100%); 
@@ -81,14 +74,12 @@
         
         .hero-footer { position: absolute; bottom: 3rem; right: 4rem; z-index: 3; font-family: 'Space Mono'; font-size: 0.8rem; color: #888; text-align: right; text-transform: uppercase; line-height: 1.5;}
 
-        /* SECTIONS & BENTO GRIDS */
         section { padding: 8rem 4rem; position: relative; z-index: 5; background: var(--bg-color); }
         .section-title { font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; margin-bottom: 4rem; letter-spacing: -2px; text-transform: uppercase; line-height: 1;}
         
         .bento-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
         .bento-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
         
-        /* WORK GRID */
         .work-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; }
         .image-wrapper { height: 450px; width: 100%; overflow: hidden; position: relative; border-bottom: 1px solid var(--border-light); }
         .work-image { width: 100%; height: 100%; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); object-fit: cover; }
@@ -97,14 +88,12 @@
         .work-tags { display: flex; gap: 10px; margin-bottom: 1.5rem; }
         .tag { font-family: 'Space Mono'; font-size: 0.65rem; color: var(--accent); border: 1px solid #333; padding: 6px 12px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* LEADERSHIP */
         .message-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
         .message-box { padding: 4rem 3rem; display: flex; flex-direction: column; justify-content: space-between; }
         .quote-icon { font-size: 5rem; color: var(--accent); margin-bottom: 1rem; font-family: serif; line-height: 0; }
         .leader-name { margin-top: 3rem; font-weight: 800; font-size: 1.2rem; text-transform: uppercase; }
         .role { font-family: 'Space Mono'; font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; text-transform: uppercase; }
 
-        /* PRICING */
         .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
         .price-card { padding: 3.5rem 3rem; display: flex; flex-direction: column; position: relative; }
         .premium-card { border-color: var(--accent); background: linear-gradient(180deg, rgba(255,77,41,0.08) 0%, #0a0a0a 100%); }
@@ -114,14 +103,12 @@
         .features li { padding: 1rem 0; border-bottom: 1px solid #1a1a1a; font-size: 0.95rem; color: #aaa; font-weight: 500; }
         .price-badge { position: absolute; top: 0; right: 0; background: var(--accent); color: white; padding: 8px 20px; font-size: 0.7rem; font-weight: 800; font-family: 'Space Mono'; border-bottom-left-radius: 16px; text-transform: uppercase; letter-spacing: 1px;}
 
-        /* FOOTER */
         .main-footer { padding: 6rem 4rem 2rem 4rem; background: #000; border-top: 1px solid var(--border-light); margin-top: 4rem; position: relative; z-index: 5;}
         .footer-top { display: flex; justify-content: space-between; margin-bottom: 5rem; }
         .footer-links { display: flex; gap: 5rem; }
         .footer-links a { display: block; color: var(--text-main); text-decoration: none; margin-bottom: 12px; font-size: 0.95rem; transition: 0.3s; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
         .footer-links a:hover { color: var(--accent); padding-left: 5px; }
 
-        /* MODALS (Kept Safe & Elegant) */
         .portal-modal, .privacy-modal, .sow-modal { display: none; position: fixed; z-index: 5000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.96); backdrop-filter: blur(20px); justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
         .portal-content, .privacy-content { background: #0a0a0a; padding: 50px; border-radius: 12px; width: 100%; max-width: 550px; border: 1px solid var(--border-light); transform: translateY(30px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.8);}
         .active { display: flex !important; opacity: 1 !important; }
@@ -138,7 +125,6 @@
         .status-badge { background: #16a34a; color: white; padding: 4px 12px; font-size: 0.7rem; font-family: 'Space Mono'; border-radius: 4px; }
         .policy-box { background: #111; padding: 15px; border-left: 2px solid var(--accent); margin: 25px 0; font-size: 0.85rem; color: #888; line-height: 1.6; border-radius: 4px; }
 
-        /* KABIR BOT */
         #kabir-bot { position: fixed; bottom: 30px; right: 30px; z-index: 4000; }
         .bot-toggle { background: var(--accent); color: white; width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 24px; transition: transform 0.3s; box-shadow: 0 10px 30px rgba(255,77,41,0.4); display: flex; justify-content: center; align-items: center;}
         .bot-toggle:hover { transform: scale(1.1); }
@@ -148,17 +134,27 @@
         .bot-btn { width: 100%; text-align: left; padding: 12px 15px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; border-radius: 6px; font-family: 'Inter'; font-weight: 500; transition: 0.3s; font-size: 0.85rem; }
         .bot-btn:hover { background: var(--accent); border-color: var(--accent); }
 
+        /* MOBILE FIXES */
         @media (max-width: 768px) {
             * { cursor: auto !important; } .cursor { display: none !important; }
-            .hero { padding: 2rem; align-items: center; justify-content: center; text-align: center;}
-            .hero-overlay { background: linear-gradient(to top, rgba(3,3,3,0.9) 0%, rgba(3,3,3,0.5) 100%); }
-            .hero-content { padding: 0; margin-top: 5rem; }
+            .hero { padding: 2rem; align-items: flex-end; justify-content: flex-start; text-align: left; }
+            
+            /* Fix for the hands getting cut off on mobile */
+            .hero-bg { 
+                background-size: contain; 
+                background-position: center 25%; /* Pushes the image slightly down from the top */
+                background-repeat: no-repeat;
+                background-color: var(--bg-color); /* Fills the rest of the space */
+            }
+            .hero-overlay { background: linear-gradient(to top, rgba(3,3,3,1) 35%, rgba(3,3,3,0.4) 60%, rgba(3,3,3,0.1) 100%); }
+            .hero-content { padding: 0; padding-bottom: 4rem; }
+            
             section { padding: 5rem 2rem; }
             .hero-main { font-size: 15vw; }
             .manifesto-grid, .work-grid, .message-grid, .pricing-grid { grid-template-columns: 1fr; }
             .footer-top { flex-direction: column; gap: 3rem; }
             .nav-links { display: none; }
-            .hero-footer { right: 2rem; bottom: 2rem; text-align: center; width: 100%; justify-content: center;}
+            .hero-footer { right: 2rem; bottom: 2rem; text-align: center; width: 100%; justify-content: center; display: none;}
         }
     </style>
 </head>
@@ -169,9 +165,9 @@
     <nav class="navbar" id="navbar">
         <div class="logo interactable">icebug<span class="accent">®</span></div>
         <div class="nav-links">
-            <a href="#work" class="interactable">01/ Concepts</a>
-            <a href="#leadership" class="interactable">02/ Leadership</a>
-            <a href="#pricing" class="interactable">03/ Retainer</a>
+            <a href="#work" class="interactable">Concepts</a>
+            <a href="#leadership" class="interactable">Leadership</a>
+            <a href="#pricing" class="interactable">Retainer</a>
             <a href="https://instagram.com/icebug.co" target="_blank" class="interactable">Instagram ↗</a>
             <a href="javascript:void(0)" class="interactable" onclick="openPortal()" style="color: var(--accent);">Client Portal 🔒</a>
             <a href="https://wa.me/919214847729" class="btn-primary interactable" style="padding: 10px 24px;">Let's Chat ↗</a>
@@ -217,7 +213,7 @@
                     <p class="role">Status: Under Development // 2026</p>
                 </div>
             </div>
-            <div class="work-card bento-card anim-up interactable" style="padding:0; transition-delay: 0.1s;">
+            <div class="work-card bento-card anim-up interactable" style="padding:0;">
                 <div class="image-wrapper">
                     <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2000&auto=format&fit=crop" class="work-image" alt="Project 2">
                 </div>
@@ -241,7 +237,7 @@
                     <p class="role">// LEAD ARCHITECT & FOUNDER</p>
                 </div>
             </div>
-            <div class="message-box bento-card anim-up interactable" style="transition-delay: 0.1s;">
+            <div class="message-box bento-card anim-up interactable">
                 <div class="quote-icon">"</div>
                 <p style="font-size: 1.25rem; line-height: 1.6; color: #ddd; font-weight: 500;">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
                 <div style="border-top: 1px solid var(--border-light); margin-top: 3rem; padding-top: 1.5rem;">
@@ -269,7 +265,7 @@
                 <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary interactable" style="width: 100%;">Sign SOW 🔒</a>
             </div>
             
-            <div class="price-card bento-card premium-card anim-up interactable" style="transition-delay: 0.1s;">
+            <div class="price-card bento-card premium-card anim-up interactable">
                 <div class="price-badge">MOST POPULAR</div>
                 <h3 style="font-size: 2.2rem; font-weight: 900;">The Premium</h3>
                 <p class="setup-fee">₹25,000 Setup</p>
@@ -285,7 +281,7 @@
                 <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary interactable" style="width: 100%;">Sign SOW 🔒</a>
             </div>
             
-            <div class="price-card bento-card anim-up interactable" style="transition-delay: 0.2s;">
+            <div class="price-card bento-card anim-up interactable">
                 <h3 style="font-size: 2rem; font-weight: 900;">The Bespoke</h3>
                 <p class="setup-fee">₹50k+ Setup</p>
                 <div class="monthly-fee">₹4,999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
@@ -424,7 +420,6 @@
     <script>
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
 
-        // ELITE CUSTOM CURSOR (Magnetic Hover)
         const cursor = document.querySelector('.cursor');
         if(window.matchMedia("(pointer: fine)").matches) {
             document.addEventListener('mousemove', (e) => {
@@ -439,31 +434,27 @@
             });
         }
 
-        // CLOCK
         function updateClock() { 
             const clockEl = document.getElementById('clock');
             if(clockEl) clockEl.textContent = new Date().toLocaleTimeString('en-US', { hour12: false }); 
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // ELITE GSAP ANIMATIONS
         gsap.registerPlugin(ScrollTrigger);
 
-        // Hero Parallax Setup
         gsap.to("#heroParallax", {
             yPercent: 30, ease: "none",
             scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
         });
 
-        // Fade up reveal for elements
+        // Fast stagger animation to fix the weird delay
         gsap.utils.toArray(".anim-up").forEach(el => {
             gsap.from(el, {
-                y: 60, opacity: 0, duration: 1, ease: "power3.out",
+                y: 40, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.05,
                 scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" }
             });
         });
 
-        // Hide Navbar on Scroll Down
         let lastScroll = 0;
         window.addEventListener("scroll", () => {
             const currentScroll = window.pageYOffset;
@@ -473,7 +464,6 @@
             lastScroll = currentScroll;
         });
 
-        // MODALS LOGIC
         function openPortal() { document.getElementById('portalModal').classList.add('active'); const savedData = sessionStorage.getItem('icebug_user'); if (savedData) showDashboard(JSON.parse(savedData)); document.body.style.overflow = "hidden"; }
         function closePortal() { document.getElementById('portalModal').classList.remove('active'); document.body.style.overflow = "auto"; }
 
@@ -492,7 +482,6 @@
             document.body.style.overflow = "auto";
         }
 
-        // BACKEND LOGIC
         async function handleLogin() {
             const email = document.getElementById('login-email').value.trim();
             const phone = document.getElementById('login-phone').value.trim();
@@ -537,7 +526,6 @@
             else window.location.href = "https://rzp.io/rzp/uQQlcFu";
         }
 
-        // KABIR BOT
         function toggleBot() {
             const win = document.getElementById('botWindow');
             win.style.display = win.style.display === 'block' ? 'none' : 'block';
