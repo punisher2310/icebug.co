@@ -4,529 +4,476 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Icebug\Studio | Premium Digital Experiences</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Space+Mono&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
-        /* --- CORE STYLES & FORTEX THEME --- */
-        :root {
-            --bg: #050505;
-            --surface: #111111;
-            --surface-border: #222222;
-            --text-main: #ffffff;
-            --text-muted: #888888;
-            --accent: #ff4d29; /* Fortex Neon Orange */
-        }
-
+        /* --- YOUR ORIGINAL 5 AM STYLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        :root { --bg-color: #050505; --text-main: #ffffff; --text-muted: #888888; --accent: #ff4d29; --nav-bg: rgba(5, 5, 5, 0.8); }
+        
         html { scroll-behavior: smooth; }
-        body { background-color: var(--bg); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* --- MICRO-INTERACTIONS: Custom Cursor --- */
+        /* CUSTOM CURSOR */
         .cursor {
-            width: 15px; height: 15px; background: var(--accent); border-radius: 50%;
+            width: 20px; height: 20px; background: var(--accent); border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 99999;
-            transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background 0.3s;
-            mix-blend-mode: difference;
+            transition: transform 0.1s ease; box-shadow: 0 0 10px rgba(255, 77, 41, 0.5);
+            transform: translate(-50%, -50%);
         }
-        .cursor.hover-active { width: 50px; height: 50px; background: white; mix-blend-mode: difference; }
 
-        /* --- TYPOGRAPHY --- */
-        .mono { font-family: 'Space Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
-        .text-accent { color: var(--accent); }
-        .text-muted { color: var(--text-muted); }
-
-        /* --- NAVIGATION --- */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 2rem 4rem; position: fixed; width: 100%; top: 0; z-index: 1000;
-            background: linear-gradient(to bottom, rgba(5, 5, 5, 0.9), transparent);
-            transition: transform 0.3s ease;
-        }
-        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; }
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: color 0.3s; position: relative; }
+        /* NAVIGATION */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 2rem 4rem; position: fixed; width: 100%; top: 0; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(10px); }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .accent { color: var(--accent); }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { color: var(--text-main); text-decoration: none; margin-left: 2rem; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent); }
         
-        .btn-primary { background: var(--accent); color: white; padding: 12px 28px; border-radius: 4px; font-weight: 600; border: none; transition: 0.3s, transform 0.2s; display: inline-block; text-decoration: none; text-align: center; }
-        .btn-primary:hover { background: #e03c1c; transform: translateY(-2px); }
+        /* BUTTONS */
+        .client-login { border: 1px solid #333; padding: 6px 16px; border-radius: 20px; font-size: 0.8rem !important; }
+        .btn-primary { background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; border: none; display: inline-block; text-align: center; }
+        .btn-primary:hover { opacity: 0.8; box-shadow: 0 0 15px rgba(255, 77, 41, 0.4); }
+        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid #333; padding: 12px 24px; border-radius: 30px; text-decoration: none; display: inline-block; transition: 0.3s; cursor: pointer; text-align: center; }
+        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* --- HERO (Scrollytelling Base) --- */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 4rem; position: relative;
-            background: linear-gradient(rgba(5, 5, 5, 0.4), rgba(5, 5, 5, 1)), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
-            background-size: cover; background-position: center; background-attachment: fixed;
-        }
-        .hero-content { z-index: 2; position: relative; }
-        .hero-sub { font-size: clamp(1rem, 2vw, 1.2rem); color: #ddd; max-width: 500px; margin-bottom: 1.5rem; line-height: 1.4; }
-        .hero-title { font-size: clamp(4rem, 9vw, 9rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase; }
-        .hero-title .outline { color: transparent; -webkit-text-stroke: 1px var(--text-muted); }
-        .hero-bottom-info { position: absolute; bottom: 3rem; width: calc(100% - 8rem); display: flex; justify-content: space-between; align-items: flex-end; }
-
-        /* WebGL / Lottie Container Placeholders */
-        .webgl-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.5; }
-        .lottie-container { width: 100px; height: 100px; margin-bottom: 20px; }
-
-        /* --- SECTIONS --- */
-        section { padding: 8rem 4rem; position: relative; z-index: 2; background: var(--bg); }
-        .section-title { font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 900; margin-bottom: 4rem; letter-spacing: -2px; line-height: 1; }
-
-        /* --- BENTO GRID --- */
-        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem; }
-        .bento-card { 
-            background-color: var(--surface); border: 1px solid var(--surface-border); border-radius: 12px; 
-            padding: 3rem; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s; min-height: 450px;
-        }
-        .bento-card:hover { border-color: var(--accent); transform: scale(0.98); } /* Micro-interaction scale */
-        .col-8 { grid-column: span 8; }
-        .col-4 { grid-column: span 4; }
-        .col-6 { grid-column: span 6; }
+        /* SECTIONS & LAYOUT */
+        section { padding: 6rem 4rem; }
+        .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 3rem; }
         
-        .card-bg-1 { background: linear-gradient(to top, rgba(0,0,0,0.9), transparent), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; }
-        .card-bg-2 { background: linear-gradient(to top, rgba(0,0,0,0.9), transparent), url('https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; }
-        
-        .bento-card h3 { font-size: clamp(1.5rem, 3vw, 2.5rem); position: relative; z-index: 2; line-height: 1.1; }
+        /* HERO */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 4rem; }
+        .hero-main { font-size: clamp(3rem, 10vw, 7rem); font-weight: 800; letter-spacing: -4px; margin-bottom: 2rem; }
+        .hero-sub { font-size: clamp(1rem, 3vw, 2.5rem); font-weight: 300; color: var(--text-muted); }
+        .tech-detail { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text-muted); position: absolute; }
+        .top-left { top: 7rem; left: 4rem; }
+        .top-right { top: 7rem; right: 4rem; text-align: right; }
+        .bottom-left { bottom: 3rem; left: 4rem; }
 
-        /* --- PRICING --- */
+        /* GRIDS */
+        .manifesto-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 3rem; line-height: 1.3; }
+        .manifesto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .stat { font-size: 3.5rem; font-weight: 800; color: var(--accent); margin-bottom: 0.5rem; }
+        
+        .work-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; }
+        .work-card { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; overflow: hidden; }
+        .image-wrapper { height: 350px; width: 100%; }
+        .work-info { padding: 2rem; }
+        .work-tags { display: flex; gap: 10px; margin-bottom: 1rem; }
+        .tag { font-family: 'Space Mono'; font-size: 0.65rem; color: var(--accent); border: 1px solid #222; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
+        
+        .message-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .message-box { background: #0a0a0a; padding: 3rem; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; }
+        .quote-icon { font-size: 3rem; color: var(--accent); margin-bottom: 1rem; font-family: serif; }
+        .leader-name { margin-top: 2rem; font-weight: bold; }
+        .role { font-family: 'Space Mono'; font-size: 0.7rem; color: var(--text-muted); }
+
         .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .price-card { background: #0a0a0a; border: 1px solid var(--surface-border); padding: 3rem; border-radius: 12px; display: flex; flex-direction: column; transition: transform 0.3s; }
-        .price-card:hover { transform: translateY(-10px); }
-        .premium-card { border-color: var(--accent); position: relative; background: linear-gradient(180deg, #110805 0%, #0a0a0a 100%); }
-        .price-badge { position: absolute; top: -12px; right: 24px; background: var(--accent); color: white; padding: 6px 14px; font-size: 0.7rem; font-weight: 800; border-radius: 4px; }
-        .price-amount { font-size: 3.5rem; font-weight: 900; margin: 1rem 0; letter-spacing: -2px; }
-        .price-features { list-style: none; margin: 2rem 0; flex-grow: 1; color: var(--text-muted); font-size: 0.95rem; line-height: 2.2; }
-        .btn-outline { background: transparent; color: white; border: 1px solid #333; padding: 14px; border-radius: 4px; text-align: center; text-decoration: none; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-        .btn-full { width: 100%; display: block; text-align: center; margin-top: 10px; cursor: pointer; padding: 14px; }
+        .price-card { background: #0a0a0a; padding: 3rem; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; }
+        .premium-card { border-color: var(--accent); position: relative; }
+        .monthly-fee { font-size: 2.5rem; font-weight: 800; margin: 1rem 0; }
+        .setup-fee { font-family: 'Space Mono'; color: var(--text-muted); font-size: 0.8rem; }
+        .features { list-style: none; margin: 1.5rem 0; flex-grow: 1; }
+        .features li { padding: 0.5rem 0; border-bottom: 1px solid #111; font-size: 0.9rem; color: var(--text-muted); }
 
-        /* --- FOOTER --- */
-        footer { padding: 6rem 4rem 2rem; border-top: 1px solid var(--surface-border); background: #000; }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
-        .footer-logo { font-size: clamp(3rem, 8vw, 7rem); font-weight: 900; letter-spacing: -3px; line-height: 1; margin-bottom: 1rem; }
-        .footer-links a { display: block; color: white; text-decoration: none; margin-bottom: 12px; font-size: 0.95rem; transition: color 0.3s; }
+        /* FOOTER */
+        .main-footer { padding: 6rem 4rem 2rem 4rem; background: #080808; border-top: 1px solid #1a1a1a; }
+        .footer-top { display: flex; justify-content: space-between; margin-bottom: 4rem; }
+        .footer-links { display: flex; gap: 4rem; }
+        .footer-links a { display: block; color: var(--text-main); text-decoration: none; margin-bottom: 10px; font-size: 0.9rem; transition: 0.3s; }
         .footer-links a:hover { color: var(--accent); }
+        .footer-bottom { display: flex; justify-content: space-between; border-top: 1px solid #1a1a1a; padding-top: 2rem; font-size: 0.75rem; color: var(--text-muted); }
 
-        /* --- MODALS (Portal, Privacy, SOW) --- */
-        .custom-modal { display: none; position: fixed; z-index: 5000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.96); backdrop-filter: blur(15px); justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
-        .custom-modal.active { display: flex; opacity: 1; }
-        .modal-content { background: #0a0a0a; padding: 40px; border-radius: 8px; width: 100%; max-width: 550px; border: 1px solid #222; transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .custom-modal.active .modal-content { transform: translateY(0); }
+        /* MODALS */
+        .portal-modal, .privacy-modal, .sow-modal { display: none; position: fixed; z-index: 5000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.96); backdrop-filter: blur(15px); justify-content: center; align-items: center; padding: 20px; }
+        .portal-content, .privacy-content { background: #0a0a0a; padding: 40px; border-radius: 8px; width: 100%; max-width: 550px; border: 1px solid #222; transform: translateY(20px); transition: 0.4s ease; }
+        .active { display: flex !important; }
+        .active .portal-content, .active .privacy-content { transform: translateY(0); }
         
-        .close-modal { cursor: pointer; font-size: 14px; color: #666; letter-spacing: 2px; float: right; font-family: 'Space Mono'; transition: color 0.3s; }
-        .close-modal:hover { color: var(--accent); }
-        .login-input { width: 100%; padding: 16px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; border-radius: 4px; transition: border-color 0.3s; }
+        .portal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #222; padding-bottom: 20px; }
+        .close-portal { cursor: pointer; font-size: 14px; color: #666; font-family: 'Space Mono'; letter-spacing: 2px; }
+        .close-portal:hover { color: var(--accent); }
+        
+        .login-input { width: 100%; padding: 14px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.9rem; border-radius: 4px; }
         .login-input:focus { border-color: var(--accent); }
-        
-        /* --- KABIR BOT --- */
+        .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #666; margin-bottom: 5px; text-transform: uppercase; }
+        .portal-detail { display: flex; justify-content: space-between; margin: 18px 0; font-family: 'Space Mono'; font-size: 0.9rem; color: #888; border-bottom: 1px solid #111; padding-bottom: 8px; }
+        .status-badge { background: #16a34a; color: white; padding: 4px 12px; font-size: 0.7rem; font-family: 'Space Mono'; border-radius: 4px; }
+        .policy-box { background: #111; padding: 15px; border-left: 2px solid var(--accent); margin: 25px 0; font-size: 0.8rem; color: #666; line-height: 1.6; }
+
+        /* BOT */
         #kabir-bot { position: fixed; bottom: 30px; right: 30px; z-index: 4000; }
-        .bot-toggle { background: var(--accent); color: white; width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; transition: transform 0.3s; }
-        .bot-toggle:hover { transform: scale(1.1); }
-        .bot-window { position: absolute; bottom: 85px; right: 0; width: 340px; background: #0a0a0a; border: 1px solid #222; display: none; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
-        .bot-header { background: #111; padding: 15px 20px; font-size: 0.8rem; font-weight: 800; border-bottom: 1px solid #222; display: flex; justify-content: space-between;}
-        .bot-body { padding: 20px; font-size: 0.85rem; color: #888; height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;}
-        .bot-btn { width: 100%; text-align: left; padding: 12px; border: 1px solid #222; background: #111; color: white; cursor: pointer; border-radius: 4px; transition: background 0.3s; }
+        .bot-toggle { background: var(--accent); color: white; width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(255,77,41,0.4); }
+        .bot-window { position: absolute; bottom: 75px; right: 0; width: 320px; background: #0a0a0a; border: 1px solid #222; display: none; overflow: hidden; border-radius: 8px; }
+        .bot-header { background: #111; padding: 15px; font-family: 'Space Mono'; font-size: 0.75rem; border-bottom: 1px solid #222; }
+        .bot-body { padding: 20px; font-size: 0.85rem; color: #888; max-height: 250px; overflow-y: auto; }
+        .bot-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; cursor: pointer; border-radius: 4px; font-family: 'Inter'; }
         .bot-btn:hover { background: var(--accent); border-color: var(--accent); }
 
-        /* --- RESPONSIVE OPTIMIZATION --- */
-        @media (max-width: 1024px) {
-            .bento-grid, .pricing-grid, .footer-grid { grid-template-columns: 1fr; }
-            .col-8, .col-4, .col-6 { grid-column: span 1; }
-            section, .hero, nav, footer { padding-left: 2rem; padding-right: 2rem; }
+        @media (max-width: 768px) {
+            * { cursor: auto !important; } .cursor { display: none !important; }
+            section { padding: 4rem 2rem; }
+            .hero { padding: 0 2rem; text-align: center; }
+            .top-left, .top-right, .bottom-left { display: none; }
+            .hero-main { font-size: 15vw; }
+            .manifesto-grid, .work-grid, .message-grid, .pricing-grid { grid-template-columns: 1fr; }
+            .footer-top { flex-direction: column; gap: 2rem; }
             .nav-links { display: none; }
-            .cursor { display: none; }
-            body { cursor: auto; }
-            .hero-bottom-info { flex-direction: column; align-items: flex-start; gap: 1rem; position: static; margin-top: 3rem; }
-            .hero { justify-content: center; height: auto; padding-top: 150px; padding-bottom: 100px; }
         }
     </style>
 </head>
 <body>
+    
+    <div class="cursor"></div>
 
-    <div class="cursor" id="custom-cursor"></div>
+    <div id="portalModal" class="portal-modal">
+        <div class="portal-content">
+            <span class="close-portal" onclick="closePortal()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
+            
+            <div id="login-view">
+                <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// AUTH_REQUIRED</p>
+                <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">CLIENT LOGIN</h2>
+                <div style="margin-top: 25px;">
+                    <label class="login-label">Registered Email</label>
+                    <input type="email" id="login-email" class="login-input" placeholder="name@company.com">
+                    <label class="login-label">Phone Number</label>
+                    <input type="text" id="login-phone" class="login-input" placeholder="+91 XXXXX XXXXX">
+                    <button class="btn-primary" onclick="handleLogin()" style="width: 100%; padding: 16px;">ACCESS PORTAL ↗</button>
+                    <p id="login-error" style="color:#dc2626; font-size:0.7rem; margin-top:10px; display:none; font-family:'Space Mono';">// ERROR: INVALID CREDENTIALS</p>
+                </div>
+            </div>
 
-    <nav id="navbar">
-        <div class="logo">Icebug<span class="text-accent">®</span></div>
+            <div id="dashboard-view" style="display:none;">
+                <div class="portal-header" style="border:none; margin-bottom:10px;">
+                    <div>
+                        <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// SESSION_ACTIVE</p>
+                        <h2 style="margin: 5px 0; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin:0; font-size: 0.8rem; font-family: 'Space Mono'; color: #444;">ACTIVE_PLAN: <span id="plan-name" style="color: white;">...</span></h3>
+                    <span class="status-badge" id="plan-status">ACTIVE</span>
+                </div>
+                <div class="portal-detail"><strong>EMAIL_ID</strong> <span id="client-email" style="color:white;">--</span></div>
+                <div class="portal-detail"><strong>PHONE_NO</strong> <span id="client-phone" style="color:white;">--</span></div>
+                <div class="portal-detail"><strong>EXPIRY_DATE</strong> <span id="expiry-date" style="color:white;">--/--/----</span></div>
+
+                <div style="margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
+                    <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// FINANCIAL_RECORDS</p>
+                    <h3 style="margin: 10px 0; font-size: 1rem;">BILLING HISTORY</h3>
+                    <div style="font-size: 0.8rem; font-family: 'Space Mono'; color: #888;">
+                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
+                            <span>Project Setup (50% Advance)</span><span id="setup-paid">PENDING ⏳</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
+                            <span>Project Delivery (50% Final)</span><span id="final-paid">PENDING ⏳</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="policy-box"><strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.</div>
+                <button class="btn-primary" onclick="handlePayment()" style="width: 100%; padding: 16px; margin-bottom: 10px;">RENEW SUBSCRIPTION ↗</button>
+                <button class="btn-secondary" onclick="logout()" style="width: 100%; padding: 14px;">LOGOUT SESSION</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacyModal" class="privacy-modal">
+        <div class="privacy-content">
+            <span class="close-portal" onclick="closePrivacy()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
+            <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// LEGAL_TERMS</p>
+            <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">PRIVACY & TERMS</h2>
+            <div style="margin-top: 20px; max-height: 300px; overflow-y: auto; font-size: 0.85rem; color: #888; line-height: 1.6;">
+                <p><strong>No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable. Since we provide custom digital services and immediate allocation of resources, we do not offer refunds once a cycle starts.</p><br>
+                <p><strong>Cancellations:</strong> You can cancel your subscription anytime. Your access to the premium portal and support will continue until the end of the current paid billing period.</p><br>
+                <p><strong>Data Usage:</strong> We store your basic contact information and plan details securely via Supabase for subscription management only.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="sowModal" class="sow-modal">
+        <div style="background:#0a0a0a; width:90%; max-width:1000px; height:80vh; position:relative; border:1px solid #222; border-radius: 8px; display:flex; flex-direction:column;">
+            <div class="portal-header" style="padding:20px 30px; margin:0;">
+                <div>
+                    <p class="role" style="color:var(--accent);">// OFFICIAL_SCOPE</p>
+                    <h3 id="modalTitle" style="color: white; margin:0;">Project Scope</h3>
+                </div>
+                <span class="close-portal" onclick="closeSOW()">[ CLOSE ]</span>
+            </div>
+            <iframe id="sowFrame" src="" style="width:100%; flex-grow:1; border:none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></iframe>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">icebug<span class="accent">®</span></div>
         <div class="nav-links">
-            <a href="#work" class="hover-target">001/ Projects</a>
-            <a href="#vision" class="hover-target">002/ Vision</a>
-            <a href="#pricing" class="hover-target">003/ Retainer</a>
-            <a href="javascript:void(0)" onclick="openModal('portalModal')" class="hover-target" style="color: var(--accent);">Client Portal 🔒</a>
-            <a href="https://wa.me/919214847729" class="btn-primary hover-target">Let's Chat ↗</a>
+            <a href="#work">Concepts</a>
+            <a href="#leadership">Leadership</a>
+            <a href="#pricing">Retainer</a>
+            <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
+            <a href="javascript:void(0)" class="client-login" onclick="openPortal()">Client Portal 🔒</a>
+            <a href="https://wa.me/919214847729" class="btn-primary" style="margin-left: 2rem;">Let's Chat ↗</a>
         </div>
     </nav>
 
     <header class="hero">
-        <div class="webgl-background" id="webgl-container"></div>
-        
+        <div class="tech-detail top-left">// 02.01°</div>
+        <div class="tech-detail top-right">EST. 2026<br>KANPUR, UP</div>
+        <div class="tech-detail bottom-left">// LAT: 26.4499° N<br>LON: 80.3319° E</div>
         <div class="hero-content">
-            <p class="hero-sub mono">We design and develop premium digital experiences that drive real growth for ambitious brands.</p>
-            <h1 class="hero-title">
-                YOU <span class="outline">IMAGINE</span>/.<br>
-                WE MAKE IT <span class="text-accent">REAL</span>//.
-            </h1>
-        </div>
-        
-        <div class="hero-bottom-info mono">
-            <div class="scroll-indicator">Scroll to explore ↓</div>
-            <div style="text-align: right;">© 2026<br>KANPUR, UP</div>
+            <h2 class="hero-sub anim-up">Digital experiences that<br>connect, scale and perform<span class="accent">.</span></h2>
+            <h1 class="hero-main anim-up">Icebug\Studio</h1>
+            <div class="hero-bottom-grid anim-up" style="display: flex; justify-content: space-between; align-items: flex-end;">
+                <p class="hero-desc" style="font-size: 0.9rem; color: var(--text-muted);">A DESIGN STUDIO TRUSTED BY PREMIUM BRANDS.<br>WE CREATE STORIES PEOPLE REMEMBER.</p>
+                <div class="time-block tech-detail" style="position: static; text-align: right;">LOCAL TIME <span id="clock">...</span><br>UTC+5:30</div>
+            </div>
         </div>
     </header>
 
-    <section id="work">
-        <h2 class="section-title reveal">Selected <span class="text-accent">Projects.</span></h2>
-        <div class="bento-grid">
-            <div class="bento-card col-8 card-bg-1 reveal hover-target">
-                <div class="mono text-accent" style="margin-bottom: 10px;">Hospitality // Confidential</div>
-                <h3>Premium Cafe Web Experience</h3>
-            </div>
-            <div class="bento-card col-4 reveal hover-target" style="justify-content: space-between;">
-                <div class="lottie-container" id="lottie-stats">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+    <section class="manifesto-section anim-up">
+        <h2 class="manifesto-title">No recycled templates.<br>No hidden fees.<br><span class="accent">Just pure digital craft.</span></h2>
+        <div class="manifesto-grid">
+            <div class="manifesto-item"><div class="stat">99%</div><p class="stat-desc text-muted">Faster load times with custom edge deployment.</p></div>
+            <div class="manifesto-item"><div class="stat">24h</div><p class="stat-desc text-muted">Average turnaround time for priority client edits.</p></div>
+            <div class="manifesto-item"><div class="stat">Zero</div><p class="stat-desc text-muted">WordPress templates used. Every pixel is hand-coded.</p></div>
+        </div>
+    </section>
+
+    <section id="work" class="work-section anim-up">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+            <h2 class="section-title" style="margin: 0;">Selected <span class="accent">Concepts.</span></h2>
+            <a href="https://wa.me/919214847729" class="btn-secondary">Request Private Demos 🔒</a>
+        </div>
+        <div class="work-grid">
+            <div class="work-card large-card">
+                <div class="image-wrapper"><div class="work-image" style="background: radial-gradient(circle at center, #2a1a1a 0%, #050505 100%);"></div></div>
+                <div class="work-info">
+                    <div class="work-tags"><span class="tag">HOSPITALITY</span><span class="tag">CONFIDENTIAL</span></div>
+                    <h3>Premium Cafe Web Experience</h3><p class="role" style="margin-top: 10px;">Status: Under Development // 2026</p>
                 </div>
+            </div>
+            <div class="work-card">
+                <div class="image-wrapper"><div class="work-image" style="background: linear-gradient(145deg, #1a0f0a, #050505);"></div></div>
+                <div class="work-info">
+                    <div class="work-tags"><span class="tag">E-COMMERCE</span><span class="tag">INTERNAL CONCEPT</span></div>
+                    <h3>Next-Gen Apparel Drop</h3><p class="role" style="margin-top: 10px;">Status: Agency Concept // 2026</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="leadership" class="leadership-section anim-up">
+        <h2 class="section-title">The <span class="accent">Vision.</span></h2>
+        <div class="message-grid">
+            <div class="message-box">
+                <div class="quote-icon">"</div>
+                <p style="font-size: 1.1rem; line-height: 1.6;">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your code is hand-crafted, pixel by pixel.</p>
                 <div>
-                    <h3 style="font-size: 4rem; color: var(--accent);">99%</h3>
-                    <p class="text-muted">Faster load times with edge deployment.</p>
+                    <p class="leader-name">Utkarsh Tiwari</p>
+                    <p class="role">// LEAD ARCHITECT & FOUNDER</p>
                 </div>
             </div>
-            <div class="bento-card col-6 card-bg-2 reveal hover-target">
-                <div class="mono text-accent" style="margin-bottom: 10px;">E-Commerce // Concept</div>
-                <h3>Next-Gen Apparel Drop</h3>
-            </div>
-            <div class="bento-card col-6 reveal hover-target" style="background: var(--accent); color: white; border: none;">
-                <h3 style="font-size: clamp(2rem, 4vw, 3.5rem);">Zero<br>Templates.</h3>
-                <p style="margin-top: 1rem; font-size: 1.1rem;">Every pixel hand-coded. Scalable systems, not just websites.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="vision" style="background: #0a0a0a;">
-        <h2 class="section-title reveal">The <span class="text-accent">Vision.</span></h2>
-        <div class="bento-grid">
-            <div class="bento-card col-6 reveal hover-target" style="background: var(--bg);">
-                <h1 class="text-accent" style="font-size: 5rem; font-family: serif; line-height: 0.5;">"</h1>
-                <p style="font-size: clamp(1rem, 2vw, 1.4rem); margin: 1rem 0 2rem; color: #ddd;">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets.</p>
-                <div style="border-top: 1px solid #333; padding-top: 1.5rem;">
-                    <strong>Utkarsh Tiwari</strong>
-                    <p class="mono text-muted" style="margin-top: 5px;">// Lead Architect & Founder</p>
-                </div>
-            </div>
-            <div class="bento-card col-6 reveal hover-target" style="background: var(--bg); transition-delay: 0.1s;">
-                <h1 class="text-accent" style="font-size: 5rem; font-family: serif; line-height: 0.5;">"</h1>
-                <p style="font-size: clamp(1rem, 2vw, 1.4rem); margin: 1rem 0 2rem; color: #ddd;">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business scales seamlessly and profitably.</p>
-                <div style="border-top: 1px solid #333; padding-top: 1.5rem;">
-                    <strong>Ayushi Awasthi</strong>
-                    <p class="mono text-muted" style="margin-top: 5px;">// Head of Sales & Strategy</p>
+            <div class="message-box">
+                <div class="quote-icon">"</div>
+                <p style="font-size: 1.1rem; line-height: 1.6;">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
+                <div>
+                    <p class="leader-name">Ayushi Awasthi</p>
+                    <p class="role">// HEAD OF SALES & STRATEGY</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="pricing">
-        <h2 class="section-title reveal">Transparent. <span class="text-accent">Scalable.</span></h2>
+    <section id="pricing" class="pricing-section anim-up">
+        <h2 class="section-title">Transparent. <span class="accent">Scalable.</span></h2>
         <div class="pricing-grid">
-            <div class="price-card reveal hover-target">
-                <h3 style="font-size: 1.8rem;">The Essential</h3>
-                <p class="mono text-muted" style="margin-top: 5px;">₹10,000 Setup</p>
-                <div class="price-amount">₹999<span style="font-size: 1.2rem; color: var(--text-muted);">/mo</span></div>
-                <ul class="price-features">
+            <div class="price-card">
+                <h3>The Essential</h3><p class="setup-fee">₹10,000 Setup</p>
+                <div class="monthly-fee">₹999<span style="font-size: 1rem; color: #888;">/mo</span></div>
+                <hr style="border: 0; border-top: 1px solid #222;">
+                <ul class="features">
                     <li>Single Page Experience</li>
                     <li>Standard Animations</li>
                     <li>Vercel Cloud Hosting</li>
                 </ul>
-                <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential SOW')" class="btn-outline btn-full hover-target">View SOW ↗</button>
-                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20ready%20to%20sign%20The%20Essential%20Plan." class="btn-primary btn-full hover-target">Sign SOW 🔒</a>
+                <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 10px;">View SOW ↗</button>
+                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary" style="width: 100%;">Sign SOW 🔒</a>
             </div>
-            <div class="price-card premium-card reveal hover-target" style="transition-delay: 0.1s;">
-                <div class="price-badge">MOST POPULAR</div>
-                <h3 style="font-size: 1.8rem;">The Premium</h3>
-                <p class="mono text-muted" style="margin-top: 5px;">₹25,000 Setup</p>
-                <div class="price-amount">₹1,999<span style="font-size: 1.2rem; color: var(--text-muted);">/mo</span></div>
-                <ul class="price-features">
-                    <li style="color:white; font-weight:600;">Multi-Page Custom Site</li>
-                    <li style="color:white; font-weight:600;">Advanced GSAP Motion</li>
+            <div class="price-card premium-card">
+                <div style="position: absolute; top: -10px; right: 20px; background: var(--accent); color: white; padding: 4px 10px; font-size: 0.7rem; border-radius: 4px; font-weight: bold; font-family: 'Space Mono';">MOST POPULAR</div>
+                <h3>The Premium</h3><p class="setup-fee">₹25,000 Setup</p>
+                <div class="monthly-fee">₹1,999<span style="font-size: 1rem; color: #888;">/mo</span></div>
+                <hr style="border: 0; border-top: 1px solid #222;">
+                <ul class="features">
+                    <li style="color: white; font-weight: bold;">Multi-Page Custom Site</li>
+                    <li style="color: white; font-weight: bold;">Advanced GSAP Motion</li>
                     <li>CMS (Easy Content Edits)</li>
                     <li>Priority Monthly Support</li>
                 </ul>
-                <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium SOW')" class="btn-outline btn-full hover-target" style="border-color: #555;">View SOW ↗</button>
-                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary btn-full hover-target">Sign SOW 🔒</a>
+                <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 10px; border-color: #555;">View SOW ↗</button>
+                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary" style="width: 100%;">Sign SOW 🔒</a>
             </div>
-            <div class="price-card reveal hover-target" style="transition-delay: 0.2s;">
-                <h3 style="font-size: 1.8rem;">The Bespoke</h3>
-                <p class="mono text-muted" style="margin-top: 5px;">₹50k+ Setup</p>
-                <div class="price-amount">₹4,999<span style="font-size: 1.2rem; color: var(--text-muted);">/mo</span></div>
-                <ul class="price-features">
+            <div class="price-card">
+                <h3>The Bespoke</h3><p class="setup-fee">₹50k+ Setup</p>
+                <div class="monthly-fee">₹4,999<span style="font-size: 1rem; color: #888;">/mo</span></div>
+                <hr style="border: 0; border-top: 1px solid #222;">
+                <ul class="features">
                     <li>Full 3D / WebGL Motion</li>
                     <li>E-commerce / Booking Setup</li>
                     <li>Custom Backend System</li>
                     <li>Dedicated Tech Team</li>
                 </ul>
-                <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke SOW')" class="btn-outline btn-full hover-target">View SOW ↗</button>
-                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20interested%20in%20The%20Bespoke%20Plan." class="btn-primary btn-full hover-target">Let's Discuss 🔒</a>
+                <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 10px;">View SOW ↗</button>
+                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20ready%20to%20discuss%20the%20Bespoke%20Plan." class="btn-primary" style="width: 100%;">Let's Discuss 🔒</a>
             </div>
         </div>
     </section>
 
-    <footer>
-        <div class="footer-grid">
+    <footer class="main-footer anim-up">
+        <div class="footer-top">
             <div>
-                <h2 class="footer-logo">ICEBUG<span class="text-accent">®</span></h2>
-                <p class="text-muted" style="margin-top: 1rem; max-width: 300px;">High-performance digital experiences engineered in Kanpur, UP.</p>
+                <div class="logo">icebug<span class="accent">®</span></div>
+                <p class="role" style="margin-top: 10px;">High-performance digital experiences <br>engineered in Kanpur, UP.</p>
             </div>
             <div class="footer-links">
-                <p class="mono text-accent" style="margin-bottom: 1.5rem;">// CONNECT</p>
-                <a href="https://instagram.com/icebug.co" target="_blank" class="hover-target">Instagram ↗</a>
-                <a href="mailto:hello@icebug.co" class="hover-target">Email Us ↗</a>
-                <a href="https://wa.me/919214847729" target="_blank" class="hover-target">WhatsApp ↗</a>
-            </div>
-            <div class="footer-links">
-                <p class="mono text-accent" style="margin-bottom: 1.5rem;">// NAVIGATION</p>
-                <a href="javascript:void(0)" onclick="openModal('privacyModal')" class="hover-target">Privacy Policy & Terms</a>
-                <a href="#pricing" class="hover-target">Pricing Plans</a>
-                <a href="javascript:void(0)" onclick="openModal('portalModal')" class="hover-target">Client Portal 🔒</a>
+                <div>
+                    <p class="role" style="margin-bottom: 10px; color: var(--accent);">// CONNECT</p>
+                    <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
+                    <a href="https://wa.me/919214847729" target="_blank">WhatsApp ↗</a>
+                    <a href="mailto:hello@icebug.co">Email Us ↗</a>
+                </div>
+                <div>
+                    <p class="role" style="margin-bottom: 10px; color: var(--accent);">// NAVIGATION</p>
+                    <a href="javascript:void(0)" onclick="openPrivacy()">Privacy Policy & Terms</a>
+                    <a href="#pricing">Pricing Plans</a>
+                    <a href="#leadership">The Vision</a>
+                </div>
             </div>
         </div>
-        <div style="border-top: 1px solid var(--surface-border); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center;" class="mono text-muted">
-            <p>© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</p>
-            <p>HAND-CRAFTED BY <span class="text-accent">UTKARSH & AYUSHI</span></p>
+        <div class="footer-bottom">
+            <div class="role">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
+            <div class="role">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
         </div>
     </footer>
 
-    <div id="portalModal" class="custom-modal">
-        <div class="modal-content">
-            <span class="close-modal hover-target" onclick="closeModal('portalModal')">[ CLOSE ]</span>
-            <div id="login-view">
-                <p class="mono text-accent" style="margin-bottom: 5px;">// AUTH_REQUIRED</p>
-                <h2 style="margin-bottom: 25px; font-size: 2rem;">CLIENT LOGIN</h2>
-                <label class="login-label">Registered Email</label>
-                <input type="email" id="login-email" class="login-input" placeholder="name@company.com">
-                <label class="login-label">Phone Number</label>
-                <input type="text" id="login-phone" class="login-input" placeholder="+91 XXXXX XXXXX">
-                <button class="btn-primary hover-target" onclick="handleLogin()" style="width: 100%; padding: 16px; margin-top: 10px;">ACCESS PORTAL ↗</button>
-                <p id="login-error" class="mono" style="color:#dc2626; margin-top:15px; display:none;">// ERROR: INVALID CREDENTIALS</p>
-            </div>
-            <div id="dashboard-view" style="display:none;">
-                <div style="border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 20px;">
-                    <p class="mono text-accent">// SESSION_ACTIVE</p>
-                    <h2 id="client-name-display" style="font-size: 2rem; text-transform: uppercase;">WELCOME</h2>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h3 style="font-size: 1.2rem;">PLAN: <span id="plan-name" class="text-accent">...</span></h3>
-                    <span style="background: #16a34a; color: white; padding: 6px 14px; font-size: 0.75rem; border-radius: 4px; font-weight: bold;" id="plan-status">ACTIVE</span>
-                </div>
-                <div style="background: #111; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-                    <p class="mono text-muted" style="margin-bottom: 12px; display: flex; justify-content: space-between;"><span>EMAIL:</span> <span id="client-email" style="color:white;">--</span></p>
-                    <p class="mono text-muted" style="margin-bottom: 12px; display: flex; justify-content: space-between;"><span>PHONE:</span> <span id="client-phone" style="color:white;">--</span></p>
-                    <p class="mono text-muted" style="display: flex; justify-content: space-between;"><span>EXPIRY:</span> <span id="expiry-date" style="color:white;">--</span></p>
-                </div>
-                <div style="border: 1px solid #222; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-                    <p class="mono text-accent" style="margin-bottom: 15px;">// BILLING STATUS</p>
-                    <p class="mono text-muted" style="margin-bottom: 12px; display: flex; justify-content: space-between;"><span>SETUP FEE:</span> <span id="setup-paid">PENDING ⏳</span></p>
-                    <p class="mono text-muted" style="display: flex; justify-content: space-between;"><span>FINAL DELIVERY:</span> <span id="final-paid">PENDING ⏳</span></p>
-                </div>
-                <button class="btn-primary hover-target" onclick="handlePayment()" style="width: 100%; padding: 16px; margin-bottom: 15px;">RENEW SUBSCRIPTION ↗</button>
-                <button class="btn-outline hover-target" onclick="logout()" style="width: 100%;">LOGOUT SESSION</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="privacyModal" class="custom-modal">
-        <div class="modal-content">
-            <span class="close-modal hover-target" onclick="closeModal('privacyModal')">[ CLOSE ]</span>
-            <p class="mono text-accent" style="margin-bottom: 5px;">// LEGAL</p>
-            <h2 style="margin-bottom: 20px; font-size: 2rem;">PRIVACY & TERMS</h2>
-            <div style="color: #bbb; font-size: 0.95rem; line-height: 1.8; max-height: 50vh; overflow-y: auto; padding-right: 15px;">
-                <h4 style="color: white; margin-top: 10px;">1. No-Refund Policy</h4>
-                <p>All payments made to Icebug\Studio are strictly non-refundable. Due to the custom nature of our digital services and the immediate allocation of technical resources, we do not offer partial or full refunds once a billing cycle or project setup has commenced.</p>
-                <h4 style="color: white; margin-top: 20px;">2. Cancellations</h4>
-                <p>You may cancel your retainer subscription at any time via the Client Portal. Upon cancellation, your access and services will remain active until the conclusion of the current paid billing period.</p>
-                <h4 style="color: white; margin-top: 20px;">3. Data Privacy</h4>
-                <p>We collect and store only essential contact information (Email, Phone) securely via Supabase for account management. We do not sell, trade, or compromise your personal data.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="sowModal" class="custom-modal">
-        <div style="background:#0a0a0a; width:95%; max-width:1100px; height:90vh; border:1px solid #222; border-radius: 8px; display: flex; flex-direction: column; transform: translateY(20px); transition: transform 0.4s ease;">
-            <div style="padding: 20px 30px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <p class="mono text-accent" style="margin-bottom: 5px;">// OFFICIAL SCOPE</p>
-                    <h3 id="modalTitle" style="font-size: 1.5rem;">Project Scope</h3>
-                </div>
-                <span class="close-modal hover-target" onclick="closeModal('sowModal')">[ CLOSE ]</span>
-            </div>
-            <iframe id="sowFrame" src="" style="width:100%; flex-grow: 1; border:none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"></iframe>
-        </div>
-    </div>
-
     <div id="kabir-bot">
         <div class="bot-window" id="botWindow">
-            <div class="bot-header">
-                <span>ICEBUG\KABIR</span>
-                <span style="cursor:pointer;" onclick="toggleBot()">✕</span>
-            </div>
+            <div class="bot-header">ICEBUG\KABIR_ASSISTANT</div>
             <div class="bot-body" id="botBody">
-                <p style="background: #1a1a1a; padding: 10px; border-radius: 6px; border-left: 2px solid var(--accent);">Hello. I am Kabir. Systems are operational. How can I assist you?</p>
-            </div>
-            <div style="padding: 15px; border-top: 1px solid #222; background: #0a0a0a;">
-                <button class="bot-btn hover-target" onclick="botReply('refund')">What is the Refund Policy?</button>
-                <button class="bot-btn hover-target" onclick="botReply('cancel')">How to cancel subscription?</button>
+                <p>Hello. I am Kabir. Systems are operational. How can I assist you?</p>
+                <button class="bot-btn" onclick="botReply('refund')">What is the Refund Policy?</button>
+                <button class="bot-btn" onclick="botReply('cancel')">How to cancel subscription?</button>
             </div>
         </div>
-        <button class="bot-toggle hover-target" onclick="toggleBot()">💬</button>
+        <button class="bot-toggle" onclick="toggleBot()">💬</button>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-    
-    <script defer>
-        // Ensure scripts run after DOM is fully loaded
-        window.addEventListener('DOMContentLoaded', () => {
-            
-            // 1. Supabase Init
-            const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
+    <script>
+        // Supabase Connect
+        const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
 
-            // 2. Micro-Interactions: Custom Magnetic Cursor
-            const cursor = document.getElementById('custom-cursor');
-            if (window.matchMedia("(pointer: fine)").matches) {
-                document.addEventListener('mousemove', (e) => {
-                    cursor.style.left = e.clientX + 'px';
-                    cursor.style.top = e.clientY + 'px';
-                });
-                // Hover effect
-                document.querySelectorAll('.hover-target').forEach(el => {
-                    el.addEventListener('mouseenter', () => cursor.classList.add('hover-active'));
-                    el.addEventListener('mouseleave', () => cursor.classList.remove('hover-active'));
-                });
-            }
-
-            // 3. GSAP Scrollytelling & Animations
-            gsap.registerPlugin(ScrollTrigger);
-
-            // Hero Parallax Fade
-            gsap.to('.hero-content', {
-                y: -150, opacity: 0,
-                scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom center', scrub: true }
+        // Original Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        if(window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
             });
+        }
 
-            // Reveal Sections
-            gsap.utils.toArray('.reveal').forEach(el => {
-                gsap.from(el, { 
-                    y: 50, opacity: 0, duration: 1, ease: "power3.out",
-                    scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" }
-                });
-            });
+        // Original Clock
+        function updateClock() { 
+            const clockEl = document.getElementById('clock');
+            if(clockEl) clockEl.textContent = new Date().toLocaleTimeString('en-US', { hour12: false }); 
+        }
+        setInterval(updateClock, 1000); updateClock();
 
-            // Navbar hide/show on scroll
-            let lastScroll = 0;
-            window.addEventListener("scroll", () => {
-                const currentScroll = window.pageYOffset;
-                if (currentScroll > 100 && currentScroll > lastScroll) {
-                    document.getElementById("navbar").style.transform = "translateY(-100%)";
-                } else {
-                    document.getElementById("navbar").style.transform = "translateY(0)";
-                }
-                lastScroll = currentScroll;
-            });
+        // Original GSAP
+        gsap.from(".anim-up", { y: 50, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power4.out", delay: 0.2 });
 
-            // 4. Modal System (Optimized logic)
-            window.openModal = function(id) {
-                const modal = document.getElementById(id);
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                if(id === 'portalModal') checkSession();
+        // Original Modals Logic
+        function openPortal() {
+            document.getElementById('portalModal').classList.add('active');
+            const savedData = sessionStorage.getItem('icebug_user');
+            if (savedData) showDashboard(JSON.parse(savedData));
+        }
+        function closePortal() { document.getElementById('portalModal').classList.remove('active'); }
+
+        function openPrivacy() { document.getElementById('privacyModal').classList.add('active'); }
+        function closePrivacy() { document.getElementById('privacyModal').classList.remove('active'); }
+
+        function openSOW(link, title) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('sowFrame').src = link.replace('/view?usp=sharing', '/preview');
+            document.getElementById('sowModal').classList.add('active');
+            document.body.style.overflow = "hidden";
+        }
+        function closeSOW() {
+            document.getElementById('sowModal').classList.remove('active');
+            document.getElementById('sowFrame').src = '';
+            document.body.style.overflow = "auto";
+        }
+
+        // Working Backend Logic
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const phone = document.getElementById('login-phone').value.trim();
+            if(!email || !phone) { alert("Please enter both details."); return; }
+
+            const { data, error } = await _supabase.from('subscriptions').select('*').eq("Email_Id", email).eq('Phone_Number', phone).single();
+
+            if (data) {
+                sessionStorage.setItem('icebug_user', JSON.stringify(data));
+                showDashboard(data);
+                document.getElementById('login-error').style.display = 'none';
+            } else {
+                document.getElementById('login-error').style.display = 'block';
             }
+        }
 
-            window.closeModal = function(id) {
-                const modal = document.getElementById(id);
-                modal.classList.remove('active');
-                document.body.style.overflow = 'auto';
-                if(id === 'sowModal') setTimeout(() => document.getElementById('sowFrame').src = '', 300);
-            }
+        function showDashboard(data) {
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
 
-            window.openSOW = function(link, title) {
-                document.getElementById('modalTitle').innerText = title;
-                // Google Drive iframe hack
-                document.getElementById('sowFrame').src = link.replace('/view?usp=sharing', '/preview');
-                openModal('sowModal');
-                setTimeout(() => document.querySelector('#sowModal .modal-content, #sowModal > div').style.transform = 'translateY(0)', 50);
-            }
+            document.getElementById('plan-status').innerText = data.Is_Active ? "ACTIVE" : "EXPIRED";
+            document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM PLAN";
+            document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
+            document.getElementById('client-email').innerText = data.Email_Id || "NOT PROVIDED";
+            document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
+            document.getElementById('expiry-date').innerText = data.Expiry_Date || "--/--/----";
 
-            // 5. Supabase Auth & Dashboard
-            function checkSession() {
-                const savedData = sessionStorage.getItem('icebug_user');
-                if (savedData) showDashboard(JSON.parse(savedData));
-            }
+            const setupEl = document.getElementById('setup-paid');
+            const finalEl = document.getElementById('final-paid');
+            if(setupEl) { setupEl.innerText = data.Setup_Status || "PENDING ⏳"; setupEl.style.color = data.Setup_Status === "PAID ✅" ? "#16a34a" : "#f59e0b"; }
+            if(finalEl) { finalEl.innerText = data.Final_Status || "PENDING ⏳"; finalEl.style.color = data.Final_Status === "PAID ✅" ? "#16a34a" : "#f59e0b"; }
+        }
 
-            window.handleLogin = async function() {
-                const email = document.getElementById('login-email').value.trim();
-                const phone = document.getElementById('login-phone').value.trim();
-                const btn = document.querySelector('#login-view .btn-primary');
-                
-                if(!email || !phone) return alert("Please enter both details.");
-                
-                btn.innerText = "AUTHENTICATING...";
-                const { data, error } = await _supabase.from('subscriptions').select('*').eq("Email_Id", email).eq('Phone_Number', phone).single();
+        function logout() {
+            sessionStorage.removeItem('icebug_user');
+            document.getElementById('login-view').style.display = 'block';
+            document.getElementById('dashboard-view').style.display = 'none';
+        }
 
-                if (data) {
-                    sessionStorage.setItem('icebug_user', JSON.stringify(data));
-                    showDashboard(data);
-                    document.getElementById('login-error').style.display = 'none';
-                } else {
-                    document.getElementById('login-error').style.display = 'block';
-                    btn.innerText = "ACCESS PORTAL ↗";
-                }
-            }
+        function handlePayment() {
+            const plan = document.getElementById('plan-name').innerText;
+            if (plan.includes("Bespoke")) window.location.href = "https://rzp.io/rzp/g8movGN";
+            else if (plan.includes("Premium")) window.location.href = "https://rzp.io/rzp/tQ5dw83H";
+            else window.location.href = "https://rzp.io/rzp/uQQlcFu";
+        }
 
-            function showDashboard(data) {
-                document.getElementById('login-view').style.display = 'none';
-                document.getElementById('dashboard-view').style.display = 'block';
-                
-                document.getElementById('client-name-display').innerText = "WELCOME, " + (data.Client_Name || "CLIENT");
-                document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM";
-                document.getElementById('expiry-date').innerText = data.Expiry_Date || "--/--/----";
-                document.getElementById('client-email').innerText = data.Email_Id || "--";
-                document.getElementById('client-phone').innerText = data.Phone_Number || "--";
-                
-                const setup = document.getElementById('setup-paid');
-                const final = document.getElementById('final-paid');
-                setup.innerText = data.Setup_Status || "PENDING ⏳";
-                setup.style.color = data.Setup_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
-                final.innerText = data.Final_Status || "PENDING ⏳";
-                final.style.color = data.Final_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
-            }
+        function toggleBot() {
+            const win = document.getElementById('botWindow');
+            win.style.display = win.style.display === 'block' ? 'none' : 'block';
+        }
 
-            window.logout = function() {
-                sessionStorage.removeItem('icebug_user');
-                document.getElementById('login-view').style.display = 'block';
-                document.getElementById('dashboard-view').style.display = 'none';
-                document.querySelector('#login-view .btn-primary').innerText = "ACCESS PORTAL ↗";
-            }
-
-            window.handlePayment = function() {
-                const plan = document.getElementById('plan-name').innerText;
-                if (plan.includes("Bespoke")) window.location.href = "https://rzp.io/rzp/g8movGN";
-                else if (plan.includes("Premium")) window.location.href = "https://rzp.io/rzp/tQ5dw83H";
-                else window.location.href = "https://rzp.io/rzp/uQQlcFu";
-            }
-
-            // 6. Bot Logic
-            window.toggleBot = function() {
-                const win = document.getElementById('botWindow');
-                win.style.display = win.style.display === 'block' ? 'none' : 'block';
-            }
-            window.botReply = function(type) {
-                const body = document.getElementById('botBody');
-                const html = type === 'refund' 
-                    ? `<p style="background: #1a1a1a; padding: 10px; border-radius: 6px; border-left: 2px solid var(--accent); margin-top: 10px;"><b>KABIR:</b> Our refund policy is strictly non-refundable once the cycle starts.</p>`
-                    : `<p style="background: #1a1a1a; padding: 10px; border-radius: 6px; border-left: 2px solid var(--accent); margin-top: 10px;"><b>KABIR:</b> You can cancel via the dashboard button. Service continues until expiry.</p>`;
-                body.insertAdjacentHTML('beforeend', html);
-                body.scrollTop = body.scrollHeight;
-            }
-        });
+        function botReply(type) {
+            const body = document.getElementById('botBody');
+            if(type === 'refund') body.innerHTML += `<p style="color:var(--accent); margin-top:10px;"><b>KABIR:</b> Strictly non-refundable once cycle starts.</p>`;
+            else if(type === 'cancel') body.innerHTML += `<p style="color:var(--accent); margin-top:10px;"><b>KABIR:</b> Cancel via dashboard. Access remains until expiry.</p>`;
+            body.scrollTop = body.scrollHeight;
+        }
     </script>
 </body>
 </html>
