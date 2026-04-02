@@ -12,9 +12,9 @@
     <style>
         /* --- MOBILE & SMOOTH ENHANCEMENTS --- */
         html { scroll-behavior: smooth; }
-        body { overflow-x: hidden; width: 100%; cursor: none; } /* Cursor none to show custom cursor */
+        body { overflow-x: hidden; width: 100%; cursor: none; } 
 
-        /* CUSTOM CURSOR CSS (RESTORED) */
+        /* CUSTOM CURSOR CSS */
         .cursor {
             width: 20px; height: 20px; border: 1px solid #4f46e5; border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 9999;
@@ -43,7 +43,6 @@
         .close-portal { cursor: pointer; font-size: 14px; color: #666; font-family: 'Space Mono'; letter-spacing: 2px; }
         .close-portal:hover { color: #4f46e5; }
         
-        /* Login Form Styles */
         .login-input { width: 100%; padding: 14px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.9rem; }
         .login-input:focus { border-color: #4f46e5; }
         .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #666; margin-bottom: 5px; text-transform: uppercase; }
@@ -59,7 +58,6 @@
         .bot-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; cursor: pointer; font-family: 'Inter'; font-size: 0.8rem; }
         .bot-btn:hover { background: #4f46e5; }
 
-        /* Phone Enhancements */
         @media (max-width: 768px) {
             .portal-content, .privacy-content { padding: 30px 20px; }
             .hero-main { font-size: 15vw; }
@@ -98,35 +96,26 @@
                         <h2 style="margin: 5px 0; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
                     </div>
                 </div>
-
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="margin:0; font-size: 0.8rem; font-family: 'Space Mono'; color: #444;">ACTIVE_PLAN: <span id="plan-name" style="color: white;">...</span></h3>
                     <span class="status-badge" id="plan-status">ACTIVE</span>
                 </div>
-
                 <div class="portal-detail"><strong>EMAIL_ID</strong> <span id="client-email">--</span></div>
                 <div class="portal-detail"><strong>PHONE_NO</strong> <span id="client-phone">--</span></div>
                 <div class="portal-detail"><strong>EXPIRY_DATE</strong> <span id="expiry-date">--/--/----</span></div>
-
                 <div style="margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
                     <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// FINANCIAL_RECORDS</p>
                     <h3 style="margin: 10px 0; font-size: 1rem;">BILLING HISTORY</h3>
                     <div style="font-size: 0.8rem; font-family: 'Space Mono'; color: #888;">
                         <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
-                            <span>Project Setup (50% Advance)</span>
-                            <span id="setup-paid">PENDING ⏳</span>
+                            <span>Project Setup (50% Advance)</span><span id="setup-paid">PENDING ⏳</span>
                         </div>
                         <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
-                            <span>Project Delivery (50% Final)</span>
-                            <span id="final-paid">PENDING ⏳</span>
+                            <span>Project Delivery (50% Final)</span><span id="final-paid">PENDING ⏳</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="policy-box">
-                    <strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.
-                </div>
-
+                <div class="policy-box"><strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.</div>
                 <button class="btn-primary" onclick="handlePayment()" style="width: 100%; margin-left: 0; padding: 16px; font-weight: 600;">RENEW SUBSCRIPTION ↗</button>
                 <button class="btn-secondary" onclick="logout()" style="width: 100%; margin-top: 12px; border-color: #222; color: #555; padding: 14px;">LOGOUT SESSION</button>
             </div>
@@ -139,9 +128,9 @@
             <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// LEGAL_TERMS</p>
             <h2 style="margin: 10px 0; font-weight: 800; letter-spacing: -1px;">PRIVACY & TERMS</h2>
             <div style="margin-top: 20px; max-height: 300px; overflow-y: auto; font-size: 0.85rem; color: #888; line-height: 1.6;">
-                <p><strong>No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable.</p>
-                <p><strong>Cancellations:</strong> You can cancel anytime; access remains until cycle end.</p>
-                <p><strong>Data Usage:</strong> We store basic contact info securely via Supabase.</p>
+                <p><strong>No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable. Since we provide custom digital services and immediate allocation of resources, we do not offer refunds once a cycle starts.</p>
+                <p><strong>Cancellations:</strong> You can cancel your subscription anytime. Your access to the premium portal and support will continue until the end of the current paid billing period.</p>
+                <p><strong>Data Usage:</strong> We store your basic contact information and plan details securely via Supabase for subscription management only.</p>
             </div>
         </div>
     </div>
@@ -306,139 +295,4 @@
         <div class="bot-window" id="botWindow">
             <div class="bot-header">ICEBUG\KABIR_ASSISTANT</div>
             <div class="bot-body" id="botBody">
-                <p>Hello. I am Kabir. Systems are operational. How can I assist you?</p>
-                <button class="bot-btn" onclick="botReply('refund')">What is the Refund Policy?</button>
-                <button class="bot-btn" onclick="botReply('cancel')">How to cancel subscription?</button>
-            </div>
-        </div>
-        <button class="bot-toggle" onclick="toggleBot()">💬</button>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="script.js"></script>
-
-    <script>
-        const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
-        
-        let currentClientExpiry = "";
-
-        // CUSTOM CURSOR LOGIC (RESTORED)
-        const cursor = document.querySelector('.cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        // MODAL HANDLERS
-        function openPortal() {
-            const modal = document.getElementById('portalModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
-            const savedData = sessionStorage.getItem('icebug_user');
-            if (savedData) showDashboard(JSON.parse(savedData));
-        }
-
-        function closePortal() {
-            const modal = document.getElementById('portalModal');
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 400);
-        }
-
-        function openPrivacy() {
-            const modal = document.getElementById('privacyModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
-        }
-
-        function closePrivacy() {
-            const modal = document.getElementById('privacyModal');
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 400);
-        }
-
-        // SOW LOGIC (RESTORED)
-        function openSOW(link, title) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('sowFrame').src = link;
-            document.getElementById('sowModal').style.display = 'flex';
-        }
-        function closeSOW() {
-            document.getElementById('sowModal').style.display = 'none';
-            document.getElementById('sowFrame').src = '';
-        }
-
-        // LOGIN LOGIC (Fixed with Email_Id as requested)
-        async function handleLogin() {
-            const email = document.getElementById('login-email').value.trim();
-            const phone = document.getElementById('login-phone').value.trim();
-            const errorMsg = document.getElementById('login-error');
-
-            if(!email || !phone) { alert("Please enter both details."); return; }
-
-            const { data, error } = await _supabase
-                .from('subscriptions')
-                .select('*')
-                .eq("Email_Id", email) 
-                .eq('Phone_Number', phone)
-                .single();
-
-            if (data) {
-                sessionStorage.setItem('icebug_user', JSON.stringify(data));
-                showDashboard(data);
-                errorMsg.style.display = 'none';
-            } else {
-                errorMsg.style.display = 'block';
-            }
-        }
-
-        function showDashboard(data) {
-            document.getElementById('login-view').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'block';
-
-            currentClientExpiry = data.Expiry_Date;
-            document.getElementById('expiry-date').innerText = data.Expiry_Date;
-            document.getElementById('plan-status').innerText = data.Is_Active ? "ACTIVE" : "EXPIRED";
-            document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM PLAN";
-            document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
-            
-            document.getElementById('client-email').innerText = data.Email_Id || "NOT PROVIDED";
-            document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
-
-            const setupEl = document.getElementById('setup-paid');
-            const finalEl = document.getElementById('final-paid');
-            setupEl.innerText = data.Setup_Status || "PENDING ⏳";
-            setupEl.style.color = data.Setup_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
-            finalEl.innerText = data.Final_Status || "PENDING ⏳";
-            finalEl.style.color = data.Final_Status === "PAID ✅" ? "#16a34a" : "#f59e0b";
-        }
-
-        function logout() {
-            sessionStorage.removeItem('icebug_user');
-            document.getElementById('login-view').style.display = 'block';
-            document.getElementById('dashboard-view').style.display = 'none';
-        }
-
-        function handlePayment() {
-            const plan = document.getElementById('plan-name').innerText;
-            if (plan.includes("Bespoke")) window.location.href = "https://rzp.io/rzp/g8movGN";
-            else if (plan.includes("Premium")) window.location.href = "https://rzp.io/rzp/tQ5dw83H";
-            else if (plan.includes("Essential")) window.location.href = "https://rzp.io/rzp/uQQlcFu";
-        }
-
-        function toggleBot() {
-            const win = document.getElementById('botWindow');
-            win.style.display = win.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function botReply(type) {
-            const body = document.getElementById('botBody');
-            if(type === 'refund') {
-                body.innerHTML += `<p style="color:#4f46e5; margin-top:10px;"><b>KABIR:</b> Our refund policy is strictly non-refundable.</p>`;
-            } else if(type === 'cancel') {
-                body.innerHTML += `<p style="color:#4f46e5; margin-top:10px;"><b>KABIR:</b> Cancel via dashboard button.</p>`;
-            }
-            body.scrollTop = body.scrollHeight;
-        }
-    </script>
-</body>
-</html>
+                <p>Hello. I am Kabir. Systems 
