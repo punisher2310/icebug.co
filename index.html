@@ -150,11 +150,13 @@
             * { cursor: auto !important; } .cursor { display: none !important; }
             .hero { padding: 2rem; align-items: flex-end; justify-content: flex-start; text-align: left; }
             
-            /* Guaranteed to show the image on mobile */
-            .hero-bg { 
-                background-size: cover; 
-                background-position: center right; /* Keeps hands visible */
-            }
+            /* Mobile Image Fix - Shows Both Hands */
+        .hero-bg { 
+            background-size: contain; /* Isse photo kategi nahi, dono haath dikhenge */
+            background-position: center 25%; /* Photo ko thoda upar set karega */
+            background-repeat: no-repeat;
+            background-color: #000; /* Bachi hui jagah black mein blend ho jayegi! */
+        }
             .hero-overlay { background: linear-gradient(to top, rgba(3,3,3,1) 15%, rgba(3,3,3,0.4) 50%, rgba(3,3,3,0.1) 100%); }
             .hero-content { padding: 0; padding-bottom: 4rem; }
             
