@@ -149,10 +149,25 @@
         <button class="bot-toggle" onclick="toggleBot()">💬</button>
     </div>
 
+    <div id="sowModal" class="sow-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div>
+                    <p class="role">// ICEBUG OFFICIAL SCOPE</p>
+                    <h3 id="modalTitle" style="color: white; font-weight: 500;">Project Scope</h3>
+                </div>
+                <span class="close-btn" onclick="closeSOW()">&times;</span>
+            </div>
+            <iframe id="sowFrame" src=""></iframe>
+        </div>
+    </div>
+
     <nav class="navbar">
         <div class="logo">icebug<span class="accent">®</span></div>
         <div class="nav-links">
-            <a href="#work">Concepts</a><a href="#leadership">Leadership</a><a href="#pricing">Retainer</a>
+            <a href="#work">Concepts</a>
+            <a href="#leadership">Leadership</a>
+            <a href="#pricing">Retainer</a>
             <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
             <a href="javascript:void(0)" class="client-login" onclick="openPortal()">Client Portal 🔒</a>
             <a href="https://wa.me/919214847729" class="btn-primary">Let's Chat ↗</a>
@@ -207,7 +222,7 @@
         
         let currentClientExpiry = "";
 
-        // MODAL HANDLERS (Same as your code)
+        // MODAL HANDLERS
         function openPortal() {
             const modal = document.getElementById('portalModal');
             modal.style.display = 'flex';
@@ -235,7 +250,7 @@
             setTimeout(() => modal.style.display = 'none', 400);
         }
 
-        // --- LOGIN LOGIC (FIXED COLUMN NAME) ---
+        // --- LOGIN LOGIC (UPDATED WITH YOUR FIX) ---
         async function handleLogin() {
             const email = document.getElementById('login-email').value.trim();
             const phone = document.getElementById('login-phone').value.trim();
@@ -246,7 +261,7 @@
             const { data, error } = await _supabase
                 .from('subscriptions')
                 .select('*')
-                .eq("Email_Id", email) // <--- FIXED: No more apostrophe
+                .eq("Email_Id", email) // <--- EXTRA CODE APPLIED: NO APOSTROPHE
                 .eq('Phone_Number', phone)
                 .single();
 
@@ -256,7 +271,6 @@
                 errorMsg.style.display = 'none';
             } else {
                 errorMsg.style.display = 'block';
-                console.log("Login Error:", error);
             }
         }
 
@@ -270,11 +284,11 @@
             document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM PLAN";
             document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
             
-            // FIXED: Column name updated to match renamed Supabase column
+            // UPDATED: Column name for correct display
             document.getElementById('client-email').innerText = data.Email_Id || "NOT PROVIDED";
             document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
 
-            // Financial Records
+            // Financial Record Logic
             const setupEl = document.getElementById('setup-paid');
             const finalEl = document.getElementById('final-paid');
             setupEl.innerText = data.Setup_Status || "PENDING ⏳";
