@@ -14,13 +14,15 @@
         html { scroll-behavior: smooth; }
         body { overflow-x: hidden; width: 100%; cursor: none; } /* Cursor none to show custom cursor */
 
-        /* CUSTOM CURSOR CSS (RESTORED) */
+        /* CUSTOM CURSOR CSS (ORANGE COLOR RESTORED) */
         .cursor {
-            width: 20px; height: 20px; border: 1px solid #4f46e5; border-radius: 50%;
+            width: 20px; height: 20px; 
+            border: 1px solid #ff6b00; /* Orange Border */
+            border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 10000;
             transition: transform 0.1s ease, background 0.3s ease;
             transform: translate(-50%, -50%);
-            background: rgba(79, 70, 229, 0.1);
+            background: rgba(255, 107, 0, 0.1); /* Light Orange Background */
         }
 
         /* Shared Modal Styles */
@@ -30,12 +32,17 @@
             backdrop-filter: blur(15px); justify-content: center; align-items: center;
             padding: 20px; box-sizing: border-box;
         }
+
+        /* FIX: Ensure active class shows the modal */
+        .portal-modal.active, .privacy-modal.active, .sow-modal.active {
+            display: flex !important;
+        }
+
         .portal-content, .privacy-content {
             background: #0a0a0a; color: white; padding: 40px; border-radius: 4px; 
             width: 100%; max-width: 550px; border: 1px solid #222; position: relative;
             transform: translateY(20px); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .active { display: flex !important; }
         .active .portal-content, .active .privacy-content { transform: translateY(0); }
         
         .portal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #222; padding-bottom: 20px; }
@@ -302,13 +309,15 @@
             <div class="tech-detail">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
             <div class="tech-detail">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
         </div>
-    </footer> <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
 
     <script>
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
 
-        // --- CUSTOM CURSOR LOGIC (FIXED) ---
+        // --- CUSTOM CURSOR LOGIC ---
         const cursor = document.querySelector('.cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
@@ -318,8 +327,7 @@
         // --- MODAL HANDLERS ---
         function openPortal() {
             const modal = document.getElementById('portalModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
+            modal.classList.add('active'); // Added to make visible
             const savedData = sessionStorage.getItem('icebug_user');
             if (savedData) showDashboard(JSON.parse(savedData));
         }
@@ -332,8 +340,7 @@
 
         function openPrivacy() {
             const modal = document.getElementById('privacyModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
+            modal.classList.add('active'); // Added to make visible
         }
 
         function closePrivacy() {
@@ -343,13 +350,15 @@
         }
 
         function openSOW(link, title) {
+            const modal = document.getElementById('sowModal');
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('sowFrame').src = link;
-            document.getElementById('sowModal').style.display = 'flex';
+            modal.classList.add('active'); // Added to make visible
         }
 
         function closeSOW() {
-            document.getElementById('sowModal').style.display = 'none';
+            const modal = document.getElementById('sowModal');
+            modal.classList.remove('active');
             document.getElementById('sowFrame').src = '';
         }
 
@@ -386,7 +395,7 @@
             document.getElementById('plan-name').innerText = data.Plan_Type || "PREMIUM PLAN";
             document.getElementById('client-name-display').innerText = data.Client_Name || "CLIENT";
             
-            // SHOW EMAIL & PHONE IN DASHBOARD
+            // EMAIL & PHONE DISPLAY
             document.getElementById('client-email').innerText = data.Email_Id || "NOT PROVIDED";
             document.getElementById('client-phone').innerText = data.Phone_Number || "NOT PROVIDED";
 
