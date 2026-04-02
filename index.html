@@ -1,1 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icebug\Studio | Premium Digital Experiences</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
+    <style>
+        /* --- CORE STYLES & FORTEX THEME --- */
+        :root {
+            --bg: #050505;
+            --surface: #111111;
+            --surface-border: #222222;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent: #ff4d29; /* Neon Orange from template */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        html { scroll-behavior: smooth; }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            line-height: 1.5;
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        .cursor {
+            width: 15px; height: 15px; background: var(--accent); border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s;
+            mix-blend-mode: difference;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4 { font-weight: 800; letter-spacing: -0.03em; }
+        .mono { font-family: 'Space Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        .text-accent { color: var(--accent); }
+        .text-muted { color: var(--text-muted); }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 2rem 4rem; position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+        .btn-primary { background: var(--accent); color: white; padding: 10px 24px; border-radius: 4px; font-weight: 600; border: none; transition: 0.3s; display: inline-block; text-decoration: none; }
+        .btn-primary:hover { background: #e03c1c; }
+        .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--surface-border); padding: 10px 24px; border-radius: 4px; transition: 0.3s; }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* --- SECTIONS --- */
+        section { padding: 8rem 4rem; }
+        .section-header { margin-bottom: 4rem; }
+        .section-title { font-size: clamp(3rem, 6vw, 5rem); line-height: 1; margin-bottom: 1rem; }
+
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 4rem; position: relative; }
+        .hero-sub { font-size: clamp(1.2rem, 2vw, 1.8rem); color: var(--text-muted); max-width: 600px; margin-bottom: 1rem; }
+        .hero-title { font-size: clamp(4rem, 10vw, 9rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.05em; text-transform: uppercase; }
+        .hero-title span.italic { font-style: italic; color: var(--text-muted); font-weight: 300; }
+        
+        /* --- BENTO GRID (Concepts/Projects) --- */
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem; }
+        .bento-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 12px; padding: 2rem; overflow: hidden; position: relative; transition: border-color 0.3s; }
+        .bento-card:hover { border-color: var(--accent); }
+        .col-8 { grid-column: span 8; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+
+        /* --- PRICING --- */
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .price-card { background: var(--surface); border: 1px solid var(--surface-border); padding: 3rem; border-radius: 12px; display: flex; flex-direction: column; }
+        .price-card.popular { border-color: var(--accent); position: relative; }
+        .price-badge { position: absolute; top: -12px; right: 24px; background: var(--accent); color: white; padding: 4px 12px; font-size: 0.7rem; font-weight: 800; border-radius: 4px; }
+        .price-amount { font-size: 3rem; font-weight: 800; margin: 1rem 0; }
+        .price-features { list-style: none; margin: 2rem 0; flex-grow: 1; }
+        .price-features li { padding: 0.5rem 0; border-bottom: 1px solid var(--surface-border); font-size: 0.9rem; color: var(--text-muted); }
+
+        /* --- FOOTER --- */
+        footer { border-top: 1px solid var(--surface-border); padding: 6rem 4rem 2rem; background: var(--bg); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+        .footer-massive { font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; letter-spacing: -2px; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .bento-grid, .pricing-grid, .footer-grid { grid-template-columns: 1fr; }
+            .col-8, .col-4, .col-6 { grid-column: span 1; }
+            section, .hero, nav, footer { padding-left: 2rem; padding-right: 2rem; }
+            .nav-links { display: none; } /* Mobile menu needed */
+            * { cursor: auto !important; }
+            .cursor { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor" id="custom-cursor"></div>
+
+    <nav>
+        <div class="logo">Icebug<span class="text-accent">®</span></div>
+        <div class="nav-links">
+            <a href="#projects">Projects/</a>
+            <a href="#vision">Vision/</a>
+            <a href="#pricing">Retainer/</a>
+            <a href="#" class="btn-outline" style="padding: 6px 16px; font-size: 0.8rem;">Client Portal 🔒</a>
+            <a href="https://wa.me/919214847729" class="btn-primary" style="padding: 6px 16px; font-size: 0.8rem;">Let's Chat ↗</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <p class="hero-sub mono">We design and develop digital experiences that drive real growth for ambitious brands.</p>
+        <h1 class="hero-title">
+            YOU <span class="italic">IMAGINE</span>/.<br>
+            WE MAKE IT <span class="text-accent">REAL</span>//.
+        </h1>
+        <div class="mono" style="position: absolute; bottom: 3rem; left: 4rem; color: var(--text-muted);">
+            001 / Scroll to explore ↓
+        </div>
+        <div class="mono" style="position: absolute; bottom: 3rem; right: 4rem; text-align: right;">
+            © 2026<br>KANPUR, UP.
+        </div>
+    </header>
+
+    <section id="projects">
+        <div class="section-header">
+            <p class="mono text-accent">002 / Our Work</p>
+            <h2 class="section-title">Selected <span class="text-accent">Projects.</span></h2>
+        </div>
+        <div class="bento-grid">
+            <div class="bento-card col-8" style="min-height: 400px; background: linear-gradient(145deg, #1a0f0a, #050505);">
+                <div style="position: absolute; bottom: 2rem; left: 2rem;">
+                    <div class="mono text-accent" style="margin-bottom: 10px;">HOSPITALITY / CONFIDENTIAL</div>
+                    <h3>Premium Cafe Experience</h3>
+                </div>
+            </div>
+            <div class="bento-card col-4" style="min-height: 400px; display: flex; flex-direction: column; justify-content: space-between;">
+                <h3 style="font-size: 2rem;">95%</h3>
+                <p class="text-muted">Client satisfaction rate across 15+ successful high-end projects.</p>
+            </div>
+            <div class="bento-card col-6" style="min-height: 300px;">
+                <div class="mono text-accent" style="margin-bottom: 10px;">E-COMMERCE</div>
+                <h3>Next-Gen Apparel Drop</h3>
+                <p class="text-muted" style="margin-top: 10px;">Status: Internal Concept // 2026</p>
+            </div>
+            <div class="bento-card col-6" style="min-height: 300px; background: var(--accent); color: white;">
+                <h3 style="font-size: 2.5rem; line-height: 1.1;">Flexible <br>Pricing</h3>
+                <p style="margin-top: 10px;">Scalable systems that adapt to your budget and scope.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="vision">
+        <div class="section-header">
+            <p class="mono text-accent">003 / Leadership</p>
+            <h2 class="section-title">The <span class="text-accent">Vision.</span></h2>
+        </div>
+        <div class="bento-grid">
+            <div class="bento-card col-6">
+                <span class="text-accent" style="font-size: 2rem; font-family: serif;">"</span>
+                <p style="font-size: 1.2rem; margin: 1rem 0 2rem;">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets.</p>
+                <div>
+                    <strong>Utkarsh Tiwari</strong>
+                    <p class="mono text-muted" style="margin-top: 5px;">// Lead Architect & Founder</p>
+                </div>
+            </div>
+            <div class="bento-card col-6">
+                <span class="text-accent" style="font-size: 2rem; font-family: serif;">"</span>
+                <p style="font-size: 1.2rem; margin: 1rem 0 2rem;">Our relationship doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the infrastructure it needs to scale profitably.</p>
+                <div>
+                    <strong>Ayushi Awasthi</strong>
+                    <p class="mono text-muted" style="margin-top: 5px;">// Head of Sales & Strategy</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing">
+        <div class="section-header">
+            <p class="mono text-accent">004 / Retainer</p>
+            <h2 class="section-title">Transparent. <span class="text-accent">Scalable.</span></h2>
+        </div>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>The Essential</h3>
+                <p class="mono text-muted" style="margin-top: 5px;">₹10,000 Setup</p>
+                <div class="price-amount">₹999<span style="font-size: 1rem; color: var(--text-muted);">/mo</span></div>
+                <ul class="price-features">
+                    <li>Single Page Experience</li>
+                    <li>Standard Animations</li>
+                    <li>Vercel Cloud Hosting</li>
+                </ul>
+                <button class="btn-outline" style="width: 100%; margin-bottom: 10px;">View SOW ↗</button>
+                <button class="btn-primary" style="width: 100%;">Sign SOW 🔒</button>
+            </div>
+            <div class="price-card popular">
+                <div class="price-badge">MOST POPULAR</div>
+                <h3>The Premium</h3>
+                <p class="mono text-muted" style="margin-top: 5px;">₹25,000 Setup</p>
+                <div class="price-amount">₹1,999<span style="font-size: 1rem; color: var(--text-muted);">/mo</span></div>
+                <ul class="price-features">
+                    <li>Multi-Page Custom Site</li>
+                    <li>Advanced GSAP Motion</li>
+                    <li>CMS (Easy Content Edits)</li>
+                    <li>Priority Monthly Support</li>
+                </ul>
+                <button class="btn-outline" style="width: 100%; margin-bottom: 10px; border-color: #555;">View SOW ↗</button>
+                <button class="btn-primary" style="width: 100%;">Sign SOW 🔒</button>
+            </div>
+            <div class="price-card">
+                <h3>The Bespoke</h3>
+                <p class="mono text-muted" style="margin-top: 5px;">₹50k+ Setup</p>
+                <div class="price-amount">₹4,999<span style="font-size: 1rem; color: var(--text-muted);">/mo</span></div>
+                <ul class="price-features">
+                    <li>Full 3D / WebGL Motion</li>
+                    <li>E-commerce / Booking Setup</li>
+                    <li>Custom Backend System</li>
+                    <li>Dedicated Tech Team</li>
+                </ul>
+                <button class="btn-outline" style="width: 100%; margin-bottom: 10px;">View SOW ↗</button>
+                <button class="btn-primary" style="width: 100%;">Let's Discuss 🔒</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h2 class="footer-massive">ICEBUG<span class="text-accent">®</span></h2>
+                <p class="text-muted" style="max-width: 300px; margin-top: 1rem;">High-performance digital experiences engineered in Kanpur, UP.</p>
+            </div>
+            <div>
+                <p class="mono text-accent" style="margin-bottom: 1.5rem;">// CONNECT</p>
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+                    <li><a href="https://instagram.com/icebug.co" target="_blank" style="color: white; text-decoration: none;">Instagram ↗</a></li>
+                    <li><a href="https://wa.me/919214847729" target="_blank" style="color: white; text-decoration: none;">WhatsApp ↗</a></li>
+                    <li><a href="mailto:hello@icebug.co" style="color: white; text-decoration: none;">Email Us ↗</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="mono text-accent" style="margin-bottom: 1.5rem;">// LEGAL & NAV</p>
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+                    <li><a href="#" style="color: white; text-decoration: none;">Client Portal 🔒</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Privacy Policy</a></li>
+                    <li><a href="#" style="color: white; text-decoration: none;">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top: 1px solid var(--surface-border); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center;" class="mono text-muted">
+            <p>© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</p>
+            <p>HAND-CRAFTED BY <span class="text-accent">UTKARSH & AYUSHI</span></p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom Cursor Logic
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Add hover effect for cursor on links/buttons
+        const interactables = document.querySelectorAll('a, button');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(2)';
+                cursor.style.background = 'white';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.background = 'var(--accent)';
+            });
+        });
+    </script>
+</body>
+</html>
