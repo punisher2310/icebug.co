@@ -12,22 +12,22 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        /* --- CORE ELITE STYLES (FAIL-SAFE) --- */
+        /* --- CORE ELITE STYLES --- */
         :root { 
-            --bg-color: #030303; 
+            --bg-color: #000000; 
             --surface: #0a0a0a; 
             --border-light: #1f1f1f;
             --text-main: #ffffff; 
             --text-muted: #888888; 
             --accent: #ff4d29; 
-            --nav-bg: rgba(3, 3, 3, 0.8); 
+            --nav-bg: rgba(0, 0, 0, 0.6); 
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* SIMPLE RELIABLE CURSOR */
+        /* ELITE CURSOR */
         .cursor {
             width: 18px; height: 18px; background: var(--accent); border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 99999;
@@ -54,33 +54,35 @@
         .ticker { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker 25s linear infinite; font-family: 'Space Mono'; font-weight: bold; font-size: 1.2rem; color: #000; text-transform: uppercase; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
-        /* HERO SECTION - FIXED IMAGE ISSUE */
+        /* ========================================= */
+        /* HERO SECTION - REFINED FOR DESKTOP & MOBILE */
+        /* ========================================= */
         .hero { position: relative; width: 100%; height: 100vh; display: flex; align-items: flex-end; background: #000; padding: 4rem; overflow: hidden; }
         
         .hero-bg { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
-            /* Make sure file is named hero.jpg in GitHub */
-            background-image: url('hero.jpeg'); 
-            background-position: center;
+            background-image: url('hero.jpeg'); /* Make sure your image in github is exactly hero.jpg */
+            background-position: center 40%; /* Lifts the card up slightly on desktop */
             background-size: cover;
             background-repeat: no-repeat;
-            opacity: 0.8;
+            opacity: 0.95;
         }
         
+        /* Stronger gradient at the bottom so text is readable */
         .hero-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;
-            background: linear-gradient(to top, rgba(3,3,3,1) 0%, rgba(3,3,3,0) 50%, rgba(3,3,3,0.8) 100%); 
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,0) 100%); 
         }
 
-        .hero-content { position: relative; z-index: 3; width: 100%; max-width: 1200px; padding-bottom: 2rem; }
-        .hero-sub { font-family: 'Space Mono'; font-size: clamp(0.9rem, 2vw, 1.1rem); font-weight: 600; color: #ccc; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px; }
-        .hero-main { font-size: clamp(3.5rem, 10vw, 9rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; text-transform: uppercase; margin-bottom: 0; }
-        .outline-text { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.8); font-style: italic; font-weight: 800; }
+        .hero-content { position: relative; z-index: 3; width: 100%; max-width: 1200px; padding-bottom: 0; }
+        .hero-sub { font-family: 'Space Mono'; font-size: clamp(0.85rem, 2vw, 1rem); font-weight: 600; color: #ccc; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px; }
+        .hero-main { font-size: clamp(3.5rem, 10vw, 8.5rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; text-transform: uppercase; margin-bottom: 0; }
+        .outline-text { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.7); font-style: italic; font-weight: 800; }
         
-        .hero-footer { position: absolute; bottom: 3rem; right: 4rem; z-index: 3; font-family: 'Space Mono'; font-size: 0.8rem; color: #888; text-align: right; text-transform: uppercase; line-height: 1.5;}
+        .hero-footer { position: absolute; bottom: 4rem; right: 4rem; z-index: 3; font-family: 'Space Mono'; font-size: 0.8rem; color: #888; text-align: right; text-transform: uppercase; line-height: 1.5;}
 
-        /* SECTIONS & BENTO GRIDS (Always Visible Now) */
-        section { padding: 8rem 4rem; position: relative; z-index: 5; background: var(--bg-color); display: block !important; opacity: 1 !important; visibility: visible !important; }
+        /* SECTIONS & BENTO GRIDS */
+        section { padding: 8rem 4rem; position: relative; z-index: 5; background: var(--bg-color); }
         .section-title { font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; margin-bottom: 4rem; letter-spacing: -2px; text-transform: uppercase; line-height: 1;}
         
         .bento-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden; transition: all 0.4s ease; position: relative; }
@@ -145,23 +147,24 @@
         .bot-btn { width: 100%; text-align: left; padding: 12px 15px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; border-radius: 6px; font-family: 'Inter'; font-weight: 500; transition: 0.3s; font-size: 0.85rem; }
         .bot-btn:hover { background: var(--accent); border-color: var(--accent); }
 
-        /* MOBILE FIXES - FAIL SAFE */
+        /* ========================================= */
+        /* MOBILE RESPONSIVE FIXES (FAIL SAFE)       */
+        /* ========================================= */
         @media (max-width: 768px) {
             * { cursor: auto !important; } .cursor { display: none !important; }
-            .hero { padding: 2rem; align-items: flex-end; justify-content: flex-start; text-align: left; }
+            .hero { padding: 2rem; align-items: flex-end; justify-content: flex-start; text-align: left; padding-bottom: 5rem;}
             
-            /* Mobile Image Fix - Shows Both Hands */
-        .hero-bg { 
-            background-size: contain; /* Isse photo kategi nahi, dono haath dikhenge */
-            background-position: center 25%; /* Photo ko thoda upar set karega */
-            background-repeat: no-repeat;
-            background-color: #000; /* Bachi hui jagah black mein blend ho jayegi! */
-        }
-            .hero-overlay { background: linear-gradient(to top, rgba(3,3,3,1) 15%, rgba(3,3,3,0.4) 50%, rgba(3,3,3,0.1) 100%); }
-            .hero-content { padding: 0; padding-bottom: 4rem; }
+            /* MOBILE IMAGE FIX: Force 100% width, don't crop sides */
+            .hero-bg { 
+                background-size: 100% auto; /* 100% width, auto height. Shows both hands perfectly! */
+                background-position: center 25%; /* Puts the image in the upper middle */
+                background-color: var(--bg-color); /* Fills top and bottom space with black */
+            }
+            .hero-overlay { background: linear-gradient(to top, rgba(0,0,0,1) 35%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0) 100%); }
+            .hero-content { padding: 0; }
             
             section { padding: 5rem 2rem; }
-            .hero-main { font-size: 14vw; }
+            .hero-main { font-size: 14vw; line-height: 0.95; }
             .manifesto-grid, .work-grid, .message-grid, .pricing-grid { grid-template-columns: 1fr; }
             .footer-top { flex-direction: column; gap: 3rem; }
             .nav-links { display: none; }
@@ -431,7 +434,7 @@
     <script>
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
 
-        // Simple Cursor
+        // Simple Custom Cursor
         const cursor = document.querySelector('.cursor');
         if(window.matchMedia("(pointer: fine)").matches) {
             document.addEventListener('mousemove', (e) => {
@@ -446,6 +449,7 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
+        // Navbar scroll logic
         let lastScroll = 0;
         window.addEventListener("scroll", () => {
             const currentScroll = window.pageYOffset;
@@ -455,6 +459,7 @@
             lastScroll = currentScroll;
         });
 
+        // Modals
         function openPortal() { document.getElementById('portalModal').classList.add('active'); const savedData = sessionStorage.getItem('icebug_user'); if (savedData) showDashboard(JSON.parse(savedData)); document.body.style.overflow = "hidden"; }
         function closePortal() { document.getElementById('portalModal').classList.remove('active'); document.body.style.overflow = "auto"; }
 
