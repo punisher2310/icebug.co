@@ -4,152 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Icebug\Studio | Premium Digital Experiences</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Space+Mono&display=swap" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        /* --- CORE STYLES & FORTEX VIBE --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        /* --- CORE ELITE STYLES --- */
         :root { 
-            --bg-color: #030303; /* Slightly darker, deep premium black */
+            --bg-color: #030303; 
             --surface: #0a0a0a; 
             --border-light: #1f1f1f;
             --text-main: #ffffff; 
             --text-muted: #888888; 
             --accent: #ff4d29; 
-            --nav-bg: rgba(3, 3, 3, 0.85); 
+            --nav-bg: rgba(3, 3, 3, 0.5); 
         }
         
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* CUSTOM CURSOR */
+        /* ELITE CURSOR */
         .cursor {
-            width: 18px; height: 18px; background: var(--accent); border-radius: 50%;
+            width: 15px; height: 15px; background: var(--accent); border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 99999;
-            transition: transform 0.15s ease-out; box-shadow: 0 0 15px rgba(255, 77, 41, 0.5);
-            transform: translate(-50%, -50%);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), width 0.2s, height 0.2s, background 0.2s;
+            box-shadow: 0 0 15px rgba(255, 77, 41, 0.6); transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
         }
+        .cursor-hover { width: 50px; height: 50px; background: #fff; box-shadow: none; }
 
         /* NAVIGATION */
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; position: fixed; width: 100%; top: 0; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: -1.5px; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; position: fixed; width: 100%; top: 0; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s; }
+        .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: -1.5px; text-transform: uppercase; }
         .accent { color: var(--accent); }
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a { color: var(--text-main); text-decoration: none; margin-left: 2.5rem; font-size: 0.85rem; font-weight: 600; transition: color 0.3s ease; }
+        .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.3s; }
         .nav-links a:hover { color: var(--accent); }
         
         /* BUTTONS */
-        .client-login { border: 1px solid #333; padding: 8px 20px; border-radius: 6px; transition: border-color 0.3s; }
-        .client-login:hover { border-color: var(--accent); }
-        .btn-primary { background: var(--accent); color: #fff; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: transform 0.3s, background 0.3s; cursor: pointer; border: none; display: inline-block; text-align: center; }
-        .btn-primary:hover { background: #e03c1c; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255, 77, 41, 0.2); }
-        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--border-light); padding: 14px 32px; border-radius: 6px; text-decoration: none; display: inline-block; transition: all 0.3s; cursor: pointer; text-align: center; }
+        .btn-primary { background: var(--accent); color: #fff; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); border: none; display: inline-block; text-align: center; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+        .btn-primary:hover { background: #fff; color: #000; transform: translateY(-4px); box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1); }
+        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--border-light); padding: 14px 32px; border-radius: 6px; text-decoration: none; display: inline-block; transition: all 0.3s; text-align: center; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
         .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* SECTIONS & LAYOUT */
-        section { padding: 8rem 4rem; }
-        .section-title { font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; margin-bottom: 4rem; letter-spacing: -0.04em; line-height: 1; }
+        /* INFINITE MARQUEE TICKER */
+        .ticker-wrap { width: 100%; overflow: hidden; background: var(--accent); padding: 1rem 0; border-top: 1px solid #fff; border-bottom: 1px solid #fff; transform: rotate(-2deg); margin: 4rem -2rem; position: relative; z-index: 10;}
+        .ticker { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker 25s linear infinite; font-family: 'Space Mono'; font-weight: bold; font-size: 1.2rem; color: #000; text-transform: uppercase; }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
+        /* FORTEX HERO SECTION (Image Adjusted) */
+        .hero { position: relative; width: 100%; height: 100vh; display: flex; align-items: flex-end; background: #000; padding: 4rem; overflow: hidden; }
         
-        /* FORTEX BENTO CARD SYSTEM */
-        .bento-card { 
-            background: var(--surface); border: 1px solid var(--border-light); 
-            border-radius: 16px; overflow: hidden; 
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease; 
+        /* User's Specific Image Background */
+        .hero-bg { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+            background: url('hero.jpeg') no-repeat center center / cover; 
+            opacity: 0.9;
         }
-        .bento-card:hover { transform: translateY(-8px); border-color: #444; }
+        
+        /* Dark vignette overlay to make text pop without hiding the hands */
+        .hero-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;
+            background: linear-gradient(to top, rgba(3,3,3,1) 0%, rgba(3,3,3,0) 40%, rgba(3,3,3,0.8) 100%); 
+        }
 
-        /* HERO */
-        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 4rem; }
-        .hero-main { font-size: clamp(4rem, 12vw, 10rem); font-weight: 900; letter-spacing: -0.06em; margin-bottom: 1rem; text-transform: uppercase; line-height: 0.85; }
-        .hero-sub { font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 400; color: #ddd; max-width: 800px; line-height: 1.3; text-align: center; margin: 0 auto; letter-spacing: -1px; }
-        .tech-detail { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-muted); position: absolute; text-transform: uppercase; letter-spacing: 1px; }
-        .top-left { top: 8rem; left: 4rem; }
-        .top-right { top: 8rem; right: 4rem; text-align: right; }
-        .bottom-left { bottom: 3rem; left: 4rem; }
-        .hero-content { text-align: center; z-index: 2; width: 100%; }
+        .hero-content { position: relative; z-index: 3; width: 100%; max-width: 1200px; padding-bottom: 2rem; }
+        .hero-sub { font-family: 'Space Mono'; font-size: clamp(0.9rem, 2vw, 1.1rem); font-weight: 600; color: #ccc; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 1px; }
+        .hero-main { font-size: clamp(4rem, 10vw, 9rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; text-transform: uppercase; margin-bottom: 0; }
+        .outline-text { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.6); font-style: italic; font-weight: 800; }
+        
+        .hero-footer { position: absolute; bottom: 3rem; right: 4rem; z-index: 3; font-family: 'Space Mono'; font-size: 0.8rem; color: #888; text-align: right; text-transform: uppercase; line-height: 1.5;}
 
-        /* MANIFESTO */
-        .manifesto-title { font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; margin-bottom: 4rem; line-height: 1.1; letter-spacing: -2px; }
-        .manifesto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-        .manifesto-item { padding: 4rem 3rem; display: flex; flex-direction: column; justify-content: space-between; }
-        .stat { font-size: 5rem; font-weight: 900; color: var(--accent); margin-bottom: 1rem; letter-spacing: -3px; line-height: 1; }
+        /* SECTIONS & BENTO GRIDS */
+        section { padding: 8rem 4rem; position: relative; z-index: 5; background: var(--bg-color); }
+        .section-title { font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; margin-bottom: 4rem; letter-spacing: -2px; text-transform: uppercase; line-height: 1;}
+        
+        .bento-card { background: var(--surface); border: 1px solid var(--border-light); border-radius: 16px; overflow: hidden; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
+        .bento-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
         
         /* WORK GRID */
         .work-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; }
-        .image-wrapper { height: 450px; width: 100%; overflow: hidden; border-bottom: 1px solid var(--border-light); }
-        .work-image { width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .work-card:hover .work-image { transform: scale(1.05); }
-        .work-card:hover { border-color: var(--accent); }
+        .image-wrapper { height: 450px; width: 100%; overflow: hidden; position: relative; border-bottom: 1px solid var(--border-light); }
+        .work-image { width: 100%; height: 100%; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); object-fit: cover; }
+        .work-card:hover .work-image { transform: scale(1.08); filter: brightness(1.1); }
         .work-info { padding: 2.5rem; }
         .work-tags { display: flex; gap: 10px; margin-bottom: 1.5rem; }
         .tag { font-family: 'Space Mono'; font-size: 0.65rem; color: var(--accent); border: 1px solid #333; padding: 6px 12px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
-        
+
         /* LEADERSHIP */
         .message-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
         .message-box { padding: 4rem 3rem; display: flex; flex-direction: column; justify-content: space-between; }
-        .quote-icon { font-size: 4rem; color: var(--accent); margin-bottom: 1rem; font-family: serif; line-height: 0.5; }
-        .leader-name { margin-top: 2rem; font-weight: 800; font-size: 1.2rem; }
+        .quote-icon { font-size: 5rem; color: var(--accent); margin-bottom: 1rem; font-family: serif; line-height: 0; }
+        .leader-name { margin-top: 3rem; font-weight: 800; font-size: 1.2rem; text-transform: uppercase; }
         .role { font-family: 'Space Mono'; font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; text-transform: uppercase; }
 
-        /* PRICING GRID */
+        /* PRICING */
         .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
         .price-card { padding: 3.5rem 3rem; display: flex; flex-direction: column; position: relative; }
-        .premium-card { border-color: var(--accent); background: linear-gradient(180deg, rgba(255,77,41,0.05) 0%, #0a0a0a 100%); }
-        .premium-card:hover { border-color: var(--accent); box-shadow: 0 10px 40px rgba(255, 77, 41, 0.1); }
+        .premium-card { border-color: var(--accent); background: linear-gradient(180deg, rgba(255,77,41,0.08) 0%, #0a0a0a 100%); }
+        .monthly-fee { font-size: 4rem; font-weight: 900; margin: 1.5rem 0; letter-spacing: -3px; color: #fff; }
         .setup-fee { font-family: 'Space Mono'; color: var(--accent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
-        .monthly-fee { font-size: 4rem; font-weight: 900; margin: 1.5rem 0; letter-spacing: -3px; }
         .features { list-style: none; margin: 2rem 0; flex-grow: 1; }
-        .features li { padding: 0.8rem 0; border-bottom: 1px solid #1a1a1a; font-size: 0.95rem; color: #aaa; }
-        .price-badge { position: absolute; top: 0; right: 0; background: var(--accent); color: white; padding: 8px 20px; font-size: 0.7rem; font-weight: 800; font-family: 'Space Mono'; border-bottom-left-radius: 12px; }
+        .features li { padding: 1rem 0; border-bottom: 1px solid #1a1a1a; font-size: 0.95rem; color: #aaa; font-weight: 500; }
+        .price-badge { position: absolute; top: 0; right: 0; background: var(--accent); color: white; padding: 8px 20px; font-size: 0.7rem; font-weight: 800; font-family: 'Space Mono'; border-bottom-left-radius: 16px; text-transform: uppercase; letter-spacing: 1px;}
 
         /* FOOTER */
-        .main-footer { padding: 8rem 4rem 2rem 4rem; background: #000; border-top: 1px solid var(--border-light); }
+        .main-footer { padding: 6rem 4rem 2rem 4rem; background: #000; border-top: 1px solid var(--border-light); margin-top: 4rem; position: relative; z-index: 5;}
         .footer-top { display: flex; justify-content: space-between; margin-bottom: 5rem; }
         .footer-links { display: flex; gap: 5rem; }
-        .footer-links a { display: block; color: var(--text-main); text-decoration: none; margin-bottom: 12px; font-size: 0.95rem; transition: 0.3s; font-weight: 500; }
-        .footer-links a:hover { color: var(--accent); }
-        .footer-bottom { display: flex; justify-content: space-between; border-top: 1px solid var(--border-light); padding-top: 2rem; font-size: 0.75rem; color: var(--text-muted); font-family: 'Space Mono'; text-transform: uppercase; }
+        .footer-links a { display: block; color: var(--text-main); text-decoration: none; margin-bottom: 12px; font-size: 0.95rem; transition: 0.3s; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+        .footer-links a:hover { color: var(--accent); padding-left: 5px; }
 
-        /* MODALS (Portal, Privacy, SOW) */
-        .portal-modal, .privacy-modal, .sow-modal { display: none; position: fixed; z-index: 5000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.96); backdrop-filter: blur(15px); justify-content: center; align-items: center; padding: 20px; }
-        .portal-content, .privacy-content { background: #0a0a0a; padding: 40px; border-radius: 12px; width: 100%; max-width: 550px; border: 1px solid #222; transform: translateY(20px); transition: 0.4s ease; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .active { display: flex !important; }
+        /* MODALS (Kept Safe & Elegant) */
+        .portal-modal, .privacy-modal, .sow-modal { display: none; position: fixed; z-index: 5000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.96); backdrop-filter: blur(20px); justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+        .portal-content, .privacy-content { background: #0a0a0a; padding: 50px; border-radius: 12px; width: 100%; max-width: 550px; border: 1px solid var(--border-light); transform: translateY(30px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.8);}
+        .active { display: flex !important; opacity: 1 !important; }
         .active .portal-content, .active .privacy-content { transform: translateY(0); }
         
         .portal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #222; padding-bottom: 20px; }
-        .close-portal { cursor: pointer; font-size: 14px; color: #666; font-family: 'Space Mono'; letter-spacing: 2px; }
+        .close-portal { cursor: pointer; font-size: 14px; color: #888; font-family: 'Space Mono'; letter-spacing: 2px; transition: 0.3s; text-transform: uppercase;}
         .close-portal:hover { color: var(--accent); }
         
-        .login-input { width: 100%; padding: 16px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.95rem; border-radius: 6px; transition: 0.3s; }
+        .login-input { width: 100%; padding: 16px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.95rem; border-radius: 6px; transition: border-color 0.3s; }
         .login-input:focus { border-color: var(--accent); }
-        .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #666; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-        .portal-detail { display: flex; justify-content: space-between; margin: 18px 0; font-family: 'Space Mono'; font-size: 0.9rem; color: #888; border-bottom: 1px solid #111; padding-bottom: 12px; }
+        .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .portal-detail { display: flex; justify-content: space-between; margin: 18px 0; font-family: 'Space Mono'; font-size: 0.9rem; color: #aaa; border-bottom: 1px solid #111; padding-bottom: 12px; text-transform: uppercase; }
         .status-badge { background: #16a34a; color: white; padding: 4px 12px; font-size: 0.7rem; font-family: 'Space Mono'; border-radius: 4px; }
         .policy-box { background: #111; padding: 15px; border-left: 2px solid var(--accent); margin: 25px 0; font-size: 0.85rem; color: #888; line-height: 1.6; border-radius: 4px; }
 
-        /* BOT */
+        /* KABIR BOT */
         #kabir-bot { position: fixed; bottom: 30px; right: 30px; z-index: 4000; }
-        .bot-toggle { background: var(--accent); color: white; width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(255,77,41,0.4); transition: transform 0.3s; }
-        .bot-toggle:hover { transform: scale(1.05); }
-        .bot-window { position: absolute; bottom: 85px; right: 0; width: 340px; background: #0a0a0a; border: 1px solid #222; display: none; overflow: hidden; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
-        .bot-header { background: #111; padding: 18px 20px; font-family: 'Space Mono'; font-size: 0.75rem; border-bottom: 1px solid #222; letter-spacing: 1px; }
-        .bot-body { padding: 20px; font-size: 0.85rem; color: #888; max-height: 250px; overflow-y: auto; }
-        .bot-btn { width: 100%; text-align: left; padding: 12px 15px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; cursor: pointer; border-radius: 6px; font-family: 'Inter'; font-weight: 500; transition: 0.3s; }
+        .bot-toggle { background: var(--accent); color: white; width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 24px; transition: transform 0.3s; box-shadow: 0 10px 30px rgba(255,77,41,0.4); display: flex; justify-content: center; align-items: center;}
+        .bot-toggle:hover { transform: scale(1.1); }
+        .bot-window { position: absolute; bottom: 85px; right: 0; width: 340px; background: #0a0a0a; border: 1px solid var(--border-light); display: none; overflow: hidden; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
+        .bot-header { background: #111; padding: 18px 20px; font-family: 'Space Mono'; font-size: 0.75rem; border-bottom: 1px solid #222; letter-spacing: 1px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;}
+        .bot-body { padding: 20px; font-size: 0.85rem; color: #888; height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;}
+        .bot-btn { width: 100%; text-align: left; padding: 12px 15px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; border-radius: 6px; font-family: 'Inter'; font-weight: 500; transition: 0.3s; font-size: 0.85rem; }
         .bot-btn:hover { background: var(--accent); border-color: var(--accent); }
 
         @media (max-width: 768px) {
             * { cursor: auto !important; } .cursor { display: none !important; }
+            .hero { padding: 2rem; align-items: center; justify-content: center; text-align: center;}
+            .hero-overlay { background: linear-gradient(to top, rgba(3,3,3,0.9) 0%, rgba(3,3,3,0.5) 100%); }
+            .hero-content { padding: 0; margin-top: 5rem; }
             section { padding: 5rem 2rem; }
-            .hero { padding: 0 2rem; text-align: center; }
-            .top-left, .top-right, .bottom-left { display: none; }
             .hero-main { font-size: 15vw; }
             .manifesto-grid, .work-grid, .message-grid, .pricing-grid { grid-template-columns: 1fr; }
             .footer-top { flex-direction: column; gap: 3rem; }
             .nav-links { display: none; }
-            .price-card, .message-box, .manifesto-item { padding: 2.5rem 2rem; }
+            .hero-footer { right: 2rem; bottom: 2rem; text-align: center; width: 100%; justify-content: center;}
         }
     </style>
 </head>
@@ -157,20 +166,183 @@
     
     <div class="cursor"></div>
 
+    <nav class="navbar" id="navbar">
+        <div class="logo interactable">icebug<span class="accent">®</span></div>
+        <div class="nav-links">
+            <a href="#work" class="interactable">01/ Concepts</a>
+            <a href="#leadership" class="interactable">02/ Leadership</a>
+            <a href="#pricing" class="interactable">03/ Retainer</a>
+            <a href="https://instagram.com/icebug.co" target="_blank" class="interactable">Instagram ↗</a>
+            <a href="javascript:void(0)" class="interactable" onclick="openPortal()" style="color: var(--accent);">Client Portal 🔒</a>
+            <a href="https://wa.me/919214847729" class="btn-primary interactable" style="padding: 10px 24px;">Let's Chat ↗</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-bg" id="heroParallax"></div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content anim-up">
+            <p class="hero-sub">// We design & develop digital experiences</p>
+            <h1 class="hero-main">
+                YOU <span class="outline-text">IMAGINE</span>/.<br>
+                WE MAKE IT <span class="accent">REAL</span>//.
+            </h1>
+        </div>
+        
+        <div class="hero-footer anim-up">
+            <p>EST. 2026<br>LOCAL TIME <span id="clock">...</span> UTC+5:30</p>
+        </div>
+    </header>
+
+    <div class="ticker-wrap anim-up">
+        <div class="ticker">
+            BRAND IDENTITY • WEB DESIGN • DEVELOPMENT • 3D MOTION • UI/UX • SCALABLE SYSTEMS • BRAND IDENTITY • WEB DESIGN • DEVELOPMENT • 3D MOTION • UI/UX • SCALABLE SYSTEMS • 
+        </div>
+    </div>
+
+    <section id="work" class="work-section">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
+            <h2 class="section-title anim-up" style="margin: 0;">Selected <br><span class="accent">Concepts.</span></h2>
+            <a href="https://wa.me/919214847729" class="btn-secondary interactable anim-up">Request Private Demos 🔒</a>
+        </div>
+        <div class="work-grid">
+            <div class="work-card bento-card anim-up interactable" style="padding:0;">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop" class="work-image" alt="Project 1">
+                </div>
+                <div class="work-info">
+                    <div class="work-tags"><span class="tag">HOSPITALITY</span><span class="tag">CONFIDENTIAL</span></div>
+                    <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 10px;">Premium Cafe Web Experience</h3>
+                    <p class="role">Status: Under Development // 2026</p>
+                </div>
+            </div>
+            <div class="work-card bento-card anim-up interactable" style="padding:0; transition-delay: 0.1s;">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2000&auto=format&fit=crop" class="work-image" alt="Project 2">
+                </div>
+                <div class="work-info">
+                    <div class="work-tags"><span class="tag">E-COMMERCE</span><span class="tag">INTERNAL CONCEPT</span></div>
+                    <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 10px;">Next-Gen Apparel Drop</h3>
+                    <p class="role">Status: Agency Concept // 2026</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="leadership" class="leadership-section">
+        <h2 class="section-title anim-up">The <br><span class="accent">Vision.</span></h2>
+        <div class="message-grid">
+            <div class="message-box bento-card anim-up interactable">
+                <div class="quote-icon">"</div>
+                <p style="font-size: 1.25rem; line-height: 1.6; color: #ddd; font-weight: 500;">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your code is hand-crafted, pixel by pixel.</p>
+                <div style="border-top: 1px solid var(--border-light); margin-top: 3rem; padding-top: 1.5rem;">
+                    <p class="leader-name">Utkarsh Tiwari</p>
+                    <p class="role">// LEAD ARCHITECT & FOUNDER</p>
+                </div>
+            </div>
+            <div class="message-box bento-card anim-up interactable" style="transition-delay: 0.1s;">
+                <div class="quote-icon">"</div>
+                <p style="font-size: 1.25rem; line-height: 1.6; color: #ddd; font-weight: 500;">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
+                <div style="border-top: 1px solid var(--border-light); margin-top: 3rem; padding-top: 1.5rem;">
+                    <p class="leader-name">Ayushi Awasthi</p>
+                    <p class="role">// HEAD OF SALES & STRATEGY</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing-section">
+        <h2 class="section-title anim-up">Transparent.<br><span class="accent">Scalable.</span></h2>
+        <div class="pricing-grid">
+            <div class="price-card bento-card anim-up interactable">
+                <h3 style="font-size: 2rem; font-weight: 900;">The Essential</h3>
+                <p class="setup-fee">₹10,000 Setup</p>
+                <div class="monthly-fee">₹999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
+                <hr style="border: 0; border-top: 1px solid var(--border-light);">
+                <ul class="features">
+                    <li>Single Page Experience</li>
+                    <li>Standard Animations</li>
+                    <li>Vercel Cloud Hosting</li>
+                </ul>
+                <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary interactable" style="width: 100%; margin-bottom: 15px;">View SOW ↗</button>
+                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary interactable" style="width: 100%;">Sign SOW 🔒</a>
+            </div>
+            
+            <div class="price-card bento-card premium-card anim-up interactable" style="transition-delay: 0.1s;">
+                <div class="price-badge">MOST POPULAR</div>
+                <h3 style="font-size: 2.2rem; font-weight: 900;">The Premium</h3>
+                <p class="setup-fee">₹25,000 Setup</p>
+                <div class="monthly-fee">₹1,999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
+                <hr style="border: 0; border-top: 1px solid var(--border-light);">
+                <ul class="features">
+                    <li style="color: white; font-weight: bold;">Multi-Page Custom Site</li>
+                    <li style="color: white; font-weight: bold;">Advanced GSAP Motion</li>
+                    <li>CMS (Easy Content Edits)</li>
+                    <li>Priority Monthly Support</li>
+                </ul>
+                <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary interactable" style="width: 100%; margin-bottom: 15px; border-color: #555;">View SOW ↗</button>
+                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary interactable" style="width: 100%;">Sign SOW 🔒</a>
+            </div>
+            
+            <div class="price-card bento-card anim-up interactable" style="transition-delay: 0.2s;">
+                <h3 style="font-size: 2rem; font-weight: 900;">The Bespoke</h3>
+                <p class="setup-fee">₹50k+ Setup</p>
+                <div class="monthly-fee">₹4,999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
+                <hr style="border: 0; border-top: 1px solid var(--border-light);">
+                <ul class="features">
+                    <li>Full 3D / WebGL Motion</li>
+                    <li>E-commerce / Booking Setup</li>
+                    <li>Custom Backend System</li>
+                    <li>Dedicated Tech Team</li>
+                </ul>
+                <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke - Scope of Work')" class="btn-secondary interactable" style="width: 100%; margin-bottom: 15px;">View SOW ↗</button>
+                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20ready%20to%20discuss%20the%20Bespoke%20Plan." class="btn-primary interactable" style="width: 100%;">Let's Discuss 🔒</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer anim-up">
+        <div class="footer-top">
+            <div>
+                <div class="logo" style="font-size: 4rem; letter-spacing: -2px;">icebug<span class="accent">®</span></div>
+                <p class="role" style="margin-top: 15px; font-size: 0.95rem; max-width: 350px; line-height: 1.6;">High-performance digital experiences engineered in Kanpur, UP.</p>
+            </div>
+            <div class="footer-links">
+                <div>
+                    <p class="role" style="margin-bottom: 15px; color: var(--accent);">// CONNECT</p>
+                    <a href="https://instagram.com/icebug.co" target="_blank" class="interactable">Instagram ↗</a>
+                    <a href="https://wa.me/919214847729" target="_blank" class="interactable">WhatsApp ↗</a>
+                    <a href="mailto:hello@icebug.co" class="interactable">Email Us ↗</a>
+                </div>
+                <div>
+                    <p class="role" style="margin-bottom: 15px; color: var(--accent);">// NAVIGATION</p>
+                    <a href="javascript:void(0)" onclick="openPrivacy()" class="interactable">Privacy Policy & Terms</a>
+                    <a href="#pricing" class="interactable">Pricing Plans</a>
+                    <a href="javascript:void(0)" onclick="openPortal()" class="interactable">Client Portal 🔒</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="role" style="font-size: 0.75rem;">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
+            <div class="role" style="font-size: 0.75rem;">HAND-CRAFTED BY <span class="accent">UTKARSH & AYUSHI</span></div>
+        </div>
+    </footer>
+
     <div id="portalModal" class="portal-modal">
         <div class="portal-content">
-            <span class="close-portal" onclick="closePortal()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
+            <span class="close-portal interactable" onclick="closePortal()" style="position:absolute; right:25px; top:25px;">[ CLOSE ]</span>
             
             <div id="login-view">
                 <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// AUTH_REQUIRED</p>
-                <h2 style="margin: 10px 0; font-weight: 900; letter-spacing: -1px; font-size: 2rem;">CLIENT LOGIN</h2>
+                <h2 style="margin: 10px 0; font-weight: 900; letter-spacing: -1px; font-size: 2.5rem;">CLIENT LOGIN</h2>
                 <div style="margin-top: 30px;">
                     <label class="login-label">Registered Email</label>
-                    <input type="email" id="login-email" class="login-input" placeholder="name@company.com">
+                    <input type="email" id="login-email" class="login-input interactable" placeholder="name@company.com">
                     <label class="login-label">Phone Number</label>
-                    <input type="text" id="login-phone" class="login-input" placeholder="+91 XXXXX XXXXX">
-                    <button class="btn-primary" onclick="handleLogin()" style="width: 100%; padding: 16px; margin-top: 10px;">ACCESS PORTAL ↗</button>
-                    <p id="login-error" style="color:#dc2626; font-size:0.7rem; margin-top:15px; display:none; font-family:'Space Mono';">// ERROR: INVALID CREDENTIALS</p>
+                    <input type="text" id="login-phone" class="login-input interactable" placeholder="+91 XXXXX XXXXX">
+                    <button class="btn-primary interactable" onclick="handleLogin()" style="width: 100%; padding: 16px; margin-top: 10px;">ACCESS PORTAL ↗</button>
+                    <p id="login-error" style="color:#dc2626; font-size:0.75rem; margin-top:15px; display:none; font-family:'Space Mono';">// ERROR: INVALID CREDENTIALS</p>
                 </div>
             </div>
 
@@ -178,18 +350,18 @@
                 <div class="portal-header" style="border:none; margin-bottom:10px;">
                     <div>
                         <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// SESSION_ACTIVE</p>
-                        <h2 style="margin: 5px 0; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; font-size: 1.8rem;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
+                        <h2 style="margin: 5px 0; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; font-size: 2rem; line-height: 1;">WELCOME, <br><span id="client-name-display" style="color: var(--accent);">CLIENT</span></h2>
                     </div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h3 style="margin:0; font-size: 0.9rem; font-family: 'Space Mono'; color: #666;">PLAN: <span id="plan-name" style="color: white;">...</span></h3>
+                    <h3 style="margin:0; font-size: 0.9rem; font-family: 'Space Mono'; color: #888;">PLAN: <span id="plan-name" style="color: white;">...</span></h3>
                     <span class="status-badge" id="plan-status">ACTIVE</span>
                 </div>
                 <div class="portal-detail"><strong>EMAIL_ID</strong> <span id="client-email" style="color:white;">--</span></div>
                 <div class="portal-detail"><strong>PHONE_NO</strong> <span id="client-phone" style="color:white;">--</span></div>
                 <div class="portal-detail"><strong>EXPIRY_DATE</strong> <span id="expiry-date" style="color:white;">--/--/----</span></div>
 
-                <div style="margin-top: 35px; border-top: 1px solid #222; padding-top: 25px;">
+                <div style="margin-top: 35px; border-top: 1px solid var(--border-light); padding-top: 25px;">
                     <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// FINANCIAL_RECORDS</p>
                     <h3 style="margin: 15px 0; font-size: 1.1rem;">BILLING HISTORY</h3>
                     <div style="font-size: 0.85rem; font-family: 'Space Mono'; color: #888;">
@@ -202,17 +374,17 @@
                     </div>
                 </div>
                 <div class="policy-box"><strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.</div>
-                <button class="btn-primary" onclick="handlePayment()" style="width: 100%; padding: 16px; margin-bottom: 15px;">RENEW SUBSCRIPTION ↗</button>
-                <button class="btn-secondary" onclick="logout()" style="width: 100%; padding: 14px;">LOGOUT SESSION</button>
+                <button class="btn-primary interactable" onclick="handlePayment()" style="width: 100%; padding: 16px; margin-bottom: 15px;">RENEW SUBSCRIPTION ↗</button>
+                <button class="btn-secondary interactable" onclick="logout()" style="width: 100%; padding: 14px;">LOGOUT SESSION</button>
             </div>
         </div>
     </div>
 
     <div id="privacyModal" class="privacy-modal">
         <div class="privacy-content">
-            <span class="close-portal" onclick="closePrivacy()" style="position:absolute; right:20px; top:20px;">[ CLOSE ]</span>
+            <span class="close-portal interactable" onclick="closePrivacy()" style="position:absolute; right:25px; top:25px;">[ CLOSE ]</span>
             <p style="color: var(--accent); margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// LEGAL_TERMS</p>
-            <h2 style="margin: 10px 0; font-weight: 900; letter-spacing: -1px; font-size: 2rem;">PRIVACY & TERMS</h2>
+            <h2 style="margin: 10px 0; font-weight: 900; letter-spacing: -1px; font-size: 2.5rem;">PRIVACY & TERMS</h2>
             <div style="margin-top: 25px; max-height: 40vh; overflow-y: auto; font-size: 0.95rem; color: #888; line-height: 1.8; padding-right: 15px;">
                 <p><strong>No-Refund Policy:</strong> All payments made to Icebug\Studio are non-refundable. Since we provide custom digital services and immediate allocation of resources, we do not offer refunds once a cycle starts.</p><br>
                 <p><strong>Cancellations:</strong> You can cancel your subscription anytime. Your access to the premium portal and support will continue until the end of the current paid billing period.</p><br>
@@ -228,217 +400,85 @@
                     <p class="role" style="color:var(--accent); font-family: 'Space Mono'; font-size: 0.7rem;">// OFFICIAL_SCOPE</p>
                     <h3 id="modalTitle" style="color: white; margin:0; font-size: 1.5rem; font-weight: 800;">Project Scope</h3>
                 </div>
-                <span class="close-portal" onclick="closeSOW()">[ CLOSE ]</span>
+                <span class="close-portal interactable" onclick="closeSOW()">[ CLOSE ]</span>
             </div>
             <iframe id="sowFrame" src="" style="width:100%; flex-grow:1; border:none; background: #fff;"></iframe>
         </div>
     </div>
 
-    <nav class="navbar">
-        <div class="logo">icebug<span class="accent">®</span></div>
-        <div class="nav-links">
-            <a href="#work">Concepts</a>
-            <a href="#leadership">Leadership</a>
-            <a href="#pricing">Retainer</a>
-            <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
-            <a href="javascript:void(0)" class="client-login" onclick="openPortal()">Client Portal 🔒</a>
-            <a href="https://wa.me/919214847729" class="btn-primary" style="margin-left: 2rem; padding: 10px 24px;">Let's Chat ↗</a>
-        </div>
-    </nav>
-
-    <header class="hero">
-        <div class="tech-detail top-left">// 02.01°</div>
-        <div class="tech-detail top-right">EST. 2026<br>KANPUR, UP</div>
-        <div class="tech-detail bottom-left">// LAT: 26.4499° N<br>LON: 80.3319° E</div>
-        <div class="hero-content">
-            <h2 class="hero-sub anim-up">Digital experiences that<br>connect, scale and perform<span class="accent">.</span></h2>
-            <h1 class="hero-main anim-up">Icebug\Studio</h1>
-            <div class="hero-bottom-grid anim-up" style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 4rem;">
-                <p class="hero-desc" style="font-size: 0.85rem; color: var(--text-muted); max-width: 300px; line-height: 1.6; font-weight: 500; text-align: left;">A DESIGN STUDIO TRUSTED BY PREMIUM BRANDS.<br>WE CREATE STORIES PEOPLE REMEMBER.</p>
-                <div class="tech-detail" style="position: static; text-align: right;">LOCAL TIME <span id="clock">...</span><br>UTC+5:30</div>
-            </div>
-        </div>
-    </header>
-
-    <section class="manifesto-section anim-up">
-        <h2 class="manifesto-title">No recycled templates.<br>No hidden fees.<br><span class="accent">Just pure digital craft.</span></h2>
-        <div class="manifesto-grid">
-            <div class="manifesto-item bento-card"><div class="stat">99%</div><p class="role text-muted">FASTER LOAD TIMES WITH CUSTOM EDGE DEPLOYMENT.</p></div>
-            <div class="manifesto-item bento-card"><div class="stat">24h</div><p class="role text-muted">AVERAGE TURNAROUND TIME FOR PRIORITY CLIENT EDITS.</p></div>
-            <div class="manifesto-item bento-card"><div class="stat">Zero</div><p class="role text-muted">WORDPRESS TEMPLATES USED. EVERY PIXEL IS HAND-CODED.</p></div>
-        </div>
-    </section>
-
-    <section id="work" class="work-section anim-up">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
-            <h2 class="section-title" style="margin: 0;">Selected <span class="accent">Concepts.</span></h2>
-            <a href="https://wa.me/919214847729" class="btn-secondary">Request Private Demos 🔒</a>
-        </div>
-        <div class="work-grid">
-            <div class="work-card large-card bento-card" style="padding: 0;">
-                <div class="image-wrapper"><div class="work-image" style="background: radial-gradient(circle at center, #2a1a1a 0%, #050505 100%);"></div></div>
-                <div class="work-info">
-                    <div class="work-tags"><span class="tag">HOSPITALITY</span><span class="tag">CONFIDENTIAL</span></div>
-                    <h3 style="font-size: 2rem; font-weight: 800;">Premium Cafe Web Experience</h3>
-                    <p class="role" style="margin-top: 15px;">Status: Under Development // 2026</p>
-                </div>
-            </div>
-            <div class="work-card bento-card" style="padding: 0;">
-                <div class="image-wrapper"><div class="work-image" style="background: linear-gradient(145deg, #1a0f0a, #050505);"></div></div>
-                <div class="work-info">
-                    <div class="work-tags"><span class="tag">E-COMMERCE</span><span class="tag">INTERNAL CONCEPT</span></div>
-                    <h3 style="font-size: 2rem; font-weight: 800;">Next-Gen Apparel Drop</h3>
-                    <p class="role" style="margin-top: 15px;">Status: Agency Concept // 2026</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="leadership" class="leadership-section anim-up">
-        <h2 class="section-title">The <span class="accent">Vision.</span></h2>
-        <div class="message-grid">
-            <div class="message-box bento-card">
-                <div class="quote-icon">"</div>
-                <p style="font-size: 1.25rem; line-height: 1.6; color: #ddd; font-weight: 500;">We don't build websites just to sit on the internet. We engineer high-performance digital assets that drive revenue, elevate brand perception, and dominate local markets. Your code is hand-crafted, pixel by pixel.</p>
-                <div style="border-top: 1px solid #222; margin-top: 3rem; padding-top: 1.5rem;">
-                    <p class="leader-name">Utkarsh Tiwari</p>
-                    <p class="role">// LEAD ARCHITECT & FOUNDER</p>
-                </div>
-            </div>
-            <div class="message-box bento-card">
-                <div class="quote-icon">"</div>
-                <p style="font-size: 1.25rem; line-height: 1.6; color: #ddd; font-weight: 500;">Our relationship with clients doesn't end at launch; it begins there. From priority support to scalable strategies, I ensure your business has the digital infrastructure it needs to scale seamlessly and profitably.</p>
-                <div style="border-top: 1px solid #222; margin-top: 3rem; padding-top: 1.5rem;">
-                    <p class="leader-name">Ayushi Awasthi</p>
-                    <p class="role">// HEAD OF SALES & STRATEGY</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="pricing-section anim-up">
-        <h2 class="section-title">Transparent. <span class="accent">Scalable.</span></h2>
-        <div class="pricing-grid">
-            <div class="price-card bento-card">
-                <h3 style="font-size: 2rem; font-weight: 900;">The Essential</h3>
-                <p class="setup-fee">₹10,000 Setup</p>
-                <div class="monthly-fee">₹999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
-                <hr style="border: 0; border-top: 1px solid #222;">
-                <ul class="features">
-                    <li>Single Page Experience</li>
-                    <li>Standard Animations</li>
-                    <li>Vercel Cloud Hosting</li>
-                </ul>
-                <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 15px;">View SOW ↗</button>
-                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary" style="width: 100%;">Sign SOW 🔒</a>
-            </div>
-            
-            <div class="price-card bento-card premium-card">
-                <div class="price-badge">MOST POPULAR</div>
-                <h3 style="font-size: 2rem; font-weight: 900;">The Premium</h3>
-                <p class="setup-fee">₹25,000 Setup</p>
-                <div class="monthly-fee">₹1,999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
-                <hr style="border: 0; border-top: 1px solid #222;">
-                <ul class="features">
-                    <li style="color: white; font-weight: bold;">Multi-Page Custom Site</li>
-                    <li style="color: white; font-weight: bold;">Advanced GSAP Motion</li>
-                    <li>CMS (Easy Content Edits)</li>
-                    <li>Priority Monthly Support</li>
-                </ul>
-                <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 15px; border-color: #555;">View SOW ↗</button>
-                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary" style="width: 100%;">Sign SOW 🔒</a>
-            </div>
-            
-            <div class="price-card bento-card">
-                <h3 style="font-size: 2rem; font-weight: 900;">The Bespoke</h3>
-                <p class="setup-fee">₹50k+ Setup</p>
-                <div class="monthly-fee">₹4,999<span style="font-size: 1.2rem; color: #666; font-weight: 500;">/mo</span></div>
-                <hr style="border: 0; border-top: 1px solid #222;">
-                <ul class="features">
-                    <li>Full 3D / WebGL Motion</li>
-                    <li>E-commerce / Booking Setup</li>
-                    <li>Custom Backend System</li>
-                    <li>Dedicated Tech Team</li>
-                </ul>
-                <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 15px;">View SOW ↗</button>
-                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20ready%20to%20discuss%20the%20Bespoke%20Plan." class="btn-primary" style="width: 100%;">Let's Discuss 🔒</a>
-            </div>
-        </div>
-    </section>
-
-    <footer class="main-footer anim-up">
-        <div class="footer-top">
-            <div>
-                <div class="logo" style="font-size: 3rem; letter-spacing: -2px;">icebug<span class="accent">®</span></div>
-                <p class="role" style="margin-top: 15px; font-size: 0.9rem; max-width: 300px;">High-performance digital experiences engineered in Kanpur, UP.</p>
-            </div>
-            <div class="footer-links">
-                <div>
-                    <p class="role" style="margin-bottom: 15px; color: var(--accent);">// CONNECT</p>
-                    <a href="https://instagram.com/icebug.co" target="_blank">Instagram ↗</a>
-                    <a href="https://wa.me/919214847729" target="_blank">WhatsApp ↗</a>
-                    <a href="mailto:hello@icebug.co">Email Us ↗</a>
-                </div>
-                <div>
-                    <p class="role" style="margin-bottom: 15px; color: var(--accent);">// NAVIGATION</p>
-                    <a href="javascript:void(0)" onclick="openPrivacy()">Privacy Policy & Terms</a>
-                    <a href="#pricing">Pricing Plans</a>
-                    <a href="#leadership">The Vision</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="role" style="font-size: 0.75rem;">© 2026 ICEBUG STUDIO. ALL RIGHTS RESERVED.</div>
-            <div class="role" style="font-size: 0.75rem;">HAND-CRAFTED BY <span class="accent">Utkarsh & Ayushi</span></div>
-        </div>
-    </footer>
-
     <div id="kabir-bot">
         <div class="bot-window" id="botWindow">
             <div class="bot-header">
                 <span style="font-weight: 800; letter-spacing: 1px;">ICEBUG\KABIR</span>
+                <span class="interactable" style="cursor:pointer; color:#888;" onclick="toggleBot()">✕</span>
             </div>
             <div class="bot-body" id="botBody">
                 <p style="background: #111; padding: 12px; border-radius: 6px; border-left: 2px solid var(--accent); margin-bottom: 15px;">Hello. I am Kabir. Systems are operational. How can I assist you?</p>
-                <button class="bot-btn" onclick="botReply('refund')">What is the Refund Policy?</button>
-                <button class="bot-btn" onclick="botReply('cancel')">How to cancel subscription?</button>
+                <button class="bot-btn interactable" onclick="botReply('refund')">What is the Refund Policy?</button>
+                <button class="bot-btn interactable" onclick="botReply('cancel')">How to cancel subscription?</button>
             </div>
         </div>
-        <button class="bot-toggle" onclick="toggleBot()">💬</button>
+        <button class="bot-toggle interactable" onclick="toggleBot()">💬</button>
     </div>
 
     <script>
         const _supabase = supabase.createClient('https://ebmdhrwkwirigquzwvpp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibWRocndrd2lyaWdxdXp3dnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTk1NjQsImV4cCI6MjA5MDYzNTU2NH0.2xGtMcdlS2OTTNO5eSAc6GXez_uDaNK6qdBCtGJrKwU');
 
-        // Original Custom Cursor
+        // ELITE CUSTOM CURSOR (Magnetic Hover)
         const cursor = document.querySelector('.cursor');
         if(window.matchMedia("(pointer: fine)").matches) {
             document.addEventListener('mousemove', (e) => {
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
             });
+            
+            const interactables = document.querySelectorAll('.interactable');
+            interactables.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+            });
         }
 
-        // Original Clock
+        // CLOCK
         function updateClock() { 
             const clockEl = document.getElementById('clock');
             if(clockEl) clockEl.textContent = new Date().toLocaleTimeString('en-US', { hour12: false }); 
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // Original GSAP
-        gsap.from(".anim-up", { y: 50, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power4.out", delay: 0.2 });
+        // ELITE GSAP ANIMATIONS
+        gsap.registerPlugin(ScrollTrigger);
 
-        // Original Modals Logic
-        function openPortal() {
-            document.getElementById('portalModal').classList.add('active');
-            const savedData = sessionStorage.getItem('icebug_user');
-            if (savedData) showDashboard(JSON.parse(savedData));
-        }
-        function closePortal() { document.getElementById('portalModal').classList.remove('active'); }
+        // Hero Parallax Setup
+        gsap.to("#heroParallax", {
+            yPercent: 30, ease: "none",
+            scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+        });
 
-        function openPrivacy() { document.getElementById('privacyModal').classList.add('active'); }
-        function closePrivacy() { document.getElementById('privacyModal').classList.remove('active'); }
+        // Fade up reveal for elements
+        gsap.utils.toArray(".anim-up").forEach(el => {
+            gsap.from(el, {
+                y: 60, opacity: 0, duration: 1, ease: "power3.out",
+                scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" }
+            });
+        });
+
+        // Hide Navbar on Scroll Down
+        let lastScroll = 0;
+        window.addEventListener("scroll", () => {
+            const currentScroll = window.pageYOffset;
+            const navbar = document.getElementById('navbar');
+            if (currentScroll > 100 && currentScroll > lastScroll) { navbar.style.transform = "translateY(-100%)"; } 
+            else { navbar.style.transform = "translateY(0)"; }
+            lastScroll = currentScroll;
+        });
+
+        // MODALS LOGIC
+        function openPortal() { document.getElementById('portalModal').classList.add('active'); const savedData = sessionStorage.getItem('icebug_user'); if (savedData) showDashboard(JSON.parse(savedData)); document.body.style.overflow = "hidden"; }
+        function closePortal() { document.getElementById('portalModal').classList.remove('active'); document.body.style.overflow = "auto"; }
+
+        function openPrivacy() { document.getElementById('privacyModal').classList.add('active'); document.body.style.overflow = "hidden"; }
+        function closePrivacy() { document.getElementById('privacyModal').classList.remove('active'); document.body.style.overflow = "auto"; }
 
         function openSOW(link, title) {
             document.getElementById('modalTitle').innerText = title;
@@ -452,7 +492,7 @@
             document.body.style.overflow = "auto";
         }
 
-        // Working Backend Logic
+        // BACKEND LOGIC
         async function handleLogin() {
             const email = document.getElementById('login-email').value.trim();
             const phone = document.getElementById('login-phone').value.trim();
@@ -464,9 +504,7 @@
                 sessionStorage.setItem('icebug_user', JSON.stringify(data));
                 showDashboard(data);
                 document.getElementById('login-error').style.display = 'none';
-            } else {
-                document.getElementById('login-error').style.display = 'block';
-            }
+            } else { document.getElementById('login-error').style.display = 'block'; }
         }
 
         function showDashboard(data) {
@@ -499,6 +537,7 @@
             else window.location.href = "https://rzp.io/rzp/uQQlcFu";
         }
 
+        // KABIR BOT
         function toggleBot() {
             const win = document.getElementById('botWindow');
             win.style.display = win.style.display === 'block' ? 'none' : 'block';
