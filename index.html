@@ -12,7 +12,7 @@
     <style>
         /* --- MOBILE & SMOOTH ENHANCEMENTS --- */
         html { scroll-behavior: smooth; }
-        body { overflow-x: hidden; width: 100%; cursor: none; } 
+        body { overflow-x: hidden; width: 100%; cursor: none; } /* Cursor none to show custom cursor */
 
         /* CUSTOM CURSOR CSS */
         .cursor {
@@ -43,6 +43,7 @@
         .close-portal { cursor: pointer; font-size: 14px; color: #666; font-family: 'Space Mono'; letter-spacing: 2px; }
         .close-portal:hover { color: #4f46e5; }
         
+        /* Login Form Styles */
         .login-input { width: 100%; padding: 14px; background: #111; border: 1px solid #222; color: white; margin-bottom: 15px; outline: none; font-family: 'Inter'; font-size: 0.9rem; }
         .login-input:focus { border-color: #4f46e5; }
         .login-label { display: block; font-family: 'Space Mono'; font-size: 0.65rem; color: #666; margin-bottom: 5px; text-transform: uppercase; }
@@ -58,6 +59,7 @@
         .bot-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #222; background: #111; color: white; cursor: pointer; font-family: 'Inter'; font-size: 0.8rem; }
         .bot-btn:hover { background: #4f46e5; }
 
+        /* Phone Enhancements */
         @media (max-width: 768px) {
             .portal-content, .privacy-content { padding: 30px 20px; }
             .hero-main { font-size: 15vw; }
@@ -96,26 +98,35 @@
                         <h2 style="margin: 5px 0; font-weight: 800; letter-spacing: -1px; text-transform: uppercase;">WELCOME, <span id="client-name-display">CLIENT</span></h2>
                     </div>
                 </div>
+
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="margin:0; font-size: 0.8rem; font-family: 'Space Mono'; color: #444;">ACTIVE_PLAN: <span id="plan-name" style="color: white;">...</span></h3>
                     <span class="status-badge" id="plan-status">ACTIVE</span>
                 </div>
+
                 <div class="portal-detail"><strong>EMAIL_ID</strong> <span id="client-email">--</span></div>
                 <div class="portal-detail"><strong>PHONE_NO</strong> <span id="client-phone">--</span></div>
                 <div class="portal-detail"><strong>EXPIRY_DATE</strong> <span id="expiry-date">--/--/----</span></div>
+
                 <div style="margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
                     <p style="color: #4f46e5; margin: 0; font-family: 'Space Mono'; font-size: 0.65rem;">// FINANCIAL_RECORDS</p>
                     <h3 style="margin: 10px 0; font-size: 1rem;">BILLING HISTORY</h3>
                     <div style="font-size: 0.8rem; font-family: 'Space Mono'; color: #888;">
                         <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
-                            <span>Project Setup (50% Advance)</span><span id="setup-paid">PENDING ⏳</span>
+                            <span>Project Setup (50% Advance)</span>
+                            <span id="setup-paid">PENDING ⏳</span>
                         </div>
                         <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #111;">
-                            <span>Project Delivery (50% Final)</span><span id="final-paid">PENDING ⏳</span>
+                            <span>Project Delivery (50% Final)</span>
+                            <span id="final-paid">PENDING ⏳</span>
                         </div>
                     </div>
                 </div>
-                <div class="policy-box"><strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until the end of the current billing cycle.</div>
+
+                <div class="policy-box">
+                    <strong>SERVICE POLICY:</strong> Cancellations are non-refundable. Access remains active until cycle end.
+                </div>
+
                 <button class="btn-primary" onclick="handlePayment()" style="width: 100%; margin-left: 0; padding: 16px; font-weight: 600;">RENEW SUBSCRIPTION ↗</button>
                 <button class="btn-secondary" onclick="logout()" style="width: 100%; margin-top: 12px; border-color: #222; color: #555; padding: 14px;">LOGOUT SESSION</button>
             </div>
@@ -292,7 +303,4 @@
     </footer>
 
     <div id="kabir-bot">
-        <div class="bot-window" id="botWindow">
-            <div class="bot-header">ICEBUG\KABIR_ASSISTANT</div>
-            <div class="bot-body" id="botBody">
-                <p>Hello. I am Kabir. Systems 
+        <div class="bot-windo
