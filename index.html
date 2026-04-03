@@ -276,7 +276,7 @@
                     <li>Vercel Cloud Hosting</li>
                 </ul>
                 <button onclick="openSOW('https://drive.google.com/file/d/1RK078bQ1krub-wAkhsWe0tS7j2dBdRDM/view?usp=sharing', 'The Essential - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 15px;">View SOW ↗</button>
-                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Essential%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary" style="width: 100%;">Sign SOW 🔒</a>
+                <button onclick="handleSOW('essential')" class="btn-primary" style="width: 100%;">Sign SOW 🔒</button>
             </div>
             
             <div class="price-card bento-card premium-card">
@@ -292,7 +292,7 @@
                     <li>Priority Monthly Support</li>
                 </ul>
                 <button onclick="openSOW('https://drive.google.com/file/d/1Hwpm5MHlkGTXL4AWT1HB5XuQ0wbnmxs6/view?usp=sharing', 'The Premium - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 15px; border-color: #555;">View SOW ↗</button>
-                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I've%20reviewed%20the%20Premium%20Plan%20Scope.%20I'm%20ready%20to%20sign." class="btn-primary" style="width: 100%;">Sign SOW 🔒</a>
+                <button onclick="handleSOW('premium')" class="btn-primary" style="width: 100%;">Sign SOW 🔒</button>
             </div>
             
             <div class="price-card bento-card">
@@ -307,7 +307,7 @@
                     <li>Dedicated Tech Team</li>
                 </ul>
                 <button onclick="openSOW('https://drive.google.com/file/d/1gRANTvKd6nrJm2L4yhcrgNKX_wY4PJnF/view?usp=sharing', 'The Bespoke - Scope of Work')" class="btn-secondary" style="width: 100%; margin-bottom: 15px;">View SOW ↗</button>
-                <a href="https://wa.me/919214847729?text=Hi%20Icebug!%20I'm%20ready%20to%20discuss%20the%20Bespoke%20Plan." class="btn-primary" style="width: 100%;">Let's Discuss 🔒</a>
+                <button onclick="handleSOW('bespoke')" class="btn-primary" style="width: 100%;">Let's Discuss 🔒</button>
             </div>
         </div>
     </section>
@@ -513,13 +513,33 @@
             sessionStorage.removeItem('icebug_user');
             document.getElementById('login-view').style.display = 'block';
             document.getElementById('dashboard-view').style.display = 'none';
-        }
+        }  
 
         function handlePayment() {
             const plan = document.getElementById('plan-name').innerText;
             if (plan.includes("Bespoke")) window.location.href = "https://rzp.io/rzp/g8movGN";
             else if (plan.includes("Premium")) window.location.href = "https://rzp.io/rzp/tQ5dw83H";
             else window.location.href = "https://rzp.io/rzp/uQQlcFu";
+        } // <-- YE WALA BRACKET MISSING THA
+
+        // SOW Button -> Razorpay Redirect Logic
+        function handleSOW(planType) {
+            let setupLink = "";
+
+            // Abhi test ke liye same links hain, baad mein inko Setup Fee wale links se replace kar dena
+            if (planType === 'essential') {
+                setupLink = "https://rzp.io/rzp/uQQlcFu"; 
+            } else if (planType === 'premium') {
+                setupLink = "https://rzp.io/rzp/tQ5dw83H"; 
+            } else if (planType === 'bespoke') {
+                setupLink = "https://rzp.io/rzp/g8movGN"; // Double link fix kar diya hai
+            }
+
+            if (setupLink !== "") {
+                window.location.href = setupLink;
+            } else {
+                alert("Payment link is being updated. Please try again later.");
+            }
         }
 
         function toggleBot() {
